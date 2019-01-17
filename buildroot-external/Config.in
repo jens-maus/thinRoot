@@ -1,0 +1,2 @@
+# External packages
+source "$BR2_EXTERNAL_THINROOT_PATH/Config.ext.in"

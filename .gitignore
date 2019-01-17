@@ -1,0 +1,7 @@
+.DS_Store
+/build-*/
+/buildroot-????.??*
+/download
+/release/*.zip
+/release/*.img
+/release/*.sha256
