@@ -1,0 +1,9 @@
+# $Id: 99x11-common_start 305 2005-07-03 18:51:43Z dnusinow $
+
+# This file is sourced by Xsession(5), not executed.
+
+/bin/qutselect &
+
+exec /usr/bin/fluxbox -no-slit
+
+# vim:set ai et sts=2 sw=2 tw=80:

@@ -1,0 +1,3 @@
+[app] (name!=gimp)
+  [Position]	(WINCENTER)	{0 0}
+[end]
