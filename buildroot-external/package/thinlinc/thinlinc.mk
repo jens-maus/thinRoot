@@ -6,7 +6,7 @@
 #
 ################################################################################
 
-THINLINC_VERSION = 4.9.0-5775
+THINLINC_VERSION = 4.10.0-6068
 THINLINC_SOURCE = tl-$(THINLINC_VERSION)-client-linux-dynamic-x86_64.tar.gz
 THINLINC_SITE = https://www.cendio.com/downloads/clients
 
