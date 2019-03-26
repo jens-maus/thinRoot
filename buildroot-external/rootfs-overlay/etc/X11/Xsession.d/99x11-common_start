@@ -2,8 +2,8 @@
 
 # This file is sourced by Xsession(5), not executed.
 
-/bin/qutselect &
+/bin/qutselect -dtlogin -nouser -keep &
 
-exec /usr/bin/fluxbox -no-slit
+exec /usr/bin/fluxbox -no-slit -no-toolbar
 
 # vim:set ai et sts=2 sw=2 tw=80:
