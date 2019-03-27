@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# start/stop hotkey daemon
+#
+
+start() {
+  echo -n "Starting hotkeyd: "
+  init
+  start-stop-daemon -S -q -b -m -p /var/run/hotkeyd.pid --exec /bin/hotkeyd -- -q
+  echo "OK"
+}
+
+stop () {
+  echo -n "Stopping hotkeyd: "
+  start-stop-daemon -K -q -p /var/run/hotkeyd.pid
+  echo "OK"
+}
+
+restart() {
+  stop
+  sleep 1
+  start
+}
+
+case "$1" in
+  start)
+    start
+  ;;
+  stop)
+    stop
+  ;;
+  restart|reload)
+    restart
+  ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+esac
+
+exit $?

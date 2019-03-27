@@ -1,0 +1,6 @@
+config BR2_PACKAGE_HOTKEYD
+	bool "hotkeyd"
+	help
+	  Uber-small hotkey daemon for GNU/Linux
+
+	  https://github.com/vflyson/hotkeyd
