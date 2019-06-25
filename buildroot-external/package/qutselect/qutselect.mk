@@ -18,8 +18,8 @@ endef
 
 define QUTSELECT_INSTALL_TARGET_CMDS
   $(INSTALL) -D -m 0755 $(@D)/build-l64/bin/qutselect-$(QUTSELECT_VERSION) $(TARGET_DIR)/bin/qutselect
-  $(INSTALL) -D -m 0644 $(@D)/qutselect.slist $(TARGET_DIR)/bin/
-  $(INSTALL) -D -m 0644 $(@D)/qutselect.motd $(TARGET_DIR)/bin/
+  #$(INSTALL) -D -m 0644 $(@D)/qutselect.slist $(TARGET_DIR)/bin/
+  #$(INSTALL) -D -m 0644 $(@D)/qutselect.motd $(TARGET_DIR)/bin/
   cp -R $(@D)/scripts $(TARGET_DIR)/bin/
 endef
 
