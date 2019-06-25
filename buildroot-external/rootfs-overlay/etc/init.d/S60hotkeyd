@@ -5,7 +5,6 @@
 
 start() {
   echo -n "Starting hotkeyd: "
-  init
   start-stop-daemon -S -q -b -m -p /var/run/hotkeyd.pid --exec /bin/hotkeyd -- -q
   echo "OK"
 }
