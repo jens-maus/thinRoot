@@ -124,6 +124,7 @@ start() {
   # create tmpdir and envdir
   mkdir -p ${TMPDIR}
   mkdir -p ${ENVDIR}
+  mkdir -p /var/run/usbmount
 
   # initialize everything
   init
@@ -155,6 +156,9 @@ restart() {
 case "$1" in
   start)
     start
+  ;;
+  stop)
+    # nothing
   ;;
   restart|reload)
     restart
