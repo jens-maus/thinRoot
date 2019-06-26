@@ -6,7 +6,7 @@
 
 patchdirs=$(find buildroot/package -maxdepth 1 -type d | sort)
 
-#rm *.patch
+rm *.patch
 
 COUNTER=1
 for dir in ${patchdirs}; do
