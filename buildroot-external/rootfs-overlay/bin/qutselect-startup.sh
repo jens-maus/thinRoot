@@ -64,7 +64,7 @@ create_thinlinc_conf()
   # lets parse for SESSION_0_* env variables which we can forward
   # to the thinlinc configuration file
   TLCLIENTCONF=$HOME/.thinlinc/tlclient.conf
-  set | grep _THINLINC_CONFIG_ | sed 's/SESSION_._THINLINC_CONFIG_//g' >>${TLCLIENTCONF}
+  set | grep _THINLINC_CONFIG_ | sed 's/SESSION_._THINLINC_CONFIG_//g' | tr -d \' >${TLCLIENTCONF}
 
   return 0
 }
