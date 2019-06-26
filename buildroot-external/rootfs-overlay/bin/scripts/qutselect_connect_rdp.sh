@@ -267,10 +267,10 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
     fi
 
     # enable sound redirection
-    cmdArgs="$cmdArgs /sound"
+    cmdArgs="$cmdArgs /sound:sys:pulse"
 
     # enable audio input redirection
-    #cmdArgs="$cmdArgs /microphone:sys:pulse"
+    cmdArgs="$cmdArgs /microphone:sys:pulse"
 
     # performance optimization options
     cmdArgs="$cmdArgs +fonts +window-drag -menu-anims -themes +wallpaper"
@@ -290,7 +290,8 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
 
     # run xfreerdp finally
     if [ "x${password}" != "xNULL" ]; then
-      ${XFREERDP} ${cmdArgs} /p:${password} /v:${serverName} &>/dev/null &
+      cmdArgs="$cmdArgs /from-stdin"
+      echo ${password} | ${XFREERDP} ${cmdArgs} /v:${serverName} &>/var/log/xfreerdp.log &
     else
       ${XFREERDP} ${cmdArgs} /v:${serverName} &>/dev/null &
     fi
