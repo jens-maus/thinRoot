@@ -7,8 +7,8 @@ has_ewmh_wm()
   local child_id
 
   # If property does not exist, "id" will contain "no such atom on any window"
-  id=`/bin/xprop -root 32x ' $0\n' _NET_SUPPORTING_WM_CHECK | awk '{ print $2 }'`
-  child_id=`/bin/xprop -id "${id}" 32x ' $0\n' _NET_SUPPORTING_WM_CHECK 2>/dev/null | awk '{ print $2 }'`
+  id=`/usr/bin/xprop -root 32x ' $0\n' _NET_SUPPORTING_WM_CHECK | awk '{ print $2 }'`
+  child_id=`/usr/bin/xprop -id "${id}" 32x ' $0\n' _NET_SUPPORTING_WM_CHECK 2>/dev/null | awk '{ print $2 }'`
 
   if [ "${id}" != "${child_id}" ]; then
     return 1
@@ -76,9 +76,9 @@ get_qutselect_files
 create_thinlinc_conf
 
 # Clean up after earlier WMs
-/bin/xprop -root -remove _NET_NUMBER_OF_DESKTOPS \
-                 -remove _NET_DESKTOP_NAMES \
-                 -remove _NET_CURRENT_DESKTOP 2> /dev/null
+/usr/bin/xprop -root -remove _NET_NUMBER_OF_DESKTOPS \
+                     -remove _NET_DESKTOP_NAMES \
+                     -remove _NET_CURRENT_DESKTOP 2> /dev/null
 
 # start wm
 /usr/bin/fluxbox -no-slit -no-toolbar &
