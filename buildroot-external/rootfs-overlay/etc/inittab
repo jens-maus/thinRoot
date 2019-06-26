@@ -14,24 +14,17 @@
 # process   == program to run
 
 # Startup the system
-::sysinit:/bin/mount -t proc proc /proc
-::sysinit:/bin/mkdir -p /dev/pts /dev/shm
-::sysinit:/bin/mount -o remount,rw /
+null::sysinit:/bin/mount -t proc proc /proc
+null::sysinit:/bin/mkdir -p /dev/pts
+null::sysinit:/bin/mkdir -p /dev/shm
 tty2::sysinit:/bin/mount -a
-null::sysinit:/bin/ln -sf /proc/self/fd /dev/fd
-null::sysinit:/bin/ln -sf /proc/self/fd/0 /dev/stdin
-null::sysinit:/bin/ln -sf /proc/self/fd/1 /dev/stdout
-null::sysinit:/bin/ln -sf /proc/self/fd/2 /dev/stderr
 null::sysinit:/bin/hostname -F /etc/hostname
-null::sysinit:/usr/bin/psplash -n &
+null::sysinit:/usr/bin/psplash &
 # now run any rc scripts
 ::sysinit:/etc/init.d/rcS
 
-# Put a getty on the serial port
-tty1::respawn:/sbin/getty -L  tty1 0 vt100 # GENERIC_SERIAL
+# Put a getty on tty2
 tty2::askfirst:/sbin/getty -L tty2 0 vt100
-tty3::askfirst:/sbin/getty -L tty3 0 vt100
-tty4::askfirst:/sbin/getty -L tty4 0 vt100
 
 # Stuff to do for the 3-finger salute
 ::ctrlaltdel:/sbin/reboot
@@ -39,3 +32,4 @@ tty4::askfirst:/sbin/getty -L tty4 0 vt100
 # Stuff to do before rebooting
 ::shutdown:/etc/init.d/rcK
 tty2::shutdown:/bin/umount -a -r
+null::shutdown:/sbin/swapoff -a
