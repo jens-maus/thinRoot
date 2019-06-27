@@ -118,6 +118,87 @@ load_thinroot_conffiles() {
   done
 }
 
+setup_xconf() {
+
+  # 00-keyboard.conf
+  if [[ -n "${XKBLAYOUT}" ]]; then
+    sed -i "/Option .*XkbLayout/c\\\tOption \"XkbLayout\" \"${XKBLAYOUT}\"" /etc/X11/xorg.conf.d/00-keyboard.conf
+  fi
+  if [[ -n "${XKBMODEL}" ]]; then
+    sed -i "/Option .*XkbModel/c\\\tOption \"XkbModel\" \"${XKBMODEL}\"" /etc/X11/xorg.conf.d/00-keyboard.conf
+  fi
+  if [[ -n "${XKBVARIANT}" ]]; then
+    sed -i "/Option .*XkbVariant/c\\\tOption \"XkbVariant\" \"${XKBVARIANT}\"" /etc/X11/xorg.conf.d/00-keyboard.conf
+  fi
+  if [[ -n "${XKBOPTIONS}" ]]; then
+    sed -i "/Option .*XkbOptions/c\\\tOption \"XkbOptions\" \"${XKBOPTIONS}\"" /etc/X11/xorg.conf.d/00-keyboard.conf
+  fi
+  if [[ -n "${KEYBOARD_AUTOREPEAT}" ]]; then
+    sed -i "/Option .*AutoRepeat/c\\\tOption \"AutoRepeat\" \"${KEYBOARD_AUTOREPEAT}\"" /etc/X11/xorg.conf.d/00-keyboard.conf
+  fi
+
+  # 01-mouse.conf
+  if [[ -n "${MOUSE_RESOLUTION}" ]]; then
+    sed -i "/Option .*Resolution/c\\\tOption \"Resolution\" \"${MOUSE_RESOLUTION}\"" /etc/X11/xorg.conf.d/01-mouse.conf
+  fi
+
+  # 10-serverlayout.conf
+  if [[ -n "${SCREEN_BLANK_TIME}" ]]; then
+    sed -i "/Option .*BlankTime/c\\\tOption \"BlankTime\" \"${SCREEN_BLANK_TIME}\"" /etc/X11/xorg.conf.d/10-serverlayout.conf
+  fi
+  if [[ -n "${SCREEN_STANDBY_TIME}" ]]; then
+    sed -i "/Option .*StandbyTime/c\\\tOption \"StandbyTime\" \"${SCREEN_STANDBY_TIME}\"" /etc/X11/xorg.conf.d/10-serverlayout.conf
+  fi
+  if [[ -n "${SCREEN_SUSPEND_TIME}" ]]; then
+    sed -i "/Option .*SuspendTime/c\\\tOption \"SuspendTime\" \"${SCREEN_SUSPEND_TIME}\"" /etc/X11/xorg.conf.d/10-serverlayout.conf
+  fi
+  if [[ -n "${SCREEN_OFF_TIME}" ]]; then
+    sed -i "/Option .*OffTime/c\\\tOption \"OffTime\" \"${SCREEN_OFF_TIME}\"" /etc/X11/xorg.conf.d/10-serverlayout.conf
+  fi
+  if [[ -n "${DONT_VT_SWITCH_STATE}" ]]; then
+    sed -i "/Option .*DontVTSwitch/c\\\tOption \"DontVTSwitch\" \"${DONT_VT_SWITCH_STATE}\"" /etc/X11/xorg.conf.d/10-serverlayout.conf
+  fi
+  if [[ -n "${DONT_ZAP_STATE}" ]]; then
+    sed -i "/Option .*DontZap/c\\\tOption \"DontZap\" \"${DONT_ZAP_STATE}\"" /etc/X11/xorg.conf.d/10-serverlayout.conf
+  fi
+}
+
+setup_audio() {
+  /usr/sbin/alsactl init &>/dev/null
+  for card in $(grep -e ":" /proc/asound/cards | cut -c2); do
+    if [[ -n "${AUDIO_LEVEL}" ]]; then
+      for control in Master PCM CD Video; do
+        if /usr/bin/amixer sget -c ${card} ${control} &>/dev/null; then
+          /usr/bin/amixer sset -c ${card} ${control} ${AUDIO_LEVEL}% unmute
+          /usr/bin/amixer sset -c ${card} ${control} unmute
+        fi
+      done
+    fi
+    if [[ -n "${MIC_LEVEL}" ]] && [[ "${MIC_LEVEL}" -gt "0" ]]; then
+      [[ -z "${MIC_DEVICE}" ]] && MIC_DEVICE=Mic
+      if /usr/bin/amixer sget -c ${card} ${MIC_DEVICE} &>/dev/null; then
+        if /usr/bin/amixer sget -c ${card} Capture &>/dev/null; then
+          /usr/bin/amixer sset Capture ${MIC_LEVEL}% unmute
+        fi
+        /usr/bin/amixer sset ${MIC_DEVICE} playback mute
+        /usr/bin/amixer sset ${MIC_DEVICE} ${MIC_LEVEL}% cap
+      elif /usr/bin/amixer sget -c ${card} Capture &>/dev/null; then
+        /usr/bin/amixer sset Capture 0%
+      fi
+    fi
+    for control in $UNMUTE; do
+      if /usr/bin/amixer sget -c ${card} ${control} &>/dev/null; then
+        /usr/bin/amixer sset -c ${card} ${control} unmute
+      fi
+    done
+    for control in $MUTE; do
+      if /usr/bin/amixer sget -c ${card} ${control} &>/dev/null; then
+        /usr/bin/amixer sset -c ${card} ${control} mute
+      fi
+    done
+  done
+}
+
 start() {
   echo -n "Setup Environment: "
 
@@ -144,6 +225,12 @@ start() {
 
     # load all thinroot.conf.XXXXX conffiles
     load_thinroot_conffiles
+
+    # setup/tune X11 configs
+    setup_xconf
+
+    # setup/tune audio/alsa
+    setup_audio
   fi
 
   echo "OK"

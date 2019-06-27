@@ -1,0 +1,32 @@
+# -*- sh -*-
+# Xsession.d script to setup multi-monitor support using xrandr
+#
+# This file is sourced by Xsession(5), not executed.
+
+if [[ -e /usr/bin/xrandr ]]; then
+
+  if [[ -z "${XRANDR_OPTIONS}" ]] && [[ -n "${SCREEN_RESOLUTION}" ]]; then
+    XRANDR_OPTIONS="-s ${SCREEN_RESOLUTION}"
+  elif [[ "$XRANDR_OPTIONS" == "dualscreen" ]]; then
+    scrns=$(/usr/bin/xrandr -q | grep " connected" | cut -d " " -f1)
+    numscrns=$(echo $scrns | wc -w)
+    if [[ ${numscrns} -gt 1 ]]; then
+      left=$(echo $scrns | cut -d " " -f1)
+      right=$(echo $scrns | cut -d " " -f2)
+      if [[ -n "${SCREEN_RESOLUTION}" ]]; then
+        XRANDR_OPTIONS="--output ${left} --mode ${SCREEN_RESOLUTION} --left-of ${right} --primary --output ${right} --mode ${SCREEN_RESOLUTION}"
+      else
+        XRANDR_OPTIONS="--output ${left} --left-of ${right} --primary"
+      fi
+    elif [[ -n "${SCREEN_RESOLUTION}" ]]; then
+      XRANDR_OPTIONS="-s ${SCREEN_RESOLUTION}"
+    else
+      XRANDR_OPTIONS=""
+    fi
+  fi
+
+  if [[ -n "${XRANDR_OPTIONS}" ]]; then
+    /usr/bin/xrandr ${XRANDR_OPTIONS} &>/dev/null
+  fi
+
+fi
