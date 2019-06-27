@@ -262,7 +262,7 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
        if [ -n "${SUN_SUNRAY_TOKEN}" ]; then
          cmdArgs="$cmdArgs /drive:USB,/tmp/SUNWut/mnt/${USER}/"
        else
-         cmdArgs="$cmdArgs /drive:USB,/var/run/usbmount/"
+         cmdArgs="$cmdArgs /drive:USB,/run/usbmount/"
        fi
     fi
 
@@ -273,7 +273,7 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
     cmdArgs="$cmdArgs /microphone:sys:pulse"
 
     # performance optimization options
-    cmdArgs="$cmdArgs +fonts +window-drag -menu-anims -themes +wallpaper"
+    cmdArgs="$cmdArgs +auto-reconnect +fonts +window-drag -menu-anims -themes +wallpaper +heartbeat"
     
     # if we are not in dtlogin mode we go and
     # output the rdesktop line that is to be executed
