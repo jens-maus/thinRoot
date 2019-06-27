@@ -1,0 +1,6 @@
+config BR2_PACKAGE_NUMLOCKX
+	bool "numlockx"
+	help
+	  This little thingy allows you to start X with NumLock turned on
+
+	  https://github.com/rg3/numlockx

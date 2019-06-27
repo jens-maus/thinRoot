@@ -1,0 +1,8 @@
+# -*- sh -*-
+# Xsession.d script to set the numlock
+#
+# This file is sourced by Xsession(5), not executed.
+
+if [[ -x /bin/numlockx ]]; then
+  /bin/numlockx ${X_NUMLOCK}
+fi

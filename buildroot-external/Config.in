@@ -5,4 +5,5 @@ menu "Additional software"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/qutselect/Config.in"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/thinlinc/Config.in"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/hotkeyd/Config.in"
+  source "$BR2_EXTERNAL_THINROOT_PATH/package/numlockx/Config.in"
 endmenu
