@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XPRINTIDLE
+	bool "xprintidle"
+	help
+	  a utility that queries the X server for the user's idle time and prints it to stdout
+
+	  https://github.com/g0hl1n/xprintidle

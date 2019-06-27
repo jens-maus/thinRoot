@@ -199,6 +199,11 @@ setup_audio() {
   done
 }
 
+setup_shutdown_cronjob() {
+  [[ -z "${SHUTDOWN_IDLE_INTERVAL}" ]] && SHUTDOWN_IDLE_INTERVAL=5
+  echo "*/${SHUTDOWN_IDLE_INTERVAL} * * * * /bin/idle-check.sh &>/dev/null" >>/etc/crontab
+}
+
 start() {
   echo -n "Setup Environment: "
 
@@ -231,6 +236,9 @@ start() {
 
     # setup/tune audio/alsa
     setup_audio
+
+    # setup the shutdown cronjob
+    setup_shutdown_cronjob
   fi
 
   echo "OK"
