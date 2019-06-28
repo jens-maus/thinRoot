@@ -12,7 +12,7 @@ NUM=1
 
 init() {
   # source /proc/cmdline to that we can grab BOOT_IMAGE
-  source /proc/cmdline
+  eval $(cat /proc/cmdline | cut -d " " -f1)
 
   # get the BASE_PATH to the boot server from BOOT_IMAGE
   if [[ -n ${BOOT_IMAGE} ]]; then
@@ -169,8 +169,8 @@ setup_audio() {
     if [[ -n "${AUDIO_LEVEL}" ]]; then
       for control in Master PCM CD Video; do
         if /usr/bin/amixer sget -c ${card} ${control} &>/dev/null; then
-          /usr/bin/amixer sset -c ${card} ${control} ${AUDIO_LEVEL}% unmute
-          /usr/bin/amixer sset -c ${card} ${control} unmute
+          /usr/bin/amixer sset -c ${card} ${control} ${AUDIO_LEVEL}% unmute &>/dev/null
+          /usr/bin/amixer sset -c ${card} ${control} unmute &>/dev/null
         fi
       done
     fi
@@ -178,22 +178,22 @@ setup_audio() {
       [[ -z "${MIC_DEVICE}" ]] && MIC_DEVICE=Mic
       if /usr/bin/amixer sget -c ${card} ${MIC_DEVICE} &>/dev/null; then
         if /usr/bin/amixer sget -c ${card} Capture &>/dev/null; then
-          /usr/bin/amixer sset Capture ${MIC_LEVEL}% unmute
+          /usr/bin/amixer sset Capture ${MIC_LEVEL}% unmute &>/dev/null
         fi
-        /usr/bin/amixer sset ${MIC_DEVICE} playback mute
-        /usr/bin/amixer sset ${MIC_DEVICE} ${MIC_LEVEL}% cap
+        /usr/bin/amixer sset ${MIC_DEVICE} playback mute &>/dev/null
+        /usr/bin/amixer sset ${MIC_DEVICE} ${MIC_LEVEL}% cap &>/dev/null
       elif /usr/bin/amixer sget -c ${card} Capture &>/dev/null; then
-        /usr/bin/amixer sset Capture 0%
+        /usr/bin/amixer sset Capture 0% &>/dev/null
       fi
     fi
     for control in $UNMUTE; do
       if /usr/bin/amixer sget -c ${card} ${control} &>/dev/null; then
-        /usr/bin/amixer sset -c ${card} ${control} unmute
+        /usr/bin/amixer sset -c ${card} ${control} unmute &>/dev/null
       fi
     done
     for control in $MUTE; do
       if /usr/bin/amixer sget -c ${card} ${control} &>/dev/null; then
-        /usr/bin/amixer sset -c ${card} ${control} mute
+        /usr/bin/amixer sset -c ${card} ${control} mute &>/dev/null
       fi
     done
   done
