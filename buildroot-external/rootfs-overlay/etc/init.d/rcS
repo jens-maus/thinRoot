@@ -12,7 +12,7 @@ for i in /etc/init.d/S??* ;do
   # corresponding level
   name=${i##*/}
   num=${name:1:2}
-  /usr/bin/psplash-write "MSG Starting ${name:3}..."
+  /usr/bin/psplash-write "MSG ${name:3}..."
   /usr/bin/psplash-write "PROGRESS $((${num#0}+1))"
 
   case "${i}" in
@@ -31,4 +31,4 @@ for i in /etc/init.d/S??* ;do
   esac
 done
 
-/usr/bin/psplash-write "PROGRESS 0"
+/usr/bin/psplash-write "PROGRESS 100"
