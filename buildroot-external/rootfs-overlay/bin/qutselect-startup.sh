@@ -81,12 +81,15 @@ create_thinlinc_conf
                      -remove _NET_CURRENT_DESKTOP 2> /dev/null
 
 # start wm
-/usr/bin/fluxbox -no-slit -no-toolbar &
+/usr/bin/openbox &
 
 # wait for wm to start
 if ! wait_for_wm; then
   echo "$0: Timeout waiting for wm to start"
 fi
+
+# set solid background color in root window
+/usr/bin/xsetroot -solid "#32436B"
 
 # update the default pa sink
 /bin/pa-update-default-sink.sh

@@ -1,0 +1,20 @@
+--- buildroot/package/openbox/openbox.mk.orig
++++ buildroot/package/openbox/openbox.mk
+@@ -37,12 +37,12 @@
+ OPENBOX_CONF_OPTS += --disable-session-management
+ endif
+ 
+-ifeq ($(BR2_PACKAGE_XLIB_LIBXINERAMA),y)
+-OPENBOX_CONF_OPTS += --enable-xinerama
+-OPENBOX_DEPENDENCIES += xlib_libXinerama
+-else
++#ifeq ($(BR2_PACKAGE_XLIB_LIBXINERAMA),y)
++#OPENBOX_CONF_OPTS += --enable-xinerama
++#OPENBOX_DEPENDENCIES += xlib_libXinerama
++#else
+ OPENBOX_CONF_OPTS += --disable-xinerama
+-endif
++#endif
+ 
+ ifeq ($(BR2_PACKAGE_XLIB_LIBXRANDR),y)
+ OPENBOX_CONF_OPTS += --enable-xrandr
