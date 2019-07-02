@@ -376,6 +376,13 @@
 </menu>
 
 <applications>
+  <application name="*">
+    <decor>yes</decor>
+    <shade>no</shade>
+    <focus>yes</focus>
+    <desktop>all</desktop>
+    <iconic>no</iconic>
+  </application>
 </applications>
 
 </openbox_config>
