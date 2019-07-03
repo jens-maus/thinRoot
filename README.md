@@ -8,7 +8,6 @@
 [![Commits since last release](https://img.shields.io/github/commits-since/jens-maus/thinRoot/latest.svg)](https://github.com/jens-maus/thinRoot/releases/latest)
 [![License](https://img.shields.io/github/license/jens-maus/thinRoot.svg)](https://github.com/jens-maus/thinRoot/blob/master/LICENSE)
 [![Donate](https://img.shields.io/badge/donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RAQSDY9YNZVCL)
-[![Twitter](https://img.shields.io/twitter/follow/thinRoot.svg?style=social&label=Follow)](https://twitter.com/thinRoot)
 [![GitHub stars](https://img.shields.io/github/stars/jens-maus/thinRoot.svg?style=social&label=Star)](https://github.com/jens-maus/thinRoot/stargazers/)
 
 _thinRoot_ is a buildroot (https://buildroot.org/) powered operating system environment to create lightweight user-defined kiosk systems for PXE bootable ThinClients (e.g. using intel NUC, RaspberryPi, etc.) to smoothly connect to server-based desktop environments using ThinLinc, RDP, VNC, etc....
