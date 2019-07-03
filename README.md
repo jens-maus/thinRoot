@@ -1,6 +1,5 @@
 <img src="buildroot-external/patches/psplash/thinroot/logo.png" width="250px" align="center">
 
-<br/><br/>
 [![Current Release](https://img.shields.io/github/release/jens-maus/thinRoot.svg)](https://github.com/jens-maus/thinRoot/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/jens-maus/thinRoot/latest/total.svg)](https://github.com/jens-maus/thinRoot/releases/latest)
 [![Contributors](https://img.shields.io/github/contributors/jens-maus/thinRoot.svg)](https://github.com/jens-maus/thinRoot/graphs/contributors)
