@@ -13,15 +13,22 @@
 _thinRoot_ is a buildroot (https://buildroot.org/) powered operating system environment to create lightweight user-defined kiosk systems for PXE bootable ThinClients (e.g. using intel NUC, RaspberryPi, etc.) to smoothly connect to server-based desktop environments using ThinLinc, RDP, VNC, etc....
 
 ## :cookie: Features
-* ...
+* provides a lightweight kiosk system which after bootup provides a simple connection GUI with options to connect via [ThinLinc](http://www.cendio.se/), RDP (via [freerdp](http://www.freerdp.com)) and VNC to Linux and Windows Terminalservers
 
 ## :fire: Limitations
 * ...
 
 ## :computer: Requirements
 
-1. One of the following PXE capable ThinClient hardware:
-   * [intel NUC](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)
+1. One of the following PXE capable/enabled ThinClient hardware:
+  * 8th Gen Intel NUC (Coffee Lake): [NUC8i3BEK/NUC8i3BEH](https://www.intel.com/content/www/us/en/products/boards-kits/nuc/kits/nuc8i3bek.html)
+  * 7th Gen Intel NUC (Kaby Lake): [NUC7i3BNK/NUC7i3BNH](https://www.intel.com/content/www/us/en/products/boards-kits/nuc/kits/nuc7i3bnk.html)
+  * 6th Gen Intel NUC (Skylake): [NUC6i3SYB/NUC6i5SYB](https://www.intel.com/content/www/us/en/products/boards-kits/nuc/kits/nuc6i3syk.html)
+  * 5th Gen Intel NUC (Broadwell): [NUC5i3RYB/NUC5i5RYB](http://www.intel.de/content/www/us/en/nuc/nuc-kit-nuc5i3ryk.html)
+  * 4th Gen Intel NUC (Haswell): [D34010WYB/D54250WYB](http://www.intel.de/content/www/us/en/nuc/nuc-kit-d34010wykh-board-d34010wyb.html)
+  * 3th Gen Intel NUC (Atom): [DE3815TYBE](http://www.intel.de/content/www/us/en/nuc/nuc-kit-de3815tykhe-board-de3815tybe.html)
+  * 2th Gen Intel NUC (Ivy Bridge): [D33217GK](http://www.intel.com/content/www/us/en/support/boards-and-kits/intel-nuc-boards/intel-nuc-board-d33217gk.html)
+  * 1st Gen Intel NUC (Sandy Bridge): [DCP847SKE](http://www.intel.de/content/www/us/en/nuc/nuc-kit-dccp847dye-board-dcp847ske.html)
 2. A PXE+TFTP+DHCP based server environment to host the final PXE image for the bootable ThinClient.
 3. A server-based desktop environment to connect to (e.g. Linux via ThinLinc, Windows via RDP, etc.).
 
