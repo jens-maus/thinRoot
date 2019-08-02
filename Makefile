@@ -40,11 +40,8 @@ dist: | buildroot-$(BUILDROOT_VERSION) build-$(PRODUCT)/.config
 
 .PHONY: release
 release: dist
-	cp -a build-$(PRODUCT)/images/sdcard.img ./release/ThinRoot-$(VERSION)-$(BOARD).img
-	cd ./release && sha256sum ThinRoot-$(VERSION)-$(BOARD).img >ThinRoot-$(VERSION)-$(BOARD).img.sha256
-	rm -f ./release/ThinRoot-$(VERSION)-$(BOARD).zip
-	cd ./release && zip --junk-paths ./ThinRoot-$(VERSION)-$(BOARD).zip ./ThinRoot-$(VERSION)-$(BOARD).img ./ThinRoot-$(VERSION)-$(BOARD).img.sha256 ../LICENSE ./updatepkg/$(PRODUCT)/EULA.*
-	cd ./release && sha256sum ThinRoot-$(VERSION)-$(BOARD).zip >ThinRoot-$(VERSION)-$(BOARD).zip.sha256
+	cp -a build-$(PRODUCT)/images/bzImage ./release/thinroot-$(VERSION).img
+	cd ./release && sha256sum thinroot-$(VERSION).img >thinroot-$(VERSION).img.sha256
 
 .PHONY: clean
 clean:
