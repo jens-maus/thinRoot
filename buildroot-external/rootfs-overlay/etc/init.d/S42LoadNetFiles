@@ -126,6 +126,34 @@ load_thinroot_conffiles() {
   done
 }
 
+setup_dns() {
+  if [[ -n "${NET_DNS1}" ]]; then
+    echo "nameserver ${NET_DNS1}" >>/etc/resolv.conf.head
+  fi
+  if [[ -n "${NET_DNS2}" ]]; then
+    echo "nameserver ${NET_DNS2}" >>/etc/resolv.conf.head
+  fi
+  if [[ -n "${NET_DNS_SEARCH}" ]]; then
+    echo "search ${NET_DNS_SEARCH}" >>/etc/resolv.conf.tail
+  fi
+
+  # reconfigure DHCP so that /etc/resolv.conf will be rebuild
+  if [[ -f /etc/resolv.conf.head ]]; then
+    cat /etc/resolv.conf.head >/tmp/resolv.conf_new
+    cat /etc/resolv.conf >>/tmp/resolv.conf_new
+  fi
+  if [[ -f /etc/resolv.conf.tail ]]; then
+    if [[ ! -f /etc/resolv.conf.head ]]; then
+      cat /etc/resolv.conf >/tmp/resolv.conf_new
+    fi
+    cat /etc/resolv.conf.tail >>/tmp/resolv.conf_new
+  fi
+  if [[ -f /tmp/resolv.conf_new ]]; then
+    cat /tmp/resolv.conf_new | uniq >/etc/resolv.conf
+    rm -f /tmp/resolv.conf_new
+  fi
+}
+
 setup_xconf() {
 
   # 00-keyboard.conf
@@ -238,6 +266,9 @@ start() {
 
     # load all thinroot.conf.XXXXX conffiles
     load_thinroot_conffiles
+
+    # setup additional DNS servers
+    setup_dns
 
     # setup/tune X11 configs
     setup_xconf
