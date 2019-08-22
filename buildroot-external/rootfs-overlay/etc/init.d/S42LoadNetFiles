@@ -66,7 +66,7 @@ load_thinroot_hosts() {
 
     # put all additional groups matching the hostname
     # to the host variable
-    FOUND_GRP=$(grep -e ^${HOSTNAME} ${TMPDIR}/thinroot.hosts | cut -d" " -f "2-")
+    FOUND_GRP=$(grep -m1 -e ^${HOSTNAME} ${TMPDIR}/thinroot.hosts | cut -d" " -f "2-")
     if [[ -n "${FOUND_GRP}" ]]; then
       for grp in ${FOUND_GRP}; do
         # a comment lets us break out here
@@ -79,7 +79,7 @@ load_thinroot_hosts() {
       done
     fi
     MAC_ADDR=$(cat /sys/class/net/$(ip route show default | awk '/default/ {print $5}')/address)
-    FOUND_GRP=$(grep -i ${MAC_ADDR} ${TMPDIR}/thinroot.hosts | cut -d" " -f "2-")
+    FOUND_GRP=$(grep -m1 -i ${MAC_ADDR} ${TMPDIR}/thinroot.hosts | cut -d" " -f "2-")
     if [[ -n "${FOUND_GRP}" ]]; then
       for grp in ${FOUND_GRP}; do
         # a comment lets us break out here
@@ -90,12 +90,20 @@ load_thinroot_hosts() {
           CONFFILES="${CONFFILES} .group-${grp}"
         fi
       done
+
+      if [[ "${HOSTNAME}" == "localhost" ]]; then
+        NEW_HOSTNAME=$(grep -m1 -i ${MAC_ADDR} ${TMPDIR}/thinroot.hosts | cut -f1)
+        if [[ -n "${NEW_HOSTNAME}" && "${NEW_HOSTNAME}" != "-" ]]; then
+          /bin/hostname "${NEW_HOSTNAME}"
+          HOSTNAME=$(/bin/hostname)
+        fi
+      fi
     fi
   fi
 }
 
 load_thinroot_hostipmac() {
-  HOSTNAME=$(hostname)
+  HOSTNAME=$(/bin/hostname)
   IP=$(ip route get 1 | awk '{print $NF;exit}')
   MAC=$(cat /sys/class/net/$(ip route show default | awk '/default/ {print $5}')/address | tr -d :)
   CONFFILES="${CONFFILES} -${HOSTNAME} -${IP} -${MAC}"
