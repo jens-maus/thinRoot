@@ -154,6 +154,12 @@ setup_dns() {
   fi
 }
 
+setup_ntp() {
+  if [[ -n "${NET_TIME_SERVER}" ]]; then
+    echo "server ${NET_TIME_SERVER}" >>/etc/chrony.conf
+  fi
+}
+
 setup_xconf() {
 
   # 00-keyboard.conf
@@ -269,6 +275,9 @@ start() {
 
     # setup additional DNS servers
     setup_dns
+
+    # setup additional NTP servers
+    setup_ntp
 
     # setup/tune X11 configs
     setup_xconf
