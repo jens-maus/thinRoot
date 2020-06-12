@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-QUTSELECT_VERSION = 2.2
-QUTSELECT_TAG = dd6ac47d221329aba54c776e3a61e890cfd8c90b
+QUTSELECT_VERSION = 2.3
+QUTSELECT_TAG = a48b29f64af73226bd5a715957709fecb8303f57
 QUTSELECT_SITE = $(call github,hzdr,qutselect,$(QUTSELECT_TAG))
 QUTSELECT_LICENSE = LGPL-3.0
 QUTSELECT_LICENSE_FILES = LICENSE
