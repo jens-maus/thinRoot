@@ -1,5 +1,5 @@
 PRODUCT=intel_nuc
-BUILDROOT_VERSION=2019.11
+BUILDROOT_VERSION=2020.05
 VERSION=$(shell cat ./VERSION)
 BOARD=$(shell echo $(PRODUCT) | cut -d'_' -f2)
 
