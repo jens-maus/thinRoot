@@ -226,9 +226,9 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
 
     # keyboard
     if [ "x${keyLayout}" = "xde" ]; then
-       cmdArgs="$cmdArgs /kbd:German"
+       cmdArgs="$cmdArgs /kbd:0x407" # German
     else
-       cmdArgs="$cmdArgs /kbd:US"
+       cmdArgs="$cmdArgs /kbd:0x409" # US
     fi
 
     # add domain
