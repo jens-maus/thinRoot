@@ -285,7 +285,7 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
       echo "${XFREERDP} ${cmdArgs} /v:${serverName}"
     else
       # disable the full-screen toggling and floatbar in case we are in dtlogin mode
-      cmdArgs="$cmdArgs -toggle-fullscreen -floatbar"
+      cmdArgs="$cmdArgs -toggle-fullscreen"
     fi
 
     # run xfreerdp finally
