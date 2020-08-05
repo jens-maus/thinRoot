@@ -7,4 +7,5 @@ menu "Additional software"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/hotkeyd/Config.in"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/numlockx/Config.in"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/xprintidle/Config.in"
+  source "$BR2_EXTERNAL_THINROOT_PATH/package/intel-e1000e/Config.in"
 endmenu
