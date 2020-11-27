@@ -222,7 +222,8 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
     fi
 
     # color depth
-    cmdArgs="$cmdArgs /bpp:${colorDepth}"
+    #cmdArgs="$cmdArgs /bpp:${colorDepth}"
+    cmdArgs="$cmdArgs /bpp:32"
 
     # keyboard
     if [ "x${keyLayout}" = "xde" ]; then
@@ -273,7 +274,7 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
     cmdArgs="$cmdArgs /microphone:sys:pulse"
 
     # performance optimization options
-    cmdArgs="$cmdArgs +auto-reconnect +fonts +window-drag -menu-anims -themes +wallpaper +heartbeat"
+    cmdArgs="$cmdArgs +auto-reconnect +fonts +window-drag -menu-anims -themes +wallpaper +heartbeat /gdi:hw /rfx /gfx:avc444 /network:lan"
     
     # if we are not in dtlogin mode we go and
     # output the rdesktop line that is to be executed
@@ -288,10 +289,13 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
       cmdArgs="$cmdArgs -toggle-fullscreen"
     fi
 
+    # increase logging
+    cmdArgs="$cmdArgs /log-level:INFO"
+
     # run xfreerdp finally
     if [ "x${password}" != "xNULL" ]; then
       cmdArgs="$cmdArgs /from-stdin"
-      echo ${password} | ${XFREERDP} ${cmdArgs} /v:${serverName} &>/var/log/xfreerdp.log &
+      echo ${password} | ${XFREERDP} ${cmdArgs} /v:${serverName} &>/var/log/xfreerdp-$$.log &
     else
       ${XFREERDP} ${cmdArgs} /v:${serverName} &>/dev/null &
     fi
