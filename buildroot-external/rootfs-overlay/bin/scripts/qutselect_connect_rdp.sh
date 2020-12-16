@@ -274,7 +274,7 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
     cmdArgs="$cmdArgs /microphone:sys:pulse"
 
     # performance optimization options
-    cmdArgs="$cmdArgs +auto-reconnect +fonts +window-drag -menu-anims -themes +wallpaper +heartbeat /gdi:hw /rfx /gfx:avc444 /network:lan"
+    cmdArgs="$cmdArgs +auto-reconnect +fonts +window-drag -menu-anims -themes +wallpaper +heartbeat /dynamic-resolution /gdi:hw /rfx /gfx:avc444 /network:lan"
     
     # if we are not in dtlogin mode we go and
     # output the rdesktop line that is to be executed
