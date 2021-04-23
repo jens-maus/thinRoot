@@ -4,21 +4,19 @@
 # patchset files by generating diff output of orig<>real file differences in
 # all the 0000-XXXX folders
 
-patchdirs=$(find buildroot/package -maxdepth 1 -type d | sort)
+export LC_ALL=C
 
-rm *.patch
+patchdirs=$(find . -maxdepth 1 -type d -regex "\\./[0-9][0-9][0-9][0-9]-.*" | sort)
 
-COUNTER=1
+rm -f ./*.patch
+
 for dir in ${patchdirs}; do
-  package=$(basename ${dir})
-  [[ "${package}" == "package" ]] && continue
-  count=$(printf %04d ${COUNTER})
-  patchfile=0000-${package}.patch
-  echo ${patchfile}
-  origfiles=$(find ${dir} -name "*.orig" -type f -print | sort)
-  rm -f ${patchfile}
-  for file in ${origfiles}; do
-    diff -u --label=${file} --label=${file%.orig} ${file} ${file%.orig} >>${patchfile}
-  done
-  COUNTER=$((COUNTER+1))
+  (
+    cd "${dir}" || exit 1
+    origfiles=$(find buildroot -name "*.orig" -type f -print | sort)
+    rm -f "../${dir}.patch"
+    for file in ${origfiles}; do
+      diff -u --label="${file}" --label="${file%.orig}" "${file}" "${file%.orig}" >>"../${dir}.patch"
+    done
+  )
 done

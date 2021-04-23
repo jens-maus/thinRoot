@@ -21,6 +21,7 @@ _thinRoot_ is a buildroot (https://buildroot.org/) powered operating system envi
 ## :computer: Requirements
 
 1. One of the following PXE capable/enabled ThinClient hardware:
+  * 11th Gen Intel NUC (Panther Canyon): [NUC11ixTNK/NUC11ixTNH](https://www.intel.com/content/www/us/en/products/sku/205593/intel-nuc-11-pro-kit-nuc11tnki3/specifications.html)
   * 10th Gen Intel NUC (Comet Lake): [NUC10i3FNK/NUC10i3FNH](https://www.intel.com/content/www/us/en/products/boards-kits/nuc/kits/nuc10i3fnk.html)
   * 8th Gen Intel NUC (Coffee Lake): [NUC8i3BEK/NUC8i3BEH](https://www.intel.com/content/www/us/en/products/boards-kits/nuc/kits/nuc8i3bek.html)
   * 7th Gen Intel NUC (Kaby Lake): [NUC7i3BNK/NUC7i3BNH](https://www.intel.com/content/www/us/en/products/boards-kits/nuc/kits/nuc7i3bnk.html)
