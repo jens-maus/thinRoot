@@ -52,9 +52,9 @@ Building your own thinRoot SD card image is a very straight forward process usin
 ```sh
 $ git clone https://github.com/jens-maus/thinRoot
 $ cd thinRoot
-$ make dist
+$ make PRODUCT=intelnuc-pxe release
 [wait up to 1h]
-$ cp build-intel_nuc/images/bzImage /tftpboot/thinroot/
+$ cp release/thinroot-YYYYMMDD.img /tftpboot/thinroot/
 ```
 
 ## :scroll: License
