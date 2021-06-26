@@ -1,0 +1,25 @@
+config BR2_PACKAGE_REMMINA
+	bool "remmina"
+	select BR2_PACKAGE_CAIRO_PDF
+#	select BR2_PACKAGE_AVAHI
+	select BR2_PACKAGE_LIBGTK3
+	select BR2_PACKAGE_LIBVNCSERVER
+  select BR2_PACKAGE_LIBSODIUM
+	select BR2_PACKAGE_JSON_GLIB
+	select BR2_PACKAGE_LIBSOUP
+	select BR2_PACKAGE_LIBRSVG
+	select BR2_PACKAGE_HICOLOR_ICON_THEME
+	select BR2_PACKAGE_ADWAITA_ICON_THEME
+	select BR2_PACKAGE_SHARED_MIME_INFO
+	help
+	  Remmina is a remote desktop client written in GTK+, aiming to be
+	  useful for system administrators and travellers, who need to work
+	  with lots of remote computers in front of either large monitors
+	  or tiny netbooks.
+
+	  Remmina supports multiple network protocols in an integrated and
+	  consistent user interface.
+
+	  Currently RDP, VNC, NX, XDMCP and SSH are supported.
+
+	  https://gitlab.com/Remmina/Remmina

@@ -8,4 +8,5 @@ menu "Additional software"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/numlockx/Config.in"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/xprintidle/Config.in"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/intel-e1000e/Config.in"
+  source "$BR2_EXTERNAL_THINROOT_PATH/package/remmina/Config.in"
 endmenu
