@@ -4,9 +4,8 @@ setenv load_addr ${ramdisk_addr_r}
 setenv console "tty2"
 setenv loglevel "0"
 setenv bootfs 1
-setenv rootfs 2
-setenv userfs 3
-setenv kernel_img "zImage"
+setenv kernel_img "thinroot-Image"
+setenv initrd "thinroot-initrd"
 
 # output where we are booting from
 itest.b ${devnum} == 0 && echo "U-boot loaded from SD"
@@ -19,11 +18,10 @@ if test -e ${devtype} ${devnum}:${bootfs} bootEnv.txt; then
 fi
 
 echo "==== NORMAL BOOT ===="
-# get partuuid of root_num
-part uuid ${devtype} ${devnum}:${rootfs} partuuid
-setenv rootfs_str "PARTUUID=${partuuid}"
-setenv initrd_addr_r "-"
-setenv kernelfs ${rootfs}
+load ${devtype} ${devnum}:${bootfs} ${load_addr} ${initrd}
+setenv rootfs_str "/dev/ram0"
+setenv initrd_addr_r ${load_addr}
+setenv kernelfs ${bootfs}
 
 # load devicetree
 fdt addr ${fdt_addr}
@@ -36,4 +34,7 @@ setenv bootargs "dwc_otg.lpm_enable=0 sdhci_bcm2708.enable_llm=0 console=${conso
 load ${devtype} ${devnum}:${kernelfs} ${kernel_addr_r} ${kernel_img}
 
 # boot kernel
-bootz ${kernel_addr_r} ${initrd_addr_r} ${fdt_addr}
+booti ${kernel_addr_r} ${initrd_addr_r} ${fdt_addr}
+
+echo "Boot failed, resetting..."
+reset
