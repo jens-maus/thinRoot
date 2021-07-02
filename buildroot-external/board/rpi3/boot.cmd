@@ -17,21 +17,36 @@ if test -e ${devtype} ${devnum}:${bootfs} bootEnv.txt; then
   env import -t ${load_addr} ${filesize}
 fi
 
-echo "==== NORMAL BOOT ===="
-load ${devtype} ${devnum}:${bootfs} ${load_addr} ${initrd}
-setenv rootfs_str "/dev/ram0"
-setenv initrd_addr_r ${load_addr}
-setenv kernelfs ${bootfs}
-
 # load devicetree
 fdt addr ${fdt_addr}
 fdt get value bootargs /chosen bootargs
 
 # set bootargs
+setenv rootfs_str "/dev/ram0"
 setenv bootargs "dwc_otg.lpm_enable=0 sdhci_bcm2708.enable_llm=0 console=${console} kgdboc=${console} scandelay=5 root=${rootfs_str} ro noswap rootfstype=ext4 elevator=deadline fsck.repair=yes lapic rootwait rootdelay=5 consoleblank=120 logo.nologo quiet loglevel=${loglevel} usb-storage.quirks=${usbstoragequirks} ${extraargs} ${bootargs}"
 
-# load kernel
-load ${devtype} ${devnum}:${kernelfs} ${kernel_addr_r} ${kernel_img}
+if env exists serverip; then
+  echo "==== NETWORK BOOT ===="
+
+  # init network
+  dhcp
+
+  # load initramfs
+  tftp ${load_addr} ${initrd}
+  setenv initrd_addr_r ${load_addr}
+
+  # load kernel
+  tftp ${kernel_addr_r} ${kernel_img}
+else
+  echo "==== LOCAL BOOT ===="
+  # load initramfs
+  load ${devtype} ${devnum}:${bootfs} ${load_addr} ${initrd}
+  setenv initrd_addr_r ${load_addr}
+
+  # load kernel
+  setenv kernelfs ${bootfs}
+  load ${devtype} ${devnum}:${kernelfs} ${kernel_addr_r} ${kernel_img}
+fi
 
 # boot kernel
 booti ${kernel_addr_r} ${initrd_addr_r} ${fdt_addr}
