@@ -263,7 +263,7 @@ start() {
   # initialize everything
   init
 
-  if [[ -n "${BOOT_IMAGE}" ]]; then
+  if [[ -n "${BASE_PATH}" ]]; then
     # retrieve+install a net overlay file
     install_net_overlay
 
