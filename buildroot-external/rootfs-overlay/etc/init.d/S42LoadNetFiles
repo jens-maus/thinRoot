@@ -11,22 +11,28 @@ BASENAME=thinroot.conf
 NUM=1
 
 init() {
-  # source /proc/cmdline to that we can grab BOOT_IMAGE
-  eval $(cat /proc/cmdline | cut -d " " -f1)
+  # grab BOOT_IMAGE or BASE_PATH from /proc/cmdline
+  eval "$(cat /proc/cmdline | tr ' ' '\n' | egrep 'BOOT_IMAGE|BASE_PATH')"
 
   # get the BASE_PATH to the boot server from BOOT_IMAGE
-  if [[ -n ${BOOT_IMAGE} ]]; then
+  if [[ -z "${BASE_PATH}" ]] && [[ -n "${BOOT_IMAGE}" ]]; then
     BASE_PATH=$(dirname ${BOOT_IMAGE})
-    echo "BASE_PATH=${BASE_PATH}" >>${TMPDIR}/${BASENAME}
+  fi
+
+  # use BASE_PATH in case it is not empty
+  if [[ -n "${BASE_PATH}" ]]; then
+    echo "BASE_PATH=${BASE_PATH}" >${TMPDIR}/${BASENAME}
 
     # source the file with exporting all variables in it
     set -o allexport
-    source ${TMPDIR}/${BASENAME}
+    source "${TMPDIR}/${BASENAME}"
     set +o allexport
 
     # link the file to /etc/env.d
-    ln -sf ${TMPDIR}/${BASENAME} ${ENVDIR}/$(printf "%04d" ${NUM})-${BASENAME}.env
+    ln -sf "${TMPDIR}/${BASENAME}" ${ENVDIR}/$(printf "%04d" ${NUM})-${BASENAME}.env
     NUM=$((++NUM))
+  else
+    echo -n "WARNING: no BOOT_IMAGE or BASE_PATH in /proc/cmdline found"
   fi
 }
 
@@ -34,23 +40,23 @@ install_net_overlay() {
   # this function downloads a global net overlay
   # file (overlay.tar.bz2) and installs it on top
   # of the rootfs
-  /usr/bin/wget -q ${BASE_PATH}/overlay.pkg -O ${TMPDIR}/overlay.pkg
+  /usr/bin/wget -q "${BASE_PATH}/overlay.pkg" -O "${TMPDIR}/overlay.pkg"
   if [[ $? -eq 0 ]]; then
-    /bin/tar -C / -xf ${TMPDIR}/overlay.pkg
+    /bin/tar -C / -xf "${TMPDIR}/overlay.pkg"
   fi
 }
 
 load_thinroot_network() {
   # get thinroot.network file and source all env variables in it
-  /usr/bin/wget -q ${BASE_PATH}/conf/${BASENAME}.network -O ${TMPDIR}/${BASENAME}.network
+  /usr/bin/wget -q "${BASE_PATH}/conf/${BASENAME}.network" -O "${TMPDIR}/${BASENAME}.network"
   if [[ $? -eq 0 ]]; then
     # source the file with exporting all variables in it
     set -o allexport
-    source ${TMPDIR}/${BASENAME}.network
+    source "${TMPDIR}/${BASENAME}.network"
     set +o allexport
 
     # link the file to /etc/env.d
-    ln -sf ${TMPDIR}/${BASENAME}.network ${ENVDIR}/$(printf "%04d" ${NUM})-${BASENAME}.network.env
+    ln -sf "${TMPDIR}/${BASENAME}.network" ${ENVDIR}/$(printf "%04d" ${NUM})-${BASENAME}.network.env
     NUM=$((++NUM))
   fi
 }
@@ -61,12 +67,12 @@ load_thinroot_hosts() {
   CONFFILES=".group-$(echo ${HOSTNAME} | cut -c1-3)"
 
   # get thinroot.hosts file first
-  /usr/bin/wget -q ${BASE_PATH}/conf/thinroot.hosts -O ${TMPDIR}/thinroot.hosts
+  /usr/bin/wget -q "${BASE_PATH}/conf/thinroot.hosts" -O "${TMPDIR}/thinroot.hosts"
   if [[ $? -eq 0 ]]; then
 
     # put all additional groups matching the hostname
     # to the host variable
-    FOUND_GRP=$(grep -m1 -e ^${HOSTNAME} ${TMPDIR}/thinroot.hosts | cut -d" " -f "2-")
+    FOUND_GRP=$(grep -m1 -e ^${HOSTNAME} "${TMPDIR}/thinroot.hosts" | cut -d" " -f "2-")
     if [[ -n "${FOUND_GRP}" ]]; then
       for grp in ${FOUND_GRP}; do
         # a comment lets us break out here
@@ -112,15 +118,15 @@ load_thinroot_hostipmac() {
 load_thinroot_conffiles() {
   for file in ${CONFFILES}; do
     # get thinroot.group-XXXX file and source all env variables in it
-    /usr/bin/wget -q ${BASE_PATH}/conf/${BASENAME}${file} -O ${TMPDIR}/${BASENAME}${file}
+    /usr/bin/wget -q "${BASE_PATH}/conf/${BASENAME}${file}" -O "${TMPDIR}/${BASENAME}${file}"
     if [[ $? -eq 0 ]]; then
       # source the file with exporting all variables in it
       set -o allexport
-      source ${TMPDIR}/${BASENAME}${file}
+      source "${TMPDIR}/${BASENAME}${file}"
       set +o allexport
 
       # link the file to /etc/env.d
-      ln -sf ${TMPDIR}/${BASENAME}${file} ${ENVDIR}/$(printf "%04d" ${NUM})-${BASENAME}${file}.env
+      ln -sf "${TMPDIR}/${BASENAME}${file}" ${ENVDIR}/$(printf "%04d" ${NUM})-${BASENAME}${file}.env
       NUM=$((++NUM))
     fi
   done
@@ -250,14 +256,14 @@ start() {
   echo -n "Setup Environment: "
 
   # create tmpdir and envdir
-  mkdir -p ${TMPDIR}
-  mkdir -p ${ENVDIR}
+  mkdir -p "${TMPDIR}"
+  mkdir -p "${ENVDIR}"
   mkdir -p /var/run/usbmount
 
   # initialize everything
   init
 
-  if [[ -n ${BOOT_IMAGE} ]]; then
+  if [[ -n "${BOOT_IMAGE}" ]]; then
     # retrieve+install a net overlay file
     install_net_overlay
 
