@@ -32,7 +32,7 @@ init() {
     ln -sf "${TMPDIR}/${BASENAME}" ${ENVDIR}/$(printf "%04d" ${NUM})-${BASENAME}.env
     NUM=$((++NUM))
   else
-    echo -n "WARNING: no BOOT_IMAGE or BASE_PATH in /proc/cmdline found"
+    echo -n "WARNING: no BOOT_IMAGE or BASE_PATH in /proc/cmdline, "
   fi
 }
 
