@@ -10,6 +10,6 @@ BOARD_NAME="$(basename "${BOARD_DIR}")"
 cp "${TARGET_DIR}/boot/VERSION" "${BINARIES_DIR}"
 
 # create *.img file using genimage
-support/scripts/genimage.sh -c "${BR2_EXTERNAL_EQ3_PATH}/board/${BOARD_NAME}/genimage.cfg"
+support/scripts/genimage.sh -c "${BR2_EXTERNAL_THINROOT_PATH}/board/${BOARD_NAME}/genimage.cfg"
 
 exit $?
