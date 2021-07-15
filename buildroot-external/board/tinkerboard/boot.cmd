@@ -18,7 +18,7 @@ if test -e ${devtype} ${devnum}:${bootfs} bootEnv.txt; then
 fi
 
 # Load device tree
-if test "${devnum}" = "0"; then
+if test "$devnum" = "0"; then
   setenv fdtfile "rk3288-tinker-s.dtb"
 else
   setenv fdtfile "rk3288-tinker.dtb"
