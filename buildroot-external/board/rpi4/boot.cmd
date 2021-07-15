@@ -29,8 +29,8 @@ if env exists bootserver; then
   echo "==== NETWORK BOOT ===="
 
   # init network
-  setenv serverip ${bootserver}
   dhcp
+  setenv serverip ${bootserver}
 
   # load initramfs
   tftp ${load_addr} ${initrd}
