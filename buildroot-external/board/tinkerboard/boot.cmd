@@ -5,7 +5,7 @@ setenv console "tty2"
 setenv loglevel "0"
 setenv bootfs 1
 setenv kernel_img "thinroot-Image"
-setenv initrs "thinroot-initrd"
+setenv initrd "thinroot-initrd"
 setenv overlays ""
 setenv usbstoragequirks "0x2537:0x1066:u,0x2537:0x1068:u"
 
