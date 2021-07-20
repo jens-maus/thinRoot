@@ -2,6 +2,8 @@
 #
 # remmina
 #
+# https://gitlab.com/Remmina/Remmina
+#
 ################################################################################
 
 REMMINA_VERSION = v1.4.18
@@ -11,7 +13,6 @@ REMMINA_LICENSE = GPLv2+ with OpenSSL exception
 REMMINA_LICENSE_FILES = COPYING LICENSE LICENSE.OpenSSL
 
 REMMINA_CONF_OPTS = \
-	-DWITH_SSE2=ON \
 	-DWITH_ICON_CACHE=ON \
 	-DWITH_CUPS=OFF \
 	-DWITH_SPICE=OFF \
@@ -26,6 +27,12 @@ REMMINA_CONF_OPTS = \
 	-DWITH_WAYLAND=OFF \
 	-DWITH_VTE=OFF \
 	-DWITH_LIBSECRET=OFF
+
+ifeq ($(call qstrip,$(BR2_ARCH)),x86_64)
+REMMINA_CONF_OPTS += -DWITH_SSE2=ON
+else ifeq ($(call qstrip,$(BR2_ARCH)),i686)
+REMMINA_CONF_OPTS += -DWITH_SSE2=ON
+endif
 
 REMMINA_DEPENDENCIES = \
 	libgtk3 libvncserver freerdp \
