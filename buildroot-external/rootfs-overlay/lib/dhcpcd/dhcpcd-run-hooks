@@ -1,4 +1,6 @@
 #!/bin/sh
+# shellcheck shell=dash disable=SC1090,SC2034,SC2154,SC2068
+#
 # dhcpcd client configuration script 
 
 # Handy variables and functions for our hooks to use
@@ -11,9 +13,9 @@ signature_end="$signature_base_end $from $ifname"
 state_dir=/var/run/dhcpcd/hook-state
 _detected_init=false
 
-: ${if_up:=false}
-: ${if_down:=false}
-: ${syslog_debug:=false}
+: "${if_up:=false}"
+: "${if_down:=false}"
+: "${syslog_debug:=false}"
 
 # Ensure that all arguments are unique
 uniqify()
@@ -36,14 +38,14 @@ list_interfaces()
 {
 	ifaces=
 	for i in $interface_order; do
-		for x in "$1"/$i.*; do
+		for x in "$1"/"$i".*; do
 			[ -f "$x" ] && ifaces="$ifaces${ifaces:+ }${x##*/}"
 		done
 	done
 	for x in "$1"/*; do
 		[ -f "$x" ] && ifaces="$ifaces${ifaces:+ }${x##*/}"
 	done
-	uniqify $ifaces
+	uniqify "$ifaces"
 }
 
 # Trim function
@@ -71,7 +73,7 @@ key_get_value()
 		sed -n "s/^$key//p" $@
 	else
 		for x do
-			while read line; do
+			while read -r line; do
 				case "$line" in
 				"$key"*) echo "${line##$key}";;
 				esac
@@ -93,7 +95,7 @@ remove_markers()
 		sed "/^$m1/,/^$m2/d" $@
 	else
 		for x do
-			while read line; do
+			while read -r line; do
 				case "$line" in
 				"$m1"*) in_marker=1;;
 				"$m2"*) in_marker=0;;
@@ -294,7 +296,7 @@ service_exists()
 	if [ -z "$_service_exists" ]; then
 		detect_init || return 1
 	fi
-	eval $_service_exists
+	eval "$_service_exists"
 }
 
 # Send a command to a system service
@@ -303,7 +305,7 @@ service_cmd()
 	if [ -z "$_service_cmd" ]; then
 		detect_init || return 1
 	fi
-	eval $_service_cmd
+	eval "$_service_cmd"
 }
 
 # Send a command to a system service if it is running
@@ -313,20 +315,20 @@ service_status()
 		detect_init || return 1
 	fi
 	if [ -n "$_service_status" ]; then
-		eval $_service_status
+		eval "$_service_status"
 	else
-		service_command $1 status >/dev/null 2>&1
+		service_command "$1" status >/dev/null 2>&1
 	fi
 }
 
 # Handy macros for our hooks
 service_command()
 {
-	service_exists $1 && service_cmd $1 $2
+	service_exists "$1" && service_cmd "$1" "$2"
 }
 service_condcommand()
 {
-	service_exists $1 && service_status $1 && service_cmd $1 $2
+	service_exists "$1" && service_status "$1" && service_cmd "$1" "$2"
 }
 
 # We source each script into this one so that scripts run earlier can

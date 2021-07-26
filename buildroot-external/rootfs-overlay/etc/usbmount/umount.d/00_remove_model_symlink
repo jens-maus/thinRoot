@@ -1,4 +1,6 @@
 #!/bin/sh
+# shellecheck shell=dash
+#
 # This script removes the model name symlink in /var/run/usbmount.
 # Copyright (C) 2005 Martin Dickopp
 #
@@ -13,10 +15,10 @@
 #
 set -e
 
-MOUNTNAME=$(grep ${UM_DEVICE} /proc/mounts | grep /usbmount | awk '{print $2}')
-if [[ -n "${MOUNTNAME}" ]]; then
-  /bin/umount ${MOUNTNAME}
-  /bin/rmdir ${MOUNTNAME}
+MOUNTNAME=$(grep "${UM_DEVICE}" /proc/mounts | grep /usbmount | awk '{print $2}')
+if [ -n "${MOUNTNAME}" ]; then
+  /bin/umount "${MOUNTNAME}"
+  /bin/rmdir "${MOUNTNAME}"
 fi
 
 exit 0

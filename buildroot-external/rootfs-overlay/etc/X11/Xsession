@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash disable=SC1090
 #
 # /etc/X11/Xsession
 #
@@ -15,7 +16,7 @@ message () {
   # is available and $DISPLAY is set
   MESSAGE="$PROGNAME: $*"
   echo "$MESSAGE" | fold -s -w ${COLUMNS:-80} >&2
-  if [ -n "$DISPLAY" ] && which xmessage > /dev/null 2>&1; then
+  if [ -n "$DISPLAY" ] && command -v xmessage > /dev/null 2>&1; then
     echo "$MESSAGE" | fold -s -w ${COLUMNS:-80} | xmessage -center -file -
   fi
 }
@@ -25,7 +26,7 @@ message_nonl () {
   # xmessage if it is available and $DISPLAY is set
   MESSAGE="$PROGNAME: $*"
   echo -n "$MESSAGE" | fold -s -w ${COLUMNS:-80} >&2;
-  if [ -n "$DISPLAY" ] && which xmessage > /dev/null 2>&1; then
+  if [ -n "$DISPLAY" ] && command -v xmessage > /dev/null 2>&1; then
     echo -n "$MESSAGE" | fold -s -w ${COLUMNS:-80} | xmessage -center -file -
   fi
 }
@@ -49,15 +50,15 @@ internal_errormsg () {
 
 # initialize variables for use by all session scripts
 
-OPTIONFILE=/etc/X11/Xsession.options
+#OPTIONFILE=/etc/X11/Xsession.options
 
-SYSRESOURCES=/etc/X11/Xresources
-USRRESOURCES=$HOME/.Xresources
+#SYSRESOURCES=/etc/X11/Xresources
+#USRRESOURCES=$HOME/.Xresources
 
 SYSSESSIONDIR=/etc/X11/Xsession.d
-USERXSESSION=$HOME/.xsession
-USERXSESSIONRC=$HOME/.xsessionrc
-ALTUSERXSESSION=$HOME/.Xsession
+#USERXSESSION=$HOME/.xsession
+#USERXSESSIONRC=$HOME/.xsessionrc
+#ALTUSERXSESSION=$HOME/.Xsession
 ERRFILE=$HOME/.xsession-errors
 
 # attempt to create an error file; abort if we cannot
@@ -75,9 +76,13 @@ else
 fi
 
 # truncate ERRFILE if it is too big to avoid disk usage DoS
-if [ "`stat -c%s \"$ERRFILE\"`" -gt 500000 ]; then
-  T=`mktemp -p "$HOME"`
-  tail -c 500000 "$ERRFILE" > "$T" && mv -f "$T" "$ERRFILE" || rm -f "$T"
+if [ "$(stat -c%s "$ERRFILE")" -gt 500000 ]; then
+  T=$(mktemp -p "$HOME")
+  if tail -c 500000 "$ERRFILE" > "$T"; then
+    mv -f "$T" "$ERRFILE"
+  else
+    rm -f "$T"
+  fi
 fi
 
 exec >>"$ERRFILE" 2>&1
@@ -109,7 +114,7 @@ SESSIONFILES=$(run-parts --list $SYSSESSIONDIR)
 if [ -n "$SESSIONFILES" ]; then
   set +e
   for SESSIONFILE in $SESSIONFILES; do
-    . $SESSIONFILE
+    . "${SESSIONFILE}"
   done
   set -e
 fi

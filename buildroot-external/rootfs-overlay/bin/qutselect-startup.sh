@@ -1,14 +1,14 @@
 #!/bin/sh
+# shellcheck shell=dash
 
 has_ewmh_wm()
 {
-  local name
   local id
   local child_id
 
   # If property does not exist, "id" will contain "no such atom on any window"
-  id=`/usr/bin/xprop -root 32x ' $0\n' _NET_SUPPORTING_WM_CHECK | awk '{ print $2 }'`
-  child_id=`/usr/bin/xprop -id "${id}" 32x ' $0\n' _NET_SUPPORTING_WM_CHECK 2>/dev/null | awk '{ print $2 }'`
+  id=$(/usr/bin/xprop -root 32x ' $0\n' _NET_SUPPORTING_WM_CHECK | awk '{ print $2 }')
+  child_id=$(/usr/bin/xprop -id "${id}" 32x ' $0\n' _NET_SUPPORTING_WM_CHECK 2>/dev/null | awk '{ print $2 }')
 
   if [ "${id}" != "${child_id}" ]; then
     return 1
@@ -19,7 +19,8 @@ has_ewmh_wm()
 
 wait_for_wm()
 {
-  for i in `seq 30`; do
+  # shellcheck disable=SC2034
+  for i in $(seq 30); do
     if has_ewmh_wm; then
       return 0
     fi
@@ -32,18 +33,18 @@ wait_for_wm()
 get_qutselect_files()
 {
   # make sure we have a qutselect config dir in the user home
-  if [ ! -d $HOME/.qutselect ] ; then
-    mkdir -p $HOME/.qutselect
+  if [ ! -d "${HOME}/.qutselect" ] ; then
+    mkdir -p "${HOME}/.qutselect"
   fi
 
   # get the .slist file
   if [ -n "${SESSION_0_QUTSELECT_SLIST}" ]; then
-    /usr/bin/wget -q ${BASE_PATH}/conf/${SESSION_0_QUTSELECT_SLIST} -O ${HOME}/.qutselect/qutselect.slist
+    /usr/bin/wget -q "${BASE_PATH}/conf/${SESSION_0_QUTSELECT_SLIST}" -O "${HOME}/.qutselect/qutselect.slist"
   fi
 
   # get the .motd file
   if [ -n "${SESSION_0_QUTSELECT_MOTD}" ]; then
-    /usr/bin/wget -q ${BASE_PATH}/conf/${SESSION_0_QUTSELECT_MOTD} -O ${HOME}/.qutselect/qutselect.motd
+    /usr/bin/wget -q "${BASE_PATH}/conf/${SESSION_0_QUTSELECT_MOTD}" -O "${HOME}/.qutselect/qutselect.motd"
   fi
 
   return 0
@@ -52,19 +53,19 @@ get_qutselect_files()
 create_thinlinc_conf()
 {
   # make sure we have a thinlinc config dir in the user home
-  if [ ! -d $HOME/.thinlinc ] ; then
-    mkdir -p $HOME/.thinlinc
+  if [ ! -d "${HOME}/.thinlinc" ] ; then
+    mkdir -p "${HOME}/.thinlinc"
   fi
 
   # link known_hosts file if not present
-  if [ ! -e ${HOME}/.thinlinc/known_hosts ]; then
-    ln -s /etc/ssh_known_hosts ${HOME}/.thinlinc/known_hosts
+  if [ ! -e "${HOME}/.thinlinc/known_hosts" ]; then
+    ln -s /etc/ssh_known_hosts "${HOME}/.thinlinc/known_hosts"
   fi
 
   # lets parse for SESSION_0_* env variables which we can forward
   # to the thinlinc configuration file
-  TLCLIENTCONF=$HOME/.thinlinc/tlclient.conf
-  set | grep _THINLINC_CONFIG_ | sed 's/SESSION_._THINLINC_CONFIG_//g' | tr -d \' >${TLCLIENTCONF}
+  TLCLIENTCONF=${HOME}/.thinlinc/tlclient.conf
+  set | grep _THINLINC_CONFIG_ | sed 's/SESSION_._THINLINC_CONFIG_//g' | tr -d \' >"${TLCLIENTCONF}"
 
   return 0
 }
@@ -100,8 +101,7 @@ fi
 
 # start qutselect unlimited
 while true; do
-  ${SESSION_0_QUTSELECT_CMD} >/var/log/qutselect.log 2>&1
-  if [ $? -ne 0 ]; then
+  if ! ${SESSION_0_QUTSELECT_CMD} >/var/log/qutselect.log 2>&1; then
     break 
   fi
 done

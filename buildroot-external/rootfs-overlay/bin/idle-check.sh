@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash disable=SC2169
 #
 # System Idle Shutdown (idle-check.sh)
 # ------------------------------------
@@ -78,7 +79,7 @@ if [[ ${SHUTDOWN_NOW} -eq 0 ]] &&
   echo "max uptime reached"
 
   # max uptime shutdowns should only happen on specific weekdays
-  if [[ -n "${SHUTDOWN_IDLE_MAX_UPTIME_WDAY}" ]] && [[ -z "$(LANG=C date +%a | grep -E ${SHUTDOWN_IDLE_MAX_UPTIME_WDAY})" ]]; then
+  if [[ -n "${SHUTDOWN_IDLE_MAX_UPTIME_WDAY}" ]] && ! LANG=C date +%a | grep -qE "${SHUTDOWN_IDLE_MAX_UPTIME_WDAY}"; then
     SHUTDOWN_NOW=0
 
     echo "skipping maxuptime shutdown as current weekday is not permitted"
