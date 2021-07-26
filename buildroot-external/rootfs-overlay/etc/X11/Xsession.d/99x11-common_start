@@ -1,6 +1,6 @@
 # $Id: 99x11-common_start 305 2005-07-03 18:51:43Z dnusinow $
 
-# start QUTSELECT as the command not exiting at all.
-exec /bin/qutselect-startup.sh
+# start windows manager and topmost app not exiting at all.
+exec /bin/wm-startup.sh
 
 # vim:set ai et sts=2 sw=2 tw=80:
