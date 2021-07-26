@@ -246,7 +246,9 @@ setup_audio() {
 
 setup_shutdown_cronjob() {
   [[ -z "${SHUTDOWN_IDLE_INTERVAL}" ]] && SHUTDOWN_IDLE_INTERVAL=5
-  echo "*/${SHUTDOWN_IDLE_INTERVAL} * * * * /bin/idle-check.sh >/dev/null 2>&1" >>/etc/crontab
+  if [[ "${SHUTDOWN_IDLE_INTERVAL}" -gt 0 ]]; then
+    echo "*/${SHUTDOWN_IDLE_INTERVAL} * * * * /bin/idle-check.sh >/dev/null 2>&1" >>/etc/crontab
+  fi
 }
 
 start() {
