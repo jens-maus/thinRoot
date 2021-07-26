@@ -1,7 +1,7 @@
 #!/bin/sh
 
-BOARD_DIR="$(dirname $0)"
-BOARD_NAME="$(basename ${BOARD_DIR})"
+BOARD_DIR="$(dirname "$0")"
+BOARD_NAME="$(basename "${BOARD_DIR}")"
 
 # Use our own cmdline.txt+config.txt
 cp "${BR2_EXTERNAL_THINROOT_PATH}/board/${BOARD_NAME}/cmdline.txt" "${BINARIES_DIR}/"
