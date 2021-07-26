@@ -1,5 +1,5 @@
 #!/bin/sh
-# shellcheck shell=dash disable=SC1090,SC2169
+# shellcheck shell=dash disable=SC1090,SC2169,SC3010
 #
 # start script to download and setup the global environment from
 # a boot server by trying to download certain netfiles which store
@@ -26,12 +26,12 @@ init() {
 
     # source the file with exporting all variables in it
     set -o allexport
-    source "${TMPDIR}/${BASENAME}"
+    . "${TMPDIR}/${BASENAME}"
     set +o allexport
 
     # link the file to /etc/env.d
     ln -sf "${TMPDIR}/${BASENAME}" "${ENVDIR}/$(printf "%04d" ${NUM})-${BASENAME}.env"
-    NUM=$((++NUM))
+    NUM=$((NUM+1))
   else
     echo -n "WARNING: no BOOT_IMAGE or BASE_PATH in /proc/cmdline, "
   fi
@@ -51,12 +51,12 @@ load_thinroot_network() {
   if /usr/bin/wget -q "${BASE_PATH}/conf/${BASENAME}.network" -O "${TMPDIR}/${BASENAME}.network"; then
     # source the file with exporting all variables in it
     set -o allexport
-    source "${TMPDIR}/${BASENAME}.network"
+    . "${TMPDIR}/${BASENAME}.network"
     set +o allexport
 
     # link the file to /etc/env.d
     ln -sf "${TMPDIR}/${BASENAME}.network" "${ENVDIR}/$(printf "%04d" ${NUM})-${BASENAME}.network.env"
-    NUM=$((++NUM))
+    NUM=$((NUM+1))
   fi
 }
 
@@ -124,7 +124,7 @@ load_thinroot_conffiles() {
 
       # link the file to /etc/env.d
       ln -sf "${TMPDIR}/${BASENAME}${file}" "${ENVDIR}/$(printf "%04d" ${NUM})-${BASENAME}${file}.env"
-      NUM=$((++NUM))
+      NUM=$((NUM+1))
     fi
   done
 }
@@ -209,36 +209,36 @@ setup_xconf() {
 }
 
 setup_audio() {
-  /usr/sbin/alsactl init &>/dev/null
+  /usr/sbin/alsactl init >/dev/null 2>&1
   grep -e ":" /proc/asound/cards | cut -c2 | while IFS= read -r card; do
     if [[ -n "${AUDIO_LEVEL}" ]]; then
       for control in Master PCM CD Video; do
-        if /usr/bin/amixer sget -c "${card}" "${control}" &>/dev/null; then
-          /usr/bin/amixer sset -c "${card}" "${control}" "${AUDIO_LEVEL}%" unmute &>/dev/null
-          /usr/bin/amixer sset -c "${card}" "${control}" unmute &>/dev/null
+        if /usr/bin/amixer sget -c "${card}" "${control}" >/dev/null 2>&1; then
+          /usr/bin/amixer sset -c "${card}" "${control}" "${AUDIO_LEVEL}%" unmute >/dev/null 2>&1
+          /usr/bin/amixer sset -c "${card}" "${control}" unmute >/dev/null 2>&1
         fi
       done
     fi
     if [[ -n "${MIC_LEVEL}" ]] && [[ "${MIC_LEVEL}" -gt "0" ]]; then
       [[ -z "${MIC_DEVICE}" ]] && MIC_DEVICE=Mic
-      if /usr/bin/amixer sget -c "${card}" ${MIC_DEVICE} &>/dev/null; then
-        if /usr/bin/amixer sget -c "${card}" Capture &>/dev/null; then
-          /usr/bin/amixer sset Capture "${MIC_LEVEL}%" unmute &>/dev/null
+      if /usr/bin/amixer sget -c "${card}" ${MIC_DEVICE} >/dev/null 2>&1; then
+        if /usr/bin/amixer sget -c "${card}" Capture >/dev/null 2>&1; then
+          /usr/bin/amixer sset Capture "${MIC_LEVEL}%" unmute >/dev/null 2>&1
         fi
-        /usr/bin/amixer sset ${MIC_DEVICE} playback mute &>/dev/null
-        /usr/bin/amixer sset ${MIC_DEVICE} "${MIC_LEVEL}%" cap &>/dev/null
-      elif /usr/bin/amixer sget -c "${card}" Capture &>/dev/null; then
-        /usr/bin/amixer sset Capture 0% &>/dev/null
+        /usr/bin/amixer sset ${MIC_DEVICE} playback mute >/dev/null 2>&1
+        /usr/bin/amixer sset ${MIC_DEVICE} "${MIC_LEVEL}%" cap >/dev/null 2>&1
+      elif /usr/bin/amixer sget -c "${card}" Capture >/dev/null 2>&1; then
+        /usr/bin/amixer sset Capture 0% >/dev/null 2>&1
       fi
     fi
     for control in $UNMUTE; do
-      if /usr/bin/amixer sget -c "${card}" "${control}" &>/dev/null; then
-        /usr/bin/amixer sset -c "${card}" "${control}" unmute &>/dev/null
+      if /usr/bin/amixer sget -c "${card}" "${control}" >/dev/null 2>&1; then
+        /usr/bin/amixer sset -c "${card}" "${control}" unmute >/dev/null 2>&1
       fi
     done
     for control in $MUTE; do
-      if /usr/bin/amixer sget -c "${card}" "${control}" &>/dev/null; then
-        /usr/bin/amixer sset -c "${card}" "${control}" mute &>/dev/null
+      if /usr/bin/amixer sget -c "${card}" "${control}" >/dev/null 2>&1; then
+        /usr/bin/amixer sset -c "${card}" "${control}" mute >/dev/null 2>&1
       fi
     done
   done
@@ -246,7 +246,7 @@ setup_audio() {
 
 setup_shutdown_cronjob() {
   [[ -z "${SHUTDOWN_IDLE_INTERVAL}" ]] && SHUTDOWN_IDLE_INTERVAL=5
-  echo "*/${SHUTDOWN_IDLE_INTERVAL} * * * * /bin/idle-check.sh &>/dev/null" >>/etc/crontab
+  echo "*/${SHUTDOWN_IDLE_INTERVAL} * * * * /bin/idle-check.sh >/dev/null 2>&1" >>/etc/crontab
 }
 
 start() {

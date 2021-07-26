@@ -1,5 +1,5 @@
 #!/bin/sh
-# shellcheck shell=dash disable=SC2169
+# shellcheck shell=dash disable=SC2169,SC3010
 #
 # System Idle Shutdown (idle-check.sh)
 # ------------------------------------

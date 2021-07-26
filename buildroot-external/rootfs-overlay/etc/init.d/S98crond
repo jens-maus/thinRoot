@@ -16,7 +16,7 @@ init() {
 
   # make sure our system-wide crontab is taken for
   # being merged with the user configuration crontab
-  if [[ -e /etc/crontab ]]; then
+  if [ -e /etc/crontab ]; then
     cp -a /etc/crontab /var/spool/cron/crontabs/root
   fi
 }

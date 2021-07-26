@@ -1,5 +1,5 @@
 #!/bin/sh
-# shellcheck shell=dash disable=SC1090,SC2169
+# shellcheck shell=dash disable=SC1090,SC2169,SC3010,SC3057
 #
 # Start all init scripts in /etc/init.d
 # executing them in numerical order.

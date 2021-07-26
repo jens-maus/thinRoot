@@ -1,5 +1,5 @@
 #!/bin/sh
-# shellcheck shell=dash disable=SC2169
+# shellcheck shell=dash disable=SC2169,SC3010
 
 NAME=chrony
 DAEMON=/usr/sbin/chronyd
@@ -37,8 +37,8 @@ case "$1" in
 
     # start daemon
     if start-stop-daemon -S -q -x ${DAEMON}; then
-      ${CLIENT} -a "burst 3/5" &>/dev/null
-      ${CLIENT} -a makestep &>/dev/null
+      ${CLIENT} -a "burst 3/5" >/dev/null 2>&1
+      ${CLIENT} -a makestep >/dev/null 2>&1
       echo "OK"
     else
       echo "FAIL"
