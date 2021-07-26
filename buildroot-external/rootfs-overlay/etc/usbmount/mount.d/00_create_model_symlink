@@ -1,4 +1,6 @@
 #!/bin/sh
+# shellcheck shell=dash
+#
 # This script creates the model name symlink in /var/run/usbmount.
 # Copyright (C) 2005 Martin Dickopp
 #
@@ -20,7 +22,7 @@ UM_MODEL=$(echo "${UM_MODEL}" | sed 's/ /_/g; s/[^0123456789abcdefghijklmnopqrst
 
 # Build symlink name.
 if test -z "${UM_VENDOR}" && test -z "${UM_MODEL}"; then
-    name="$(basename ${UM_MOUNTPOINT})"
+    name="$(basename "${UM_MOUNTPOINT}")"
 elif test -n "${UM_VENDOR}" && test -n "${UM_MODEL}"; then
     name="${UM_VENDOR}_${UM_MODEL}"
 else

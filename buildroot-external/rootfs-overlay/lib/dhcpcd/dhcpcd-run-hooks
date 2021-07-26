@@ -232,7 +232,7 @@ detect_init()
 	# As systemd and OpenRC can be installed on top of legacy init
 	# systems we try to detect them first.
 	status=""
-	: ${status:=status}
+	: "${status:=status}"
 	if [ -x /bin/systemctl ] && [ -S /run/systemd/private ]; then
 		_service_exists="/bin/systemctl --quiet is-enabled \$1.service"
 		_service_status="/bin/systemctl --quiet is-active \$1.service"

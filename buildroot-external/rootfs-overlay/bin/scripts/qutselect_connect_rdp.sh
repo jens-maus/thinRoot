@@ -45,13 +45,13 @@ serverName="${10}"
 # using the tl-sso-password command in case the user wants
 # to connect to one of our servers (FZR domain)
 if [ -x ${TLSSOPASSWORD} ]; then
-  if ${TLSSOPASSWORD} -c && [ "x${domain}" = "xFZR" ]; then
+  if ${TLSSOPASSWORD} -c && [ "${domain}" = "FZR" ]; then
     password=$(${TLSSOPASSWORD})
   fi
 fi
 
 # read the password from stdin if not specified yet
-if [ "x${password}" = "x" ]; then
+if [ -z "${password}" ]; then
   read -r password
 fi
 
@@ -91,7 +91,7 @@ RET=2
 if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
 
   # resolution
-  if [ "x${resolution}" = "xfullscreen" ]; then
+  if [ "${resolution}" = "fullscreen" ]; then
      cmdArgs="$cmdArgs /f"
 
      # enable multi monitor support, but only if the two displays
@@ -116,7 +116,7 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
   cmdArgs="$cmdArgs /bpp:32"
 
   # keyboard
-  if [ "x${keyLayout}" = "xde" ]; then
+  if [ "${keyLayout}" = "de" ]; then
      cmdArgs="$cmdArgs /kbd:0x407" # German
   else
      cmdArgs="$cmdArgs /kbd:0x409" # US
