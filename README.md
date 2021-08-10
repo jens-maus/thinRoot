@@ -49,7 +49,7 @@ Building your own thinRoot image is a very straight forward process using this b
 ```sh
 $ git clone https://github.com/jens-maus/thinRoot
 $ cd thinRoot
-$ make PRODUCT=intelnuc-pxe release
+$ make PRODUCT=intelnuc release
 [wait up to 1h]
 $ cp release/thinroot-YYYYMMDD.img /tftpboot/thinroot/
 ```
