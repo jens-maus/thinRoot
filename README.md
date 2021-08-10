@@ -51,7 +51,7 @@ $ git clone https://github.com/jens-maus/thinRoot
 $ cd thinRoot
 $ make PRODUCT=intelnuc release
 [wait up to 1h]
-$ cp release/thinroot-YYYYMMDD.img /tftpboot/thinroot/
+$ cp release/thinroot-YYYYMMDD-intelnuc.img /tftpboot/thinroot/
 ```
 
 ## :scroll: License
