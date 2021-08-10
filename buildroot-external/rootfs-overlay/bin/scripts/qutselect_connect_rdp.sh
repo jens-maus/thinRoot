@@ -185,10 +185,12 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
   # run xfreerdp finally
   if [ "x${password}" != "xNULL" ]; then
     cmdArgs="$cmdArgs /from-stdin"
-    echo "${password}" | ${XFREERDP} "${cmdArgs}" /v:"${serverName}" >/var/log/xfreerdp-$$.log 2>&1 &
+    # shellcheck disable=SC2086
+    echo "${password}" | ${XFREERDP} ${cmdArgs} /v:"${serverName}" >/var/log/xfreerdp-$$.log 2>&1 &
     RET=$?
   else
-    ${XFREERDP} "${cmdArgs}" /v:"${serverName}" >/dev/null 2>&1 &
+    # shellcheck disable=SC2086
+    ${XFREERDP} ${cmdArgs} /v:"${serverName}" >var/log/xfreerdp-$$.log 2>&1 &
     RET=$?
   fi
 
