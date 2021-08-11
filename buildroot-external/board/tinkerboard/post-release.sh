@@ -12,7 +12,7 @@ PRODUCT_VERSION=${3}
 cd ./release
 
 # copy the bzImage and create checksum
-cp -a "../build-${PRODUCT}/images/Image" "thinroot-${PRODUCT_VERSION}-${PRODUCT}-kernel.img"
+cp -a "../build-${PRODUCT}/images/zImage" "thinroot-${PRODUCT_VERSION}-${PRODUCT}-kernel.img"
 sha256sum "thinroot-${PRODUCT_VERSION}-${PRODUCT}-kernel.img" >"thinroot-${PRODUCT_VERSION}-${PRODUCT}-kernel.img.sha256"
 cp -a "../build-${PRODUCT}/images/rootfs.cpio.uboot" "thinroot-${PRODUCT_VERSION}-${PRODUCT}.img"
 sha256sum "thinroot-${PRODUCT_VERSION}-${PRODUCT}.img" >"thinroot-${PRODUCT_VERSION}-${PRODUCT}.img.sha256"
