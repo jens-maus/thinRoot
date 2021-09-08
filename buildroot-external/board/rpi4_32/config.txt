@@ -1,0 +1,68 @@
+# enable aarch64 bit support
+#arm_64bit=1
+
+# make sure to use less memory for the GPU and
+# all total memory available
+gpu_mem=128
+#dtoverlay=vc4-kms-v3d
+
+# Disable overscan assuming the display supports displaying the full resolution
+# If the text shown on the screen disappears off the edge, comment this out
+disable_overscan=1
+
+# enable i2c and spi
+dtparam=i2c_arm=on
+dtparam=i2c1=on
+dtparam=spi=on
+
+# enable the UART
+#enable_uart=1
+
+# make sure the uart is running at 48MHz
+#init_uart_clock=48000000
+
+# switch the bluetooth UART to the miniuart
+# for basic bluetooth support and fix core_freq
+#dtoverlay=miniuart-bt
+#core_freq=250
+
+# for disabling bluetooth alltogether
+# you can uncomment the following two lines
+dtoverlay=disable-bt
+dtparam=uart1=off
+
+# disable the splash screen
+disable_splash=1
+
+# activating the hardware watchdog
+dtparam=watchdog=on
+
+# Uncomment to disable continous SD-card poll (for USB SSD)
+#dtparam=sd_poll_once=on
+
+# start with heartbeat on PWR led and mmc0 on ACT led
+dtparam=pwr_led_trigger=timer,act_led_trigger=mmc0
+
+# special device tree options for Compute Module 4
+[cm4]
+dtoverlay=dwc2
+dtparam=i2c_vc=on
+dtoverlay=i2c-rtc,pcf85063a,i2c_csi_dsi
+
+# reset to apply to all platforms
+[all]
+
+# start device tree at 0x2008000 to have
+# space for the u-boot boot script
+device_tree_address=0x2008000
+
+# use fixed names for start.elf/fixup.dat
+start_file=start.elf
+fixup_file=fixup.dat
+
+# lets u-boot take over the boot process
+kernel=u-boot.bin
+
+# user config options shoule be put in
+# /boot/extraconfig.txt
+include extraconfig.txt
