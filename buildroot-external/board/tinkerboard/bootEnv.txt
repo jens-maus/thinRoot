@@ -1,0 +1,4 @@
+#bootserver=192.168.74.30
+#kernel_img=thinroot/thinroot-tinkerboard-kernel.img
+#initrd=thinroot/thinroot-tinkerboard.img
+#extraargs=BASE_PATH=http://192.168.74.30/thinroot
