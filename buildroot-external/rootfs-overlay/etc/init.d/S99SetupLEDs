@@ -1,0 +1,74 @@
+#!/bin/sh
+# shellcheck shell=dash disable=SC2169 source=/dev/null
+#
+# start script to setup the board leds correctly once the
+# system finished booting
+#
+
+# source all data from /var/hm_mode
+[[ -r /VERSION ]] && . /VERSION
+
+# if we are using an RaspberryPi/Tinkerboard we set the onboard
+# leds accordingly
+case "${PLATFORM}" in
+  rpi*)
+    LED_GREEN="/sys/class/leds/led0"
+    LED_RED="/sys/class/leds/led1"
+  ;;
+  tinkerboard*)
+    LED_GREEN="/sys/class/leds/led-0"
+    LED_RED="/sys/class/leds/led-2"
+  ;;
+esac
+
+start() {
+  echo -n "Setup onboard LEDs: "
+
+  # green LED
+  if [[ -f "${LED_GREEN}/trigger" ]]; then
+    echo "heartbeat" >"${LED_GREEN}/trigger"
+  fi
+  # red LED
+  if [[ -f "${LED_RED}/trigger" ]]; then
+    echo "mmc0" >"${LED_RED}/trigger"
+  fi
+
+  echo "booted, OK"
+}
+
+restart() {
+  stop
+  start
+}
+
+stop() {
+  echo -n "Setup onboard LEDs: "
+
+  # green LED
+  if [[ -f "${LED_GREEN}/trigger" ]]; then
+    echo "none" >"${LED_GREEN}/trigger"
+  fi
+  # red LED
+  if [[ -f "${LED_RED}/trigger" ]]; then
+    echo "timer" >"${LED_RED}/trigger"
+  fi
+
+  echo "shutdown, OK"
+}
+
+case "$1" in
+  start)
+    start
+  ;;
+  stop)
+    stop
+  ;;
+  restart|reload)
+    restart
+  ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+esac
+
+exit $?
