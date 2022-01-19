@@ -26,19 +26,19 @@ if [ $# -lt 10 ]; then
 fi
 
 # catch all arguments is some local variables
-parentPID="${1}"
-serverType="${2}"
+#parentPID="${1}"
+#serverType="${2}"
 dtlogin="${3}"
 resolution="${4}"
-colorDepth="${5}"
-curDepth="${6}"
-keyLayout="${7}"
-domain="${8}"
-username="${9}"
+#colorDepth="${5}"
+#curDepth="${6}"
+#keyLayout="${7}"
+#domain="${8}"
+#username="${9}"
 serverName="${10}"
 
 # read the password from stdin
-read password
+read -r password
 
 # variable to prepare the command arguments
 cmdArgs="-shared -menukey="
@@ -51,19 +51,23 @@ fi
 # run vncviewer finally
 if [ "x${password}" != "xNULL" ]; then
   if [ "x${dtlogin}" != "xtrue" ]; then
-    echo ${VNCVIEWER} ${cmdArgs} ${serverName}
+    echo "${VNCVIEWER} ${cmdArgs} ${serverName}"
   fi
-  VNC_PASSWORD="${password}" ${VNCVIEWER} ${cmdArgs} ${serverName} &>/dev/null
+  # shellcheck disable=SC2086
+  VNC_PASSWORD="${password}" ${VNCVIEWER} ${cmdArgs} "${serverName}" 2>/dev/null >/dev/null
+  RET=$?
 else
   if [ "x${dtlogin}" != "xtrue" ]; then
-    echo ${VNCVIEWER} ${cmdArgs} ${serverName}
+    echo "${VNCVIEWER} ${cmdArgs} ${serverName}"
   fi
-  ${VNCVIEWER} ${cmdArgs} ${serverName} &>/dev/null
+  # shellcheck disable=SC2086
+  ${VNCVIEWER} ${cmdArgs} "${serverName}" 2>/dev/null >/dev/null
+  RET=$?
 fi
 
-if [ $? != 0 ]; then
-   printf "ERROR: ${VNCVIEWER} returned invalid return code ($?)"
+if [ $RET != 0 ]; then
+   echo "ERROR: ${VNCVIEWER} returned invalid return code ($RET)"
    exit 2
 fi
 
-exit 0
+exit ${RET}
