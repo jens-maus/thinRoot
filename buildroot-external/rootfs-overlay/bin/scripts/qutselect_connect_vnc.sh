@@ -44,20 +44,20 @@ read -r password
 cmdArgs="-shared -menukey="
 
 # resolution
-if [ "x${resolution}" = "xfullscreen" ]; then
+if [ "${resolution}" = "fullscreen" ]; then
   cmdArgs="$cmdArgs -fullscreen -fullscreensystemkeys"
 fi
 
 # run vncviewer finally
-if [ "x${password}" != "xNULL" ]; then
-  if [ "x${dtlogin}" != "xtrue" ]; then
+if [ "${password}" != "NULL" ]; then
+  if [ "${dtlogin}" != "true" ]; then
     echo "${VNCVIEWER} ${cmdArgs} ${serverName}"
   fi
   # shellcheck disable=SC2086
   VNC_PASSWORD="${password}" ${VNCVIEWER} ${cmdArgs} "${serverName}" 2>/dev/null >/dev/null
   RET=$?
 else
-  if [ "x${dtlogin}" != "xtrue" ]; then
+  if [ "${dtlogin}" != "true" ]; then
     echo "${VNCVIEWER} ${cmdArgs} ${serverName}"
   fi
   # shellcheck disable=SC2086
