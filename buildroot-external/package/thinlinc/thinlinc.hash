@@ -1,4 +1,4 @@
 # Locally computed
-sha256  48e3f929664d1469799da287098149258e6475632c16892031e5621dd8cba8aa  tl-4.13.0-2172-client-linux-dynamic-armhf.tar.gz
-sha256  2d444774f5a4c54b4c668b2c219924f06995e608de522fbf899bf2044471d7d4  tl-4.13.0-2172-client-linux-dynamic-i686.tar.gz
-sha256  4c2106fbf1df6ddbac55beebcfc801260f7e77a682621e25bf9e2d355a7bf1d6  tl-4.13.0-2172-client-linux-dynamic-x86_64.tar.gz
+sha256  81b8e54abe184bda88a04dd827d03e85da528bf93f7f457e838c3c4f97616274  tl-4.14.0-2324-client-linux-dynamic-x86_64.tar.gz
+sha256  fc9694675cf2337d7e03b4e28b12e5c26e0054d2693b81166781209bcfa61042  tl-4.14.0-2324-client-linux-dynamic-i686.tar.gz
+sha256  c650dfa3ff45d097d7d8e9408cf8642f3284f1feabc2eceac5ade113f213bf01  tl-4.14.0-2324-client-linux-dynamic-armhf.tar.gz
