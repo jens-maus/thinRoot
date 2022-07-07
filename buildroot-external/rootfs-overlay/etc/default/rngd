@@ -1,1 +1,1 @@
-DAEMON_ARGS="-r /dev/urandom"
+DAEMON_ARGS="-r /dev/urandom -x jitter"
