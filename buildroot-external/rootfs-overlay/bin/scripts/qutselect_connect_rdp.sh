@@ -148,6 +148,7 @@ if [ -z "${cmdArgs}" ] && [ -x ${XFREERDP} ]; then
   # we are in a thinlinc session and thus have to forward
   # ${HOME}/thindrives/mnt instead
   if [ -n "${TLSESSIONDATA}" ]; then
+    mkdir -p "${TLSESSIONDATA}/drives"
     cmdArgs="$cmdArgs /drive:USB,${TLSESSIONDATA}/drives/"
   else
      if [ -n "${SUN_SUNRAY_TOKEN}" ]; then
