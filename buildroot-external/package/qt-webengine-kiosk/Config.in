@@ -1,0 +1,4 @@
+config BR2_PACKAGE_QT_WEBENGINE_KIOSK
+	bool "qt-webengine-kiosk"
+	help
+	  Simple Qt Webengine browser

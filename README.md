@@ -14,7 +14,7 @@ _thinRoot_ is a buildroot (https://buildroot.org/) powered operating system envi
 
 ## :cookie: Features
 * provides a lightweight kiosk system which after bootup provides a simple connection GUI with options to connect via [ThinLinc](http://www.cendio.se/), RDP (via [freerdp](https://github.com/FreeRDP/FreeRDP) or [remmina](https://remmina.org/)) or VNC to Linux and Windows-based Terminalservers.
-* allows to run a fullscreen webbrowser (e.g. [qt-webkit-kiosk](https://github.com/sergey-dryabzhinsky/qt-webkit-kiosk)) for webkiosk-based applications.
+* allows to run a fullscreen webbrowser (e.g. [qt-webengine-kiosk](https://github.com/akdor1154/qt-webengine-kiosk)) for webkiosk-based applications.
 * allows to either use PXE/TFTP-based network boot environments or allow to directly install the thinRoot images onto a local storage disk.
 * allows to create full-fledged system images below 150MB in size (e.g. for a fast network-based bootup).
 

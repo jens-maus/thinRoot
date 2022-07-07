@@ -1,0 +1,13 @@
+diff --git a/src/qt-webengine-kiosk.pro b/src/qt-webengine-kiosk.pro
+index b760a9c..0b38e9b 100644
+--- a/src/qt-webengine-kiosk.pro
++++ b/src/qt-webengine-kiosk.pro
+@@ -4,7 +4,7 @@
+ #
+ #-------------------------------------------------
+ 
+-QT       = core gui network widgets printsupport multimedia testlib webenginewidgets
++QT       = core gui network widgets printsupport multimedia testlib webenginewidgets webengine
+ 
+ CONFIG += console link_pkgconfig c++11
+ TARGET = qt-webengine-kiosk
