@@ -1,4 +1,4 @@
-BUILDROOT_VERSION=2022.02
+BUILDROOT_VERSION=2022.05
 BUILDROOT_EXTERNAL=buildroot-external
 DEFCONFIG_DIR=$(BUILDROOT_EXTERNAL)/configs
 DATE=$(shell date +%Y%m%d)
@@ -28,7 +28,7 @@ buildroot-$(BUILDROOT_VERSION).tar.xz:
 
 buildroot-$(BUILDROOT_VERSION): | buildroot-$(BUILDROOT_VERSION).tar.xz
 	@echo "[patching buildroot-$(BUILDROOT_VERSION)]"
-	if [ ! -d $@ ]; then tar xf buildroot-$(BUILDROOT_VERSION).tar.xz; for p in $(sort $(wildcard buildroot-patches/*.patch)); do echo "\nApplying $${p}"; patch -d buildroot-$(BUILDROOT_VERSION) -p1 < $${p} || exit 127; [ ! -x $${p%.*}.sh ] || $${p%.*}.sh buildroot-$(BUILDROOT_VERSION); done; fi
+	if [ ! -d $@ ]; then tar xf buildroot-$(BUILDROOT_VERSION).tar.xz; for p in $(sort $(wildcard buildroot-patches/*.patch)); do echo "\nApplying $${p}"; patch -d buildroot-$(BUILDROOT_VERSION) --remove-empty-files -p1 < $${p} || exit 127; [ ! -x $${p%.*}.sh ] || $${p%.*}.sh buildroot-$(BUILDROOT_VERSION); done; fi
 
 build-$(PRODUCT): | buildroot-$(BUILDROOT_VERSION) download
 	mkdir -p build-$(PRODUCT)
@@ -73,6 +73,16 @@ release: build
 	$(eval BOARD_DIR := $(BUILDROOT_EXTERNAL)/board/$(PRODUCT))
 	if [ -x $(BOARD_DIR)/post-release.sh ]; then $(BOARD_DIR)/post-release.sh $(BOARD_DIR) ${PRODUCT} ${PRODUCT_VERSION}; fi
 
+check-all: $(addsuffix -check, $(PRODUCTS))
+$(addsuffix -check, $(PRODUCTS)): %:
+	@$(MAKE) PRODUCT=$(subst -check,,$@) PRODUCT_VERSION=$(PRODUCT_VERSION) check
+
+check: buildroot-$(BUILDROOT_VERSION) build-$(PRODUCT)/.config
+	@echo "[checking: $(PRODUCT)]"
+	$(eval BOARD_DIR := $(BUILDROOT_EXTERNAL)/board/$(shell echo $(PRODUCT) | cut -d'_' -f2))
+	@echo "[checking status: $(BUILDROOT_EXTERNAL)]"
+	buildroot-$(BUILDROOT_VERSION)/utils/check-package --exclude PackageHeader --br2-external $(BUILDROOT_EXTERNAL)/package/*/*
+
 clean-all: $(addsuffix -clean, $(PRODUCTS))
 $(addsuffix -clean, $(PRODUCTS)): %:
 	@$(MAKE) PRODUCT=$(subst -clean,,$@) PRODUCT_VERSION=$(PRODUCT_VERSION) clean
@@ -99,6 +109,10 @@ xconfig: buildroot-$(BUILDROOT_VERSION) build-$(PRODUCT)/.config
 savedefconfig: buildroot-$(BUILDROOT_VERSION) build-$(PRODUCT)
 	cd build-$(PRODUCT) && $(MAKE) O=$(shell pwd)/build-$(PRODUCT) -C ../buildroot-$(BUILDROOT_VERSION) BR2_EXTERNAL=../$(BUILDROOT_EXTERNAL) BR2_DL_DIR=$(BR2_DL_DIR) BR2_CCACHE_DIR=$(BR2_CCACHE_DIR) BR2_JLEVEL=$(BR2_JLEVEL) PRODUCT=$(PRODUCT) PRODUCT_VERSION=$(PRODUCT_VERSION) savedefconfig BR2_DEFCONFIG=../$(DEFCONFIG_DIR)/$(PRODUCT)_defconfig
 
+.PHONY: toolchain
+toolchain: buildroot-$(BUILDROOT_VERSION) build-$(PRODUCT)/.config
+	cd build-$(PRODUCT) && $(MAKE) O=$(shell pwd)/build-$(PRODUCT) -C ../buildroot-$(BUILDROOT_VERSION) BR2_EXTERNAL=../$(BUILDROOT_EXTERNAL) BR2_DL_DIR=$(BR2_DL_DIR) BR2_CCACHE_DIR=$(BR2_CCACHE_DIR) BR2_JLEVEL=$(BR2_JLEVEL) PRODUCT=$(PRODUCT) PRODUCT_VERSION=$(PRODUCT_VERSION) toolchain
+
 # Create a fallback target (%) to forward all unknown target calls to the build Makefile.
 # This includes:
 #   linux-menuconfig
@@ -107,7 +121,7 @@ savedefconfig: buildroot-$(BUILDROOT_VERSION) build-$(PRODUCT)
 #   busybox-update-config
 #   uboot-menuconfig
 #   uboot-update-defconfig
-linux-menuconfig linux-update-defconfig busybox-menuconfig busybox-update-config uboot-menuconfig uboot-update-defconfig:
+linux-menuconfig linux-update-defconfig busybox-menuconfig busybox-update-config uboot-menuconfig uboot-update-defconfig legal-info:
 	@echo "[$@ $(PRODUCT)]"
 	@$(MAKE) -C build-$(PRODUCT) PRODUCT=$(PRODUCT) PRODUCT_VERSION=$(PRODUCT_VERSION) $@
 
@@ -121,8 +135,11 @@ help:
 	@echo "  $(MAKE) <product>-release: build+create release archive for product"
 	@echo "  $(MAKE) release-all: build+create release archive for all supported products"
 	@echo
+	@echo "  $(MAKE) <product>-check: run ci consistency check for product"
+	@echo "  $(MAKE) check-all: run ci consistency check all supported platforms"
+	@echo
 	@echo "  $(MAKE) <product>-clean: remove build directory for product"
-	@echo "  $(MAKE) clean-all: remove build directories for all supproted platforms"
+	@echo "  $(MAKE) clean-all: remove build directories for all supported platforms"
 	@echo
 	@echo "  $(MAKE) distclean: clean everything (all build dirs and buildroot sources)"
 	@echo
