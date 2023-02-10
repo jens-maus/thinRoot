@@ -96,36 +96,16 @@ jobs:
       # cleanup
       - name: Cleanup
         run: |
-          rm -f release/*.img*
           make distclean
 
-      #######################
-      # nightly snapshot uploads
-      - name: Upload build snapshot [intelnuc]
-        if: github.repository_owner == 'jens-maus'
-        uses: WebFreak001/deploy-nightly@v2.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      ########################
+      # upload build artifacts
+      - name: Upload build artifact [intelnuc]
+        uses: actions/upload-artifact@v3
         with:
-          upload_url: https://uploads.github.com/repos/jens-maus/thinRoot/releases/22744592/assets{?name,label}
-          release_id: 22744592
-          asset_path: release/thinRoot-${{ env.VERSION }}-${{ matrix.platform }}.zip
-          asset_name: thinRoot-${{ env.VERSION }}.$$-${{ matrix.platform }}.zip
-          asset_content_type: application/zip
-          max_releases: 1
-
-      - name: Upload build snapshot checksum [intelnuc]
-        if: github.repository_owner == 'jens-maus'
-        uses: WebFreak001/deploy-nightly@v2.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-        with:
-          upload_url: https://uploads.github.com/repos/jens-maus/thinRoot/releases/22744592/assets{?name,label}
-          release_id: 22744592
-          asset_path: release/thinRoot-${{ env.VERSION }}-${{ matrix.platform }}.zip.sha256
-          asset_name: thinRoot-${{ env.VERSION }}.$$-${{ matrix.platform }}.zip.sha256
-          asset_content_type: text/plain
-          max_releases: 1
+          path: release/thinroot-${{ env.VERSION }}-${{ matrix.platform }}.img*
+          name: thinroot-${{ env.VERSION }}-${{ env.GITHUB_SHA7 }}-${{ matrix.platform }}.tgz
+        continue-on-error: true
 
   cleanup:
     permissions:

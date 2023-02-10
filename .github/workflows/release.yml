@@ -156,7 +156,6 @@ jobs:
       # cleanup
       - name: Cleanup
         run: |
-          rm -f release/*.img*
           make distclean
 
       #######################
@@ -167,9 +166,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release_draft.outputs.upload_url }}
-          asset_path: release/thinRoot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.zip
-          asset_name: thinRoot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.zip
-          asset_content_type: application/zip
+          asset_path: release/thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.img
+          asset_name: thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.img
+          asset_content_type: application/octet-stream
 
       - name: Upload build release checksum [intelnuc]
         uses: actions/upload-release-asset@v1.0.2
@@ -177,8 +176,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.release_draft.outputs.upload_url }}
-          asset_path: release/thinRoot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.zip.sha256
-          asset_name: thinRoot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.zip.sha256
+          asset_path: release/thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.img.sha256
+          asset_name: thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.img.sha256
           asset_content_type: text/plain
 
   ##########################################
