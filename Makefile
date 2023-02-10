@@ -54,14 +54,8 @@ else
 	# Dummy build - mainly for testing CI
 	echo -n "FAKE_BUILD - generating fake release archives..."
 	mkdir -p build-$(PRODUCT)/images
-	for f in `cat release/updatepkg/$(PRODUCT)/files-images.txt`; do echo DUMMY >build-$(PRODUCT)/images/$${f}; done
-	mkdir -p /tmp/oci
-	tar -cf /tmp/oci/layer.tar LICENSE
-	tar -C /tmp -cvf thinRoot-$(PRODUCT_VERSION)-$(BOARD).tar oci
-	mv thinRoot-$(PRODUCT_VERSION)-$(BOARD).tar build-$(PRODUCT)/images/
-	rm -rf /tmp/oci
 	echo DUMMY >build-$(PRODUCT)/images/sdcard.img
-	echo DUMMY >build-$(PRODUCT)/images/thinRoot.ova
+	echo DUMMY >build-$(PRODUCT)/images/bzImage
 endif
 
 release-all: $(addsuffix -release, $(PRODUCTS))
