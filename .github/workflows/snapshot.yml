@@ -104,7 +104,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           path: release/thinroot-${{ env.VERSION }}-${{ matrix.platform }}.img*
-          name: thinroot-${{ env.VERSION }}-${{ env.GITHUB_SHA7 }}-${{ matrix.platform }}.tgz
+          name: thinroot-${{ env.VERSION }}-${{ env.GITHUB_SHA7 }}-${{ matrix.platform }}.img
         continue-on-error: true
 
   cleanup:
