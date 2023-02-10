@@ -221,12 +221,12 @@ setup_audio() {
     fi
     if [[ -n "${MIC_LEVEL}" ]] && [[ "${MIC_LEVEL}" -gt "0" ]]; then
       [[ -z "${MIC_DEVICE}" ]] && MIC_DEVICE=Mic
-      if /usr/bin/amixer sget -c "${card}" ${MIC_DEVICE} >/dev/null 2>&1; then
+      if /usr/bin/amixer sget -c "${card}" "${MIC_DEVICE}" >/dev/null 2>&1; then
         if /usr/bin/amixer sget -c "${card}" Capture >/dev/null 2>&1; then
           /usr/bin/amixer sset Capture "${MIC_LEVEL}%" unmute >/dev/null 2>&1
         fi
-        /usr/bin/amixer sset ${MIC_DEVICE} playback mute >/dev/null 2>&1
-        /usr/bin/amixer sset ${MIC_DEVICE} "${MIC_LEVEL}%" cap >/dev/null 2>&1
+        /usr/bin/amixer sset "${MIC_DEVICE}" playback mute >/dev/null 2>&1
+        /usr/bin/amixer sset "${MIC_DEVICE}" "${MIC_LEVEL}%" cap >/dev/null 2>&1
       elif /usr/bin/amixer sget -c "${card}" Capture >/dev/null 2>&1; then
         /usr/bin/amixer sset Capture 0% >/dev/null 2>&1
       fi
