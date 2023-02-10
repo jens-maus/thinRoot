@@ -1,0 +1,144 @@
+# thinRoot Snapshot build
+# yamllint disable rule:truthy
+---
+name: Snapshot Build
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # run at 0 AM UTC
+  workflow_dispatch:
+    inputs:
+      skip_build:
+        description: 'Skip build (for testing workflow)?'
+        required: true
+        default: "false"
+
+# default read-only permission
+permissions:
+  contents: read
+
+jobs:
+  repo-check:
+    name: Check for Changes
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - id: commit-check
+        run: echo "has-commits=$(git --no-pager log --pretty='format:%an' --since='24 hours ago' | grep -v github-actions | wc -l)" >> $GITHUB_OUTPUT
+    outputs:
+      has-commits: ${{ steps.commit-check.outputs.has-commits }}
+
+  build:
+    permissions:
+      contents: write  # actions/upload-artifact
+    name: Snapshot build [${{ matrix.platform }}]
+    if: ${{ github.repository == 'jens-maus/thinRoot' && (github.event_name != 'schedule' || needs.repo-check.outputs.has-commits > 0) }}
+    runs-on: ubuntu-22.04
+    needs: repo-check
+    timeout-minutes: 480
+    outputs:
+      build_datetime: ${{ steps.env.outputs.build_datetime }}
+      build_version: ${{ steps.env.outputs.build_version }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [intelnuc]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          if ! dpkg-query -l wget bc cpio rsync zip python >/dev/null 2>&1; then
+            apt update
+            apt install -y --no-install-recommends wget bc cpio rsync zip python
+          fi
+
+      - name: Setup Environment
+        id: env
+        run: |
+          echo "DATE=$(date +%Y%m%d)" >> $GITHUB_ENV
+          echo "VERSION=$(date +%Y%m%d)" >> $GITHUB_ENV
+          echo "GITHUB_SHA7=$(echo ${GITHUB_SHA::7})" >> $GITHUB_ENV
+          echo "FAKE_BUILD=${{ github.event.inputs.skip_build }}" >> $GITHUB_ENV
+          JLEVEL=0
+          if [[ -f /sys/fs/cgroup/cpu.max ]]; then # cgroups v2
+            CPU_QUOTA=$(cut -d ' ' -f1 /sys/fs/cgroup/cpu.max)
+            if [[ "${CPU_QUOTA}" != "max" ]]; then
+              CPU_PERIOD=$(cut -d ' ' -f2 /sys/fs/cgroup/cpu.max)
+              JLEVEL=$((CPU_QUOTA / CPU_PERIOD + 1))
+            fi
+          elif [[ -f /sys/fs/cgroup/cpu/cpu.cfs_quota_us ]]; then # cgroups v1
+            CPU_QUOTA=$(cat /sys/fs/cgroup/cpu/cpu.cfs_quota_us)
+            if [[ "${CPU_QUOTA}" != "-1" ]]; then
+              CPU_PERIOD=$(cat /sys/fs/cgroup/cpu/cpu.cfs_period_us)
+              JLEVEL=$((CPU_QUOTA / CPU_PERIOD + 1))
+            fi
+          fi
+          echo "JLEVEL=${JLEVEL}" >> $GITHUB_ENV
+          echo "build_datetime=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_OUTPUT
+          echo "build_version=$(date +%Y%m%d)" >> $GITHUB_OUTPUT
+
+      # - name: remote debug tmate session
+      #   uses: mxschmitt/action-tmate@v1
+      #   if: matrix.platform == 'ova'
+
+      # major build step
+      - name: Build
+        timeout-minutes: 480
+        shell: bash
+        run: |
+          make distclean
+          make DATE=${{ env.DATE }} BR2_JLEVEL=${{ env.JLEVEL }} ${{ matrix.platform }}-release
+
+      # cleanup
+      - name: Cleanup
+        run: |
+          rm -f release/*.img*
+          make distclean
+
+      #######################
+      # nightly snapshot uploads
+      - name: Upload build snapshot [intelnuc]
+        if: github.repository_owner == 'jens-maus'
+        uses: WebFreak001/deploy-nightly@v2.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        with:
+          upload_url: https://uploads.github.com/repos/jens-maus/thinRoot/releases/22744592/assets{?name,label}
+          release_id: 22744592
+          asset_path: release/thinRoot-${{ env.VERSION }}-${{ matrix.platform }}.zip
+          asset_name: thinRoot-${{ env.VERSION }}.$$-${{ matrix.platform }}.zip
+          asset_content_type: application/zip
+          max_releases: 1
+
+      - name: Upload build snapshot checksum [intelnuc]
+        if: github.repository_owner == 'jens-maus'
+        uses: WebFreak001/deploy-nightly@v2.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        with:
+          upload_url: https://uploads.github.com/repos/jens-maus/thinRoot/releases/22744592/assets{?name,label}
+          release_id: 22744592
+          asset_path: release/thinRoot-${{ env.VERSION }}-${{ matrix.platform }}.zip.sha256
+          asset_name: thinRoot-${{ env.VERSION }}.$$-${{ matrix.platform }}.zip.sha256
+          asset_content_type: text/plain
+          max_releases: 1
+
+  cleanup:
+    permissions:
+      contents: write  # c-hive/gha-remove-artifacts
+      packages: write  # smartsquaregmbh/delete-old-packages
+      actions: write  # c-hive/gha-remove-artifacts
+    name: Cleanup artifacts/packages
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Remove old artifacts
+        uses: c-hive/gha-remove-artifacts@v1.3.0
+        with:
+          age: '2 months'
+          skip-tags: true
+          skip-recent: 15
+        continue-on-error: true
