@@ -1,0 +1,31 @@
+--- a/chromium/tools/metrics/ukm/ukm_model.py.orig	2023-03-02 12:27:03.725118730 +0100
++++ b/chromium/tools/metrics/ukm/ukm_model.py	2021-12-15 17:09:27.000000000 +0100
+@@ -42,7 +42,7 @@
+ _STATISTICS_TYPE =  models.ObjectNodeType(
+     'statistics',
+     attributes=[
+-      ('export', str, r'^(?i)(|true|false)$'),
++      ('export', str, r'(?i)^(|true|false)$'),
+     ],
+     children=[
+         models.ChildType(_QUANTILES_TYPE.tag, _QUANTILES_TYPE, multiple=False),
+@@ -94,7 +94,7 @@
+     'event',
+     attributes=[
+       ('name', str, r'^[A-Za-z0-9.]+$'),
+-      ('singular', str, r'^(?i)(|true|false)$'),
++      ('singular', str, r'(?i)^(|true|false)$'),
+     ],
+     alphabetization=[
+         (_OBSOLETE_TYPE.tag, _KEEP_ORDER),
+--- a/chromium/tools/grit/grit/util.py.orig	2021-12-15 17:09:27.000000000 +0100
++++ b/chromium/tools/grit/grit/util.py	2023-03-02 14:21:33.655159542 +0100
+@@ -211,7 +211,7 @@
+     mode = 'rb'
+     encoding = None
+   else:
+-    mode = 'rU'
++    mode = 'r'
+ 
+   with io.open(abs(filename), mode, encoding=encoding) as f:
+     return f.read()
