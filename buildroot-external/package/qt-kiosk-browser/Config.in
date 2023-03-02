@@ -1,0 +1,5 @@
+config BR2_PACKAGE_QT_KIOSK_BROWSER
+	bool "qt-kiosk-browser"
+	select BR2_PACKAGE_QT5WEBENGINE
+	help
+	  Simple Qt-based kiosk browser
