@@ -6,18 +6,14 @@
 #
 ################################################################################
 
-XPRINTIDLE_VERSION = 0.2.2
-XPRINTIDLE_TAG = 0.2.2
-XPRINTIDLE_SITE = $(call github,g0hl1n,xprintidle,$(XPRINTIDLE_TAG))
+XPRINTIDLE_VERSION = 0.2.5
+XPRINTIDLE_SITE = $(call github,g0hl1n,xprintidle,$(XPRINTIDLE_VERSION))
+XPRINTIDLE_DEPENDENCIES = xlib_libXScrnSaver
 XPRINTIDLE_LICENSE = GPL-2.0
 XPRINTIDLE_LICENSE_FILES = COPYING
 
-define XPRINTIDLE_BUILD_CMDS
-	$(MAKE) CC="$(TARGET_CC)" LD="$(TARGET_LD)" CFLAGS="$(TARGET_CFLAGS)" -C $(@D) all
-endef
-
 define XPRINTIDLE_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/xprintidle $(TARGET_DIR)/bin/
+	$(INSTALL) -D -m 0755 $(@D)/build/xprintidle $(TARGET_DIR)/bin/
 endef
 
-$(eval $(autotools-package))
+$(eval $(meson-package))
