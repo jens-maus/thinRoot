@@ -161,6 +161,9 @@ setup_ntp() {
   if [[ -n "${NET_TIME_SERVER}" ]]; then
     echo "server ${NET_TIME_SERVER}" >>/etc/chrony.conf
   fi
+  echo "driftfile /var/lib/chrony/chrony.drift" >>/etc/chrony.conf
+  echo "maxupdateskew 100.0" >>/etc/chrony.conf
+  echo "makestep 1 3" >>/etc/chrony.conf
 }
 
 setup_xconf() {
