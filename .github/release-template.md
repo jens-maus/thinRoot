@@ -16,4 +16,4 @@ ${CHANGELOG}
 The following installation archives can be downloaded for different hardware platforms. To verify their integrity a `sha256` checksum is provided as well.
 
 - Intel NUC:
-<sub>:package: [thinRoot-${VERSION}-intelnuc.zip](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-intelnuc.zip)<br/>SHA256: XSHAintelnuc.zipX</sub>
+<sub>:package: [thinRoot-${VERSION}-intelnuc.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-intelnuc.img)<br/>SHA256: XSHAintelnuc.imgX</sub>
