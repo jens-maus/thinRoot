@@ -180,6 +180,14 @@ jobs:
           asset_name: thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.img.sha256
           asset_content_type: text/plain
 
+      #######################
+      # manifest file artifact upload
+      - name: Upload manifest artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: release/thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.mf
+          name: thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.mf
+
   ##########################################
   # Update checksums in release draft
   update-checksums:

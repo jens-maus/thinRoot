@@ -15,4 +15,8 @@ cd ./release
 cp -a "../build-${PRODUCT}/images/bzImage" "thinroot-${PRODUCT_VERSION}-${PRODUCT}.img"
 sha256sum "thinroot-${PRODUCT_VERSION}-${PRODUCT}.img" >"thinroot-${PRODUCT_VERSION}-${PRODUCT}.img.sha256"
 
-exit $?
+# create manifest file with checksum+sizes
+rm -f "thinroot-${PRODUCT_VERSION}-${PRODUCT}.mf"
+
+# shellcheck disable=SC2129
+echo "$(stat -c %s "./thinroot-${PRODUCT_VERSION}-${PRODUCT}.img") $(cat "thinroot-${PRODUCT_VERSION}-${PRODUCT}.img.sha256")" >>"thinroot-${PRODUCT_VERSION}-${PRODUCT}.mf"
