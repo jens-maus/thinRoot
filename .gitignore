@@ -5,3 +5,4 @@
 /release/*.zip
 /release/*.img
 /release/*.sha256
+/release/*.mf
