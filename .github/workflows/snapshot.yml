@@ -101,7 +101,7 @@ jobs:
       ########################
       # upload build artifacts
       - name: Upload build artifact [intelnuc]
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: release/thinroot-${{ env.VERSION }}-${{ matrix.platform }}.img*
           name: thinroot-${{ env.VERSION }}-${{ env.GITHUB_SHA7 }}-${{ matrix.platform }}.img
