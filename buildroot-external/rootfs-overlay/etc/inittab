@@ -18,6 +18,7 @@ null::sysinit:/bin/mount -t proc proc /proc
 null::sysinit:/bin/mkdir -p /dev/pts
 null::sysinit:/bin/mkdir -p /dev/shm
 tty2::sysinit:/bin/mount -a
+null::sysinit:/bin/mkdir -p /run/lock
 null::sysinit:/bin/hostname -F /etc/hostname
 null::sysinit:/usr/bin/psplash -n &
 # now run any rc scripts
