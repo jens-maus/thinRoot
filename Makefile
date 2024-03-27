@@ -61,7 +61,7 @@ else
 	# Dummy build - mainly for testing CI
 	echo -n "FAKE_BUILD - generating fake release archives..."
 	mkdir -p build-$(PRODUCT)/images
-	echo DUMMY >build-$(PRODUCT)/images/sdcard.img
+	echo DUMMY >build-$(PRODUCT)/images/bzImage
 endif
 
 release-all: $(addsuffix -release, $(PRODUCTS))
