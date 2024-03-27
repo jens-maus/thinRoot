@@ -6,13 +6,11 @@
 #
 ################################################################################
 
-THINLINC_VERSION = 4.14.0-2324
+THINLINC_VERSION = 4.16.0-3389
 THINLINC_SITE = https://www.cendio.com/downloads/clients
 
 ifeq ($(call qstrip,$(BR2_ARCH)),x86_64)
 THINLINC_SOURCE = tl-$(THINLINC_VERSION)-client-linux-dynamic-x86_64.tar.gz
-else ifeq ($(call qstrip,$(BR2_ARCH)),i686)
-THINLINC_SOURCE = tl-$(THINLINC_VERSION)-client-linux-dynamic-i686.tar.gz
 else ifeq ($(call qstrip,$(BR2_ARCH)),arm)
 THINLINC_SOURCE = tl-$(THINLINC_VERSION)-client-linux-dynamic-armhf.tar.gz
 endif
