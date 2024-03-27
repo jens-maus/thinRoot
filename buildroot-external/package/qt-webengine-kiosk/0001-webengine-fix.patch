@@ -1,5 +1,8 @@
 diff --git a/src/qt-webengine-kiosk.pro b/src/qt-webengine-kiosk.pro
 Signed-off-by: Jens Maus <mail@jens-maus.de>
+
+Upstream: n/a
+
 index b760a9c..0b38e9b 100644
 --- a/src/qt-webengine-kiosk.pro
 +++ b/src/qt-webengine-kiosk.pro
