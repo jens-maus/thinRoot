@@ -97,12 +97,6 @@ jobs:
           rm -rf release/thinroot-* buildroot-????.*
           sudo -H -E -u builder nice -n 19 make DATE=${{ env.DATE }} BR2_DL_DIR=/mnt/download BR2_CCACHE_DIR=/mnt/ccache/${{ matrix.platform }} BR2_JLEVEL=${{ env.JLEVEL }} clean-all ${{ matrix.platform }}-release
 
-      # cleanup
-      - name: Cleanup
-        run: |
-          make clean-all
-          rm -rf release/*.img* buildroot-????.*
-
       ########################
       # upload build artifacts
       - name: Upload build artifact [intelnuc]
@@ -111,6 +105,12 @@ jobs:
           path: release/thinroot-${{ env.VERSION }}-${{ matrix.platform }}.img*
           name: thinroot-${{ env.VERSION }}-${{ env.GITHUB_SHA7 }}-${{ matrix.platform }}.img
         continue-on-error: true
+
+      # cleanup
+      - name: Cleanup
+        run: |
+          make clean-all
+          rm -rf release/thinroot-* buildroot-????.*
 
   cleanup:
     permissions:

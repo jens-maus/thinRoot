@@ -157,12 +157,6 @@ jobs:
           rm -rf release/thinroot-* buildroot-????.*
           sudo -H -E -u builder nice -n 19 make DATE=${{ needs.release_draft.outputs.date }} BR2_DL_DIR=/mnt/download BR2_CCACHE_DIR=/mnt/ccache/${{ matrix.platform }} BR2_JLEVEL=${{ env.JLEVEL }} clean-all ${{ matrix.platform }}-release
 
-      # cleanup
-      - name: Cleanup
-        run: |
-          make clean-all
-          rm -rf release/thinroot-* buildroot-????.*
-
       #######################
       # release uploads
       - name: Upload release snapshot [intelnuc]
@@ -186,6 +180,12 @@ jobs:
         with:
           path: release/thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.mf
           name: thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.mf
+
+      # cleanup
+      - name: Cleanup
+        run: |
+          make clean-all
+          rm -rf release/thinroot-* buildroot-????.*
 
   ##########################################
   # Update checksums in release draft
