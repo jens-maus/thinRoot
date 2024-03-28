@@ -16,8 +16,22 @@ permissions:
   contents: read
 
 jobs:
+  skip_check:
+    name: Duplicate Check
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.check.outputs.should_skip }}
+    steps:
+      - id: check
+        uses: fkirc/skip-duplicate-actions@v5.3.1
+        with:
+          skip_after_successful_duplicate: 'true'
+          concurrent_skipping: 'same_content_newer'
+
   linter:
     name: Linter Checks
+    needs: skip_check
+    if: ${{ needs.skip_check.outputs.should_skip != 'true' }}
     runs-on: ubuntu-22.04
 
     steps:
