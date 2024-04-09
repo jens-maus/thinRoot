@@ -5,8 +5,7 @@
 ################################################################################
 
 QUTSELECT_VERSION = 3.0
-#QUTSELECT_SITE = $(call github,hzdr,qutselect,$(QUTSELECT_VERSION))
-QUTSELECT_SITE = $(call github,hzdr,qutselect,qt6)
+QUTSELECT_SITE = $(call github,hzdr,qutselect,$(QUTSELECT_VERSION))
 QUTSELECT_LICENSE = LGPL-3.0
 QUTSELECT_LICENSE_FILES = LICENSE
 QUTSELECT_DEPENDENCIES = qt6base
