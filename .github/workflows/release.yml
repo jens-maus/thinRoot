@@ -108,7 +108,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [intelnuc]
+        platform: [generic-x86_64]
 
     steps:
       - name: Checkout Code
@@ -148,7 +148,7 @@ jobs:
 
       # - name: remote debug tmate session
       #   uses: mxschmitt/action-tmate@v1
-      #   if: matrix.platform == 'intelnuc'
+      #   if: matrix.platform == 'generic-x86_64'
 
       # major build step
       - name: Build
@@ -159,14 +159,14 @@ jobs:
 
       #######################
       # release uploads
-      - name: Upload release snapshot [intelnuc]
+      - name: Upload release snapshot [generic-x86_64]
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ needs.release_draft.outputs.upload_url }}
           asset_path: release/thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.img
           asset_content_type: application/octet-stream
 
-      - name: Upload build release checksum [intelnuc]
+      - name: Upload build release checksum [generic-x86_64]
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ needs.release_draft.outputs.upload_url }}

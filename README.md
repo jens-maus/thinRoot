@@ -49,9 +49,9 @@ Building your own thinRoot image is a very straight forward process using this b
 ```sh
 $ git clone https://github.com/jens-maus/thinRoot
 $ cd thinRoot
-$ make PRODUCT=intelnuc release
+$ make PRODUCT=generic-x86_64 release
 [wait up to 1h]
-$ cp release/thinroot-YYYYMMDD-intelnuc.img /tftpboot/thinroot/
+$ cp release/thinroot-YYYYMMDD-generic-x86_64.img /tftpboot/thinroot/
 ```
 
 ## :scroll: License

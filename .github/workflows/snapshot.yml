@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [intelnuc]
+        platform: [generic-x86_64]
 
     steps:
       - name: Checkout Code
@@ -103,7 +103,7 @@ jobs:
 
       ########################
       # upload build artifacts
-      - name: Upload build artifact [intelnuc]
+      - name: Upload build artifact [generic-x86_64]
         uses: actions/upload-artifact@v4
         with:
           path: release/thinroot-${{ env.VERSION }}-${{ matrix.platform }}.img*
