@@ -1,0 +1,9 @@
+config BR2_PACKAGE_VIRT_VIEWER
+	bool "virt-viewer"
+	select BR2_PACKAGE_CAIRO_PDF
+	select BR2_PACKAGE_LIBGTK3
+	select BR2_PACKAGE_SPICE_GTK
+	help
+	  The virtual machine console viewer
+
+	  https://gitlab.com/virt-viewer/virt-viewer

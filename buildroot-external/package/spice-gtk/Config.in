@@ -1,0 +1,14 @@
+config BR2_PACKAGE_SPICE_GTK
+	bool "spice-gtk"
+	select BR2_PACKAGE_SPICE_PROTOCOL
+	select BR2_PACKAGE_HOST_PYTHON_SIX
+	select BR2_PACKAGE_HOST_PYTHON_PYPARSING
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBJPEG
+	select BR2_PACKAGE_JSON_GLIB
+	select BR2_PACKAGE_GSTREAMER1
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	help
+	  SPICE Client library using GLib and GTK+
+
+	  https://gitlab.freedesktop.org/spice/spice-gtk
