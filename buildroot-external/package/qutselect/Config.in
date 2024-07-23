@@ -9,6 +9,9 @@ config BR2_PACKAGE_QUTSELECT
 	select BR2_PACKAGE_QT6BASE_PNG
 	select BR2_PACKAGE_QT6BASE_WIDGETS
 	select BR2_PACKAGE_QT6BASE_NETWORK
+	select BR2_PACKAGE_JQ
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBCURL_CURL
 	help
 	  A Qt-based (unix) terminal server selection tool
 

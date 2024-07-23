@@ -12,7 +12,7 @@ if /usr/bin/pgrep "tlclient.bin" >/dev/null 2>&1; then
 else
   # otherwise we check for xfreerdp or rdesktop and then use Windows+L to lock
   # the windows session
-  if /usr/bin/pgrep "xfreerdp|rdesktop|vncviewer" >/dev/null 2>&1; then
+  if /usr/bin/pgrep "xfreerdp|rdesktop|vncviewer|remote-viewer" >/dev/null 2>&1; then
     /bin/su - truser -c "DISPLAY=:0.0 /usr/bin/xdotool keydown Super_L key l keyup Super_L" &
   else
     # bring the system into standby mode
