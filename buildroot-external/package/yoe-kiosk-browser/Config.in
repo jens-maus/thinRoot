@@ -1,0 +1,6 @@
+config BR2_PACKAGE_YOE_KIOSK_BROWSER
+	bool "yoe-kiosk-browser"
+	select BR2_PACKAGE_QT6WEBENGINE
+	select BR2_PACKAGE_QT6MULTIMEDIA
+	help
+	  Simple Qt Webengine browser
