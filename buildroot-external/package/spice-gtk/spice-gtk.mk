@@ -13,6 +13,6 @@ SPICE_GTK_LICENSE = GPL-2.0
 SPICE_GTK_LICENSE_FILES = COPYING
 SPICE_GTK_INSTALL_STAGING = YES
 
-SPICE_GTK_DEPENDENCIES = spice-protocol host-python-six host-python-pyparsing jpeg json-glib gstreamer1 gst1-plugins-base
+SPICE_GTK_DEPENDENCIES = spice-protocol host-python-six host-python-pyparsing jpeg json-glib gstreamer1 gst1-plugins-base usbredir
 
 $(eval $(meson-package))
