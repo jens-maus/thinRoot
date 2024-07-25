@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PHODAV
+	bool "phodav"
+	select BR2_PACKAGE_LIBSOUP3
+	help
+	  minimal WebDAV server implementation using GNOME libsoup (RFC 4918)
+
+	  https://gitlab.gnome.org/GNOME/phodav
