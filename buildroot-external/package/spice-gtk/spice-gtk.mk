@@ -20,6 +20,8 @@ SPICE_GTK_DEPENDENCIES = \
 	jpeg \
 	json-glib \
 	gstreamer1 \
+	gst1-plugins-good \
+	gst1-plugins-bad \
 	gst1-plugins-base \
 	usbredir \
 	usbutils \
