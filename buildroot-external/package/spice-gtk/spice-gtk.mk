@@ -6,7 +6,7 @@
 #
 ################################################################################
 
-SPICE_GTK_VERSION = 0.41
+SPICE_GTK_VERSION = 0.42
 SPICE_GTK_SOURCE = spice-gtk-$(SPICE_GTK_VERSION).tar.xz
 SPICE_GTK_SITE = https://www.spice-space.org/download/gtk
 SPICE_GTK_LICENSE = GPL-2.0
