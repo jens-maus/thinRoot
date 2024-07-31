@@ -23,6 +23,7 @@ SPICE_GTK_DEPENDENCIES = \
 	gst1-plugins-good \
 	gst1-plugins-bad \
 	gst1-plugins-base \
+	dbus-glib \
 	usbredir \
 	usbutils \
 	phodav \
