@@ -95,7 +95,10 @@ load_thinroot_hosts() {
         fi
       done
 
-      if [[ "${HOSTNAME}" == "localhost" ]]; then
+      # if no hostname can be queried (localhost or thinroot fallback), then
+      # we try to get it from the thinroot.hosts file instead
+      if [[ "${HOSTNAME}" == "localhost" ]] ||
+         [[ "${HOSTNAME}" == "thinroot" ]]; then
         NEW_HOSTNAME=$(grep -m1 -i " ${MAC_ADDR}" "${TMPDIR}/thinroot.hosts" | cut -d" " -f1)
         if [[ -n "${NEW_HOSTNAME}" && "${NEW_HOSTNAME}" != "-" ]]; then
           /bin/hostname "${NEW_HOSTNAME}"
