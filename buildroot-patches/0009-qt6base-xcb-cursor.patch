@@ -1,0 +1,20 @@
+--- buildroot/package/qt6/qt6base/Config.in.orig
++++ buildroot/package/qt6/qt6base/Config.in
+@@ -65,6 +65,7 @@
+ 	select BR2_PACKAGE_XCB_UTIL_KEYSYMS
+ 	select BR2_PACKAGE_XCB_UTIL_RENDERUTIL
+ 	select BR2_PACKAGE_XCB_UTIL_WM
++	select BR2_PACKAGE_XCB_UTIL_CURSOR
+ 	select BR2_PACKAGE_LIBXKBCOMMON
+ 
+ comment "X.org XCB backend available if X.org is enabled"
+--- buildroot/package/qt6/qt6base/qt6base.mk.orig
++++ buildroot/package/qt6/qt6base/qt6base.mk
+@@ -207,6 +207,7 @@
+ 	xcb-util-image \
+ 	xcb-util-keysyms \
+ 	xcb-util-renderutil \
++	xcb-util-cursor \
+ 	xlib_libX11
+ else
+ QT6BASE_CONF_OPTS += -DFEATURE_xcb=OFF
