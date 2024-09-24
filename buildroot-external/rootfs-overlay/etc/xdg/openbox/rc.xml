@@ -47,7 +47,7 @@
 
 <theme>
   <name>Clearlooks</name>
-  <titleLayout>LM</titleLayout>
+  <titleLayout>CLM</titleLayout>
   <!--
       available characters are NDSLIMC, each can occur at most once.
       N: window icon
@@ -370,6 +370,18 @@
       <action name="GoToDesktop"><to>next</to></action>
     </mousebind>
   </context>
+
+  <context name="Close">
+    <mousebind button="Left" action="Press">
+      <action name="Focus"/>
+      <action name="Raise"/>
+      <action name="Unshade"/>
+    </mousebind>
+    <mousebind button="Left" action="Click">
+      <action name="Close"/>
+    </mousebind>
+  </context>
+
 </mouse>
 
 <menu>
