@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QUTSELECT_VERSION = 3.7
+QUTSELECT_VERSION = 3.8
 QUTSELECT_SITE = $(call github,hzdr,qutselect,$(QUTSELECT_VERSION))
 QUTSELECT_LICENSE = LGPL-3.0
 QUTSELECT_LICENSE_FILES = LICENSE
