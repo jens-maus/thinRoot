@@ -1,0 +1,189 @@
+--- buildroot/package/freerdp/0001-Fix-variable-declaration-in-loop.patch.orig
++++ buildroot/package/freerdp/0001-Fix-variable-declaration-in-loop.patch
+@@ -1,37 +0,0 @@
+-From 48f25939f4a48b01072f3cd2ece1e36a41c0ad44 Mon Sep 17 00:00:00 2001
+-From: Armin Novak <armin.novak@thincast.com>
+-Date: Wed, 16 Sep 2020 09:30:37 +0200
+-Subject: [PATCH] Fix variable declaration in loop
+-
+-Upstream: https://github.com/FreeRDP/FreeRDP/commit/ddde652460350b962d32036981ff8ed77ed2f1ed
+-Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+-[Dario: make the patch to be applied with fuzz factor 0]
+-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+----
+- client/X11/xf_graphics.c | 3 ++-
+- 1 file changed, 2 insertions(+), 1 deletion(-)
+-
+-diff --git a/client/X11/xf_graphics.c b/client/X11/xf_graphics.c
+-index 5aa1fd48b5a3..c8f24362aec7 100644
+---- a/client/X11/xf_graphics.c
+-+++ b/client/X11/xf_graphics.c
+-@@ -447,6 +447,7 @@ static void xf_Pointer_Free(rdpContext* context, rdpPointer* pointer)
+- 	WLog_DBG(TAG, "%s: %p", __func__, pointer);
+- 
+- #ifdef WITH_XCURSOR
+-+	UINT32 i;
+- 	xfContext* xfc = (xfContext*)context;
+- 	xfPointer* xpointer = (xfPointer*)pointer;
+- 
+-@@ -456,7 +457,7 @@ static void xf_Pointer_Free(rdpContext* context, rdpPointer* pointer)
+- 	free(xpointer->cursorWidths);
+- 	free(xpointer->cursorHeights);
+- 
+--	for (int i = 0; i < xpointer->nCursors; i++)
+-+	for (i = 0; i < xpointer->nCursors; i++)
+- 	{
+- 		XFreeCursor(xfc->display, xpointer->cursors[i]);
+- 	}
+--- 
+-2.43.0
+-
+--- buildroot/package/freerdp/0002-Fixed-variable-declaration-in-loop.patch.orig
++++ buildroot/package/freerdp/0002-Fixed-variable-declaration-in-loop.patch
+@@ -1,38 +0,0 @@
+-From b0b856590b523869358875594841f3e6c2919569 Mon Sep 17 00:00:00 2001
+-From: akallabeth <akallabeth@posteo.net>
+-Date: Tue, 22 Sep 2020 07:43:56 +0200
+-Subject: [PATCH] Fixed variable declaration in loop
+-
+-Upstream: https://github.com/FreeRDP/FreeRDP/commit/4f8a48d96e472e43a5f856c449f61669792ce9fa
+-Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+-[Dario: make the patch to be applied with fuzz factor 0]
+-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+----
+- client/X11/xf_graphics.c | 4 ++--
+- 1 file changed, 2 insertions(+), 2 deletions(-)
+-
+-diff --git a/client/X11/xf_graphics.c b/client/X11/xf_graphics.c
+-index c8f24362aec7..c8b604cc6ad4 100644
+---- a/client/X11/xf_graphics.c
+-+++ b/client/X11/xf_graphics.c
+-@@ -246,7 +246,7 @@ static BOOL xf_Pointer_GetCursorForCurrentScale(rdpContext* context, const rdpPo
+- 	double xscale;
+- 	double yscale;
+- 	size_t size;
+--	int cursorIndex = -1;
+-+	int cursorIndex = -1, i;
+- 
+- 	if (!context || !pointer || !context->gdi)
+- 		return FALSE;
+-@@ -264,7 +264,7 @@ static BOOL xf_Pointer_GetCursorForCurrentScale(rdpContext* context, const rdpPo
+- 	WLog_DBG(TAG, "%s: scaled: %" PRIu32 "x%" PRIu32 ", desktop: %" PRIu32 "x%" PRIu32, __func__,
+- 	         xfc->scaledWidth, xfc->savedHeight, settings->DesktopWidth, settings->DesktopHeight);
+- 
+--	for (int i = 0; i < xpointer->nCursors; i++)
+-+	for (i = 0; i < xpointer->nCursors; i++)
+- 	{
+- 		if (xpointer->cursorWidths[i] == xTargetSize && xpointer->cursorHeights[i] == yTargetSize)
+- 		{
+--- 
+-2.43.0
+-
+--- buildroot/package/freerdp/0003-winpr-include-winpr-file.h-fix-build-on-uclibc.patch.orig
++++ buildroot/package/freerdp/0003-winpr-include-winpr-file.h-fix-build-on-uclibc.patch
+@@ -1,39 +0,0 @@
+-From 21036304f909eae9f7506f48703ba1c74724342b Mon Sep 17 00:00:00 2001
+-From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+-Date: Sat, 31 Jul 2021 09:49:27 +0200
+-Subject: [PATCH] winpr/include/winpr/file.h: fix build on uclibc
+-
+-Include stdio.h to fix the following build failure with uclibc raised
+-since version 2.4.0 and
+-https://github.com/FreeRDP/FreeRDP/commit/eb6777ea69b022c9e43a1576a2192a1cb807b1e6:
+-
+-In file included from /tmp/instance-0/output-1/build/freerdp-2.4.0/winpr/libwinpr/utils/lodepng/lodepng.c:30:
+-/tmp/instance-0/output-1/build/freerdp-2.4.0/winpr/include/winpr/file.h:524:11: error: unknown type name 'FILE'
+- WINPR_API FILE* winpr_fopen(const char* path, const char* mode);
+-           ^~~~
+-
+-Fixes:
+- - http://autobuild.buildroot.org/results/31e770a330158035e24b7b952bec0030138482b7
+-
+-Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+-Upstream: https://github.com/FreeRDP/FreeRDP/commit/0976cce458f2281cef6e8c417daf4bbd22bcc087
+----
+- winpr/include/winpr/file.h | 2 ++
+- 1 file changed, 2 insertions(+)
+-
+-diff --git a/winpr/include/winpr/file.h b/winpr/include/winpr/file.h
+-index 48a29f9f5..79c9b392c 100644
+---- a/winpr/include/winpr/file.h
+-+++ b/winpr/include/winpr/file.h
+-@@ -30,6 +30,8 @@
+- 
+- #ifndef _WIN32
+- 
+-+#include <stdio.h>
+-+
+- #ifndef MAX_PATH
+- #define MAX_PATH 260
+- #endif
+--- 
+-2.30.2
+-
+--- buildroot/package/freerdp/Config.in.orig
++++ buildroot/package/freerdp/Config.in
+@@ -13,6 +13,9 @@
+ 	select BR2_PACKAGE_LIBOPENSSL_ENABLE_RC4 if BR2_PACKAGE_LIBOPENSSL
+ 	select BR2_PACKAGE_ZLIB
+ 	select BR2_PACKAGE_LIBGLIB2
++	select BR2_PACKAGE_ICU
++	select BR2_PACKAGE_FFMPEG_SWSCALE
++	select BR2_PACKAGE_LIBV4L
+ 	help
+ 	  FreeRDP is a free implementation of the Remote Desktop
+ 	  Protocol (RDP), released under the Apache license
+--- buildroot/package/freerdp/freerdp.hash.orig
++++ buildroot/package/freerdp/freerdp.hash
+@@ -1,5 +1,6 @@
+ # From https://pub.freerdp.com/releases/freerdp-2.11.7.tar.gz.sha256
+ sha256  5a2d54e1ca0f1facd1632bcc94c73b9f071a80c5fdbbb3f26e79f02aaa586ca3  freerdp-2.11.7.tar.gz
++sha256  f7233629ed5990429b60e453f076a9b7bf4d964e92b3e5495a7bdb6e3830dfef  freerdp-b8912282796a0aeb398d7cfdcdf0c595af496f0c.tar.gz
+ 
+ # Locally calculated
+ sha256  cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE
+--- buildroot/package/freerdp/freerdp.mk.orig
++++ buildroot/package/freerdp/freerdp.mk
+@@ -4,16 +4,18 @@
+ #
+ ################################################################################
+ 
+-FREERDP_VERSION = 2.11.7
+-FREERDP_SITE = https://pub.freerdp.com/releases
+-FREERDP_DEPENDENCIES = libglib2 openssl zlib
++FREERDP_VERSION = b8912282796a0aeb398d7cfdcdf0c595af496f0c
++FREERDP_SITE = $(call github,FreeRDP,FreeRDP,$(FREERDP_VERSION))
++#FREERDP_SITE = https://pub.freerdp.com/releases
++FREERDP_DEPENDENCIES = libglib2 openssl zlib icu libv4l host-pkgconf
+ FREERDP_LICENSE = Apache-2.0
+ FREERDP_LICENSE_FILES = LICENSE
+ FREERDP_CPE_ID_VENDOR = freerdp
++FREERDP_CMAKE_BACKEND = ninja
+ 
+ FREERDP_INSTALL_STAGING = YES
+ 
+-FREERDP_CONF_OPTS = -DWITH_MANPAGES=OFF -Wno-dev -DWITH_GSTREAMER_0_10=OFF
++FREERDP_CONF_OPTS = -DWITH_MANPAGES=OFF -Wno-dev -DWITH_GSTREAMER_0_10=OFF -DCHANNEL_RDPECAM_CLIENT=ON -DALLOW_IN_SOURCE_BUILD=ON -DPKG_CONFIG_EXECUTABLE=$(HOST_DIR)/bin/pkg-config -DWITH_CLIENT_SDL=OFF
+ 
+ ifeq ($(BR2_PACKAGE_FREERDP_GSTREAMER1),y)
+ FREERDP_CONF_OPTS += -DWITH_GSTREAMER_1_0=ON
+@@ -261,12 +263,12 @@
+ # can be built and linked with libfreerdp (e.g. weston with the  RDP
+ # backend). Key and cert are installed world-readable, so non-root users
+ # can start a server.
+-define FREERDP_INSTALL_KEYS
+-	$(INSTALL) -m 0644 -D $(@D)/server/Sample/server.key \
+-		$(TARGET_DIR)/etc/freerdp/keys/server.key
+-	$(INSTALL) -m 0644 -D $(@D)/server/Sample/server.crt \
+-		$(TARGET_DIR)/etc/freerdp/keys/server.crt
+-endef
+-FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_INSTALL_KEYS
++#define FREERDP_INSTALL_KEYS
++#	$(INSTALL) -m 0644 -D $(@D)/server/Sample/server.key \
++#		$(TARGET_DIR)/etc/freerdp/keys/server.key
++#	$(INSTALL) -m 0644 -D $(@D)/server/Sample/server.crt \
++#		$(TARGET_DIR)/etc/freerdp/keys/server.crt
++#endef
++#FREERDP_POST_INSTALL_TARGET_HOOKS += FREERDP_INSTALL_KEYS
+ 
+ $(eval $(cmake-package))
