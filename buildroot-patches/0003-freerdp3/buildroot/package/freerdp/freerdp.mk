@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FREERDP_VERSION = b8912282796a0aeb398d7cfdcdf0c595af496f0c
+FREERDP_VERSION = de5e837c76ccff4bd323a596d23149e2124db755
 FREERDP_SITE = $(call github,FreeRDP,FreeRDP,$(FREERDP_VERSION))
 #FREERDP_SITE = https://pub.freerdp.com/releases
 FREERDP_DEPENDENCIES = libglib2 openssl zlib icu libv4l host-pkgconf
