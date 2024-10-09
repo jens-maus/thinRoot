@@ -39,7 +39,7 @@ getSourceName()
   numsrcs=$(pactl list short sources | awk '{ print $1 }')
   for i in ${numsrcs}; do
     srcinfo=$(echo "${painfo}" | sed -n "/^Source #${i}$/,/Formats:/p")
-    searchres=$(echo "${srcinfo}" | grep -e "${pattern}")
+    searchres=$(echo "${srcinfo}" | grep -e "${pattern}" | grep -vi 'internal' | grep -vi 'not available')
     if [ -n "${searchres}" ]; then
       # output the src name
       echo "${painfo}" | sed -n "/^Source #${i}$/,/Formats:/p" | grep "Name: " | awk '{ print $2 }'
@@ -133,7 +133,8 @@ painfo=$(pactl list sources)
 
 srcname=""
 # check for a microphone first
-if echo "${painfo}" | grep -e "Microphone.*priority" | grep -qv 'not available'; then
+MICS=$(echo "${painfo}" | grep -e "Microphone.*priority" | grep -vi 'internal' | grep -vi 'not available')
+if [ -n "${MICS}" ]; then
   # microphone is plugged in and available, lets find out the sink name
   srcname=$(getSourceName "Microphone.*priority")
 
