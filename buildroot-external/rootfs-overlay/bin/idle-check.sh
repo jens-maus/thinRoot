@@ -1,5 +1,5 @@
 #!/bin/sh
-# shellcheck shell=dash disable=SC2169,SC3010
+# shellcheck shell=dash disable=SC2169,SC3010 source=/dev/null
 #
 # System Idle Shutdown (idle-check.sh)
 # ------------------------------------
@@ -49,6 +49,9 @@
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation, version 2.
 #
+
+# source global env variables
+. /etc/profile
 
 # default config
 [[ -z "${SHUTDOWN_IDLE_INTERVAL}" ]] && SHUTDOWN_IDLE_INTERVAL=5
