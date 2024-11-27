@@ -210,6 +210,9 @@ setup_xconf() {
   if [[ -n "${SCREEN_OFF_TIME}" ]]; then
     sed -i "/Option .*OffTime/c\\\tOption \"OffTime\" \"${SCREEN_OFF_TIME}\"" /etc/X11/xorg.conf.d/10-serverlayout.conf
   fi
+  if xargs -n1 -a /proc/cmdline | grep -q "^debug$"; then
+    DONT_VT_SWITCH_STATE=FALSE
+  fi
   if [[ -n "${DONT_VT_SWITCH_STATE}" ]]; then
     sed -i "/Option .*DontVTSwitch/c\\\tOption \"DontVTSwitch\" \"${DONT_VT_SWITCH_STATE}\"" /etc/X11/xorg.conf.d/10-serverlayout.conf
   fi
