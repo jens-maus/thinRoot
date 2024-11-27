@@ -6,8 +6,8 @@
 #
 ################################################################################
 
-HOTKEYD_VERSION = 0.4.4
-HOTKEYD_TAG = 0ee8b2ae1344c9c8bedd0f91ebda0b389271a6d3
+HOTKEYD_VERSION = 0.4.5
+HOTKEYD_TAG = e94e4ab50346e01ff1dcbf0f9d95bfe94a348b01
 HOTKEYD_SITE = $(call github,jens-maus,hotkeyd,$(HOTKEYD_TAG))
 HOTKEYD_LICENSE = GPL-3.0
 HOTKEYD_LICENSE_FILES = LICENSE
