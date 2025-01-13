@@ -18,7 +18,7 @@ permissions:
 jobs:
   skip_check:
     name: Duplicate Check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       should_skip: ${{ steps.check.outputs.should_skip }}
     steps:
@@ -32,7 +32,7 @@ jobs:
     name: Linter Checks
     needs: skip_check
     if: ${{ needs.skip_check.outputs.should_skip != 'true' }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout Code

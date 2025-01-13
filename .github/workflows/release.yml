@@ -24,7 +24,7 @@ jobs:
     permissions:
       contents: write  # ncipollo/release-action
     name: Release draft
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     outputs:
       upload_url: ${{ steps.release_drafter.outputs.upload_url }}
       version: ${{ steps.env.outputs.version }}
@@ -193,7 +193,7 @@ jobs:
     permissions:
       contents: write  # ncipollo/release-action
     name: Update checksums
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: [release_draft, build]
 
     steps:

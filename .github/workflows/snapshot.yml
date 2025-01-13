@@ -20,7 +20,7 @@ permissions:
 jobs:
   repo-check:
     name: Check for Changes
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - id: commit-check
@@ -122,7 +122,7 @@ jobs:
       packages: write  # smartsquaregmbh/delete-old-packages
       actions: write  # c-hive/gha-remove-artifacts
     name: Cleanup artifacts/packages
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Remove old artifacts
         uses: c-hive/gha-remove-artifacts@v1.4.0
