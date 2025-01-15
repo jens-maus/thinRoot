@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [generic-x86_64]
+        platform: [generic-x86_64, rpi3]
 
     steps:
       - name: Checkout Code
@@ -103,11 +103,11 @@ jobs:
 
       ########################
       # upload build artifacts
-      - name: Upload build artifact [generic-x86_64]
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          path: release/thinroot-${{ env.VERSION }}-${{ matrix.platform }}.img*
-          name: thinroot-${{ env.VERSION }}-${{ env.GITHUB_SHA7 }}-${{ matrix.platform }}.img
+          path: release/thinroot-${{ env.VERSION }}-${{ matrix.platform }}*
+          name: thinroot-${{ env.VERSION }}-${{ env.GITHUB_SHA7 }}-${{ matrix.platform }}
         continue-on-error: true
 
       # cleanup
