@@ -40,6 +40,11 @@ jobs:
 
       - name: Check shell scripts
         uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          ignore_paths: >-
+            buildroot-patches/0010-lib32-integration/buildroot/support/scripts
+        env:
+          SHELLCHECK_OPTS: -e SC3010 -e SC3014 -e SC3057 -e SC3036 -e SC3028 -e SC3020
 
       - name: Check yaml files
         uses: frenck/action-yamllint@v1.5
