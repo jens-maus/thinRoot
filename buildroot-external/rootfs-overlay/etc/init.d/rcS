@@ -4,6 +4,9 @@
 # Start all init scripts in /etc/init.d
 # executing them in numerical order.
 
+# make sure we have a secure umask
+umask 0002
+
 for i in /etc/init.d/S??* ;do
 
   # Ignore dangling symlinks (if any).
