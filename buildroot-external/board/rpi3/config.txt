@@ -18,9 +18,6 @@ dtparam=spi=on
 # enable the UART
 #enable_uart=1
 
-# make sure the uart is running at 48MHz
-#init_uart_clock=48000000
-
 # switch the bluetooth UART to the miniuart
 # for basic bluetooth support and fix core_freq
 #dtoverlay=miniuart-bt
@@ -42,10 +39,6 @@ dtparam=watchdog=on
 
 # start with heartbeat on PWR led and mmc0 on ACT led
 dtparam=pwr_led_trigger=timer,act_led_trigger=mmc0
-
-# start device tree at 0x2008000 to have
-# space for the u-boot boot script
-device_tree_address=0x2008000
 
 # use fixed names for start.elf/fixup.dat
 start_file=start.elf
