@@ -113,6 +113,14 @@ savedefconfig: buildroot-$(BUILDROOT_VERSION) build-$(PRODUCT)
 toolchain: buildroot-$(BUILDROOT_VERSION) build-$(PRODUCT)/.config
 	cd $(shell pwd)/build-$(PRODUCT) && $(MAKE) O=$(shell pwd)/build-$(PRODUCT) -C ../buildroot-$(BUILDROOT_VERSION) BR2_EXTERNAL=../$(BUILDROOT_EXTERNAL) BR2_DL_DIR=$(BR2_DL_DIR) BR2_CCACHE_DIR=$(BR2_CCACHE_DIR) BR2_JLEVEL=$(BR2_JLEVEL) PRODUCT=$(PRODUCT) PRODUCT_VERSION=$(PRODUCT_VERSION) toolchain
 
+.PHONY: multilib32-menuconfig
+multilib32-menuconfig: buildroot-$(BUILDROOT_VERSION) build-$(PRODUCT)/.config
+	cd $(shell pwd)/build-$(PRODUCT)/build/multilib32-*/output && $(MAKE) BR2_EXTERNAL_THINROOT_PATH=$(shell pwd)/$(BUILDROOT_EXTERNAL) menuconfig
+
+.PHONY: multilib32-savedefconfig
+multilib32-savedefconfig: buildroot-$(BUILDROOT_VERSION) build-$(PRODUCT)/.config
+	cd $(shell pwd)/build-$(PRODUCT)/build/multilib32-*/output && $(MAKE) BR2_EXTERNAL_THINROOT_PATH=$(shell pwd)/$(BUILDROOT_EXTERNAL) savedefconfig
+
 .PHONY: linux-check-dotconfig
 linux-check-dotconfig: buildroot-$(BUILDROOT_VERSION) build-$(PRODUCT)
 	cd $(shell pwd)/build-$(PRODUCT) && $(MAKE) O=$(shell pwd)/build-$(PRODUCT) -C ../buildroot-$(BUILDROOT_VERSION) BR2_EXTERNAL=../$(BUILDROOT_EXTERNAL) BR2_DL_DIR=$(BR2_DL_DIR) BR2_CCACHE_DIR=$(BR2_CCACHE_DIR) BR2_JLEVEL=$(BR2_JLEVEL) PRODUCT=$(PRODUCT) PRODUCT_VERSION=$(PRODUCT_VERSION) linux-check-dotconfig BR2_DEFCONFIG=../$(DEFCONFIG_DIR)/$(PRODUCT).config BR2_CHECK_DOTCONFIG_OPTS="--github-format --strip-path-prefix=$(PWD)/"
@@ -156,6 +164,8 @@ help:
 	@echo "  $(MAKE) PRODUCT=<product> busybox-update-config: update busybox defconfig file"
 	@echo "  $(MAKE) PRODUCT=<product> uboot-menuconfig: change u-boot config options"
 	@echo "  $(MAKE) PRODUCT=<product> uboot-update-defconfig: update u-boot defconfig file"
+	@echo "  $(MAKE) PRODUCT=<product> multilib32-menuconfig: change config options for multilib32 build environment"
+	@echo "  $(MAKE) PRODUCT=<product> multilib32-savedefconfig: update defconfig file for multilib32 build environment"
 	@echo
 	@echo "  $(MAKE) PRODUCT=<product> legal-info: update legal information file"
 	@echo
