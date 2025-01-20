@@ -15,4 +15,5 @@ menu "Additional software"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/qt-webengine-kiosk/Config.in"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/qt-kiosk-browser/Config.in"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/multilib32/Config.in"
+  source "$BR2_EXTERNAL_THINROOT_PATH/package/yoe-kiosk-browser/Config.in"
 endmenu
