@@ -1,0 +1,13 @@
+--- buildroot/package/qt5/qt5webkit/0009-uint32-fixes-gcc13.patch.orig
++++ buildroot/package/qt5/qt5webkit/0009-uint32-fixes-gcc13.patch
+@@ -0,0 +1,10 @@
++--- a/Source/ThirdParty/ANGLE/src/common/mathutil.h.orig	2020-03-04 18:16:37.000000000 +0100
+++++ b/Source/ThirdParty/ANGLE/src/common/mathutil.h	2025-01-21 15:37:53.686866005 +0100
++@@ -16,6 +16,7 @@
++ #include <algorithm>
++ #include <string.h>
++ #include <stdlib.h>
+++#include <cstdint>
++ 
++ namespace gl
++ {
