@@ -11,3 +11,14 @@
 + 
 + namespace gl
 + {
+--- buildroot/package/qt5/qt5webkit/qt5webkit.mk.orig
++++ buildroot/package/qt5/qt5webkit/qt5webkit.mk
+@@ -27,6 +27,8 @@
+ ifeq ($(BR2_PACKAGE_QT5BASE_OPENGL),y)
+ QT5WEBKIT_CONF_OPTS += \
+ 	-DENABLE_OPENGL=ON \
++	-DQt5Gui_OPENGL_LIBRARIES="GL" \
++	-DQt5Gui_EGL_LIBRARIES="EGL" \
+ 	-DENABLE_WEBKIT2=ON
+ else
+ QT5WEBKIT_CONF_OPTS += \
