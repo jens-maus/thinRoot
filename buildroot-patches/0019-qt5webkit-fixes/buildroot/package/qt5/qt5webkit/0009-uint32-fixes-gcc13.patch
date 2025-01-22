@@ -1,4 +1,4 @@
---- a/Source/ThirdParty/ANGLE/src/common/mathutil.h.orig	2020-03-04 18:16:37.000000000 +0100
+--- a/Source/ThirdParty/ANGLE/src/common/mathutil.h	2020-03-04 18:16:37.000000000 +0100
 +++ b/Source/ThirdParty/ANGLE/src/common/mathutil.h	2025-01-21 15:37:53.686866005 +0100
 @@ -16,6 +16,7 @@
  #include <algorithm>
