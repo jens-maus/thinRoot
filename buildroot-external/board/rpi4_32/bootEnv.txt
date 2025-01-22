@@ -1,4 +1,0 @@
-#bootserver=192.168.74.30
-#kernel_img=thinroot/thinroot-rpi4_32-kernel.img
-#initrd=thinroot/thinroot-rpi4_32.img
-#extraargs=BASE_PATH=http://192.168.74.30/thinroot
