@@ -1,0 +1,29 @@
+--- a/Tools/MiniBrowser/gtk/main.c	2024-03-16 07:45:51.328670000 +0100
++++ b/Tools/MiniBrowser/gtk/main.c	2025-01-23 09:53:26.729347760 +0100
+@@ -76,6 +76,7 @@
+ static gboolean exitAfterLoad;
+ static gboolean webProcessCrashed;
+ static gboolean printVersion;
++static gdouble zoomLevel = 0.0;
+ 
+ #if !GTK_CHECK_VERSION(3, 98, 0)
+ static gboolean enableSandbox;
+@@ -118,6 +119,10 @@
+     if (editorMode)
+         webkit_web_view_set_editable(webView, TRUE);
+ 
++    // set zoom/scale level if wanted
++    if (zoomLevel > 0.0)
++      webkit_web_view_set_zoom_level(webView, zoomLevel);
++
+     browser_window_append_view(window, webView);
+     return webView;
+ }
+@@ -164,6 +169,7 @@
+     { "session-file", 's', 0, G_OPTION_ARG_FILENAME, &sessionFile, "Session file", "FILE" },
+     { "geometry", 'g', 0, G_OPTION_ARG_STRING, &geometry, "Unused. Kept for backwards-compatibility only", "GEOMETRY" },
+     { "full-screen", 'f', 0, G_OPTION_ARG_NONE, &fullScreen, "Set the window to full-screen mode", NULL },
++    { "zoom", 'z', 0, G_OPTION_ARG_DOUBLE, &zoomLevel, "Set the window zoom level upon start", NULL },
+     { "private", 'p', 0, G_OPTION_ARG_NONE, &privateMode, "Run in private browsing mode", NULL },
+     { "automation", 0, 0, G_OPTION_ARG_NONE, &automationMode, "Run in automation mode", NULL },
+     { "cookies-file", 'c', 0, G_OPTION_ARG_FILENAME, &cookiesFile, "Persistent cookie storage database file", "FILE" },
