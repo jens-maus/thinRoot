@@ -3,3 +3,5 @@ iface lo inet loopback
 
 auto wlan0
 iface wlan0 inet manual
+
+auto eth0

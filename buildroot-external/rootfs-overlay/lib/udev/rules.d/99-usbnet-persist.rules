@@ -1,0 +1,2 @@
+# USB device 085f:2230 (CANBERRA DSA-LX / cdc_ether)
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:00:af:02:d7:64", ATTR{dev_id}=="0x0", ATTR{type}=="1", KERNEL=="eth*", NAME="usb99"
