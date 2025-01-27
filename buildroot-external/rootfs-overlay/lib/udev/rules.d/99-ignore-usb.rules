@@ -1,2 +1,2 @@
 # ignore/unauth ID 085f:2230 CANBERRA DSA-LX
-SUBSYSTEM=="usb", ATTRS{idVendor}=="085f", ATTRS{idProduct}=="2230", ATTR{authorized}="0"
+SUBSYSTEM=="usb", ATTR{idVendor}=="085f", ATTR{idProduct}=="2230", ATTR{authorized}="0"
