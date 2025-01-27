@@ -1,2 +1,2 @@
 # ignore/remove ID 085f:2230 CANBERRA DSA-LX
-ACTION=="add", ATTR{idVendor}=="085f", ATTR{idProduct}=="2230", RUN="/bin/sh -c 'echo 1 >/sys/\$devpath/remove'"
+ACTION=="add", ATTR{idVendor}=="085f", ATTR{idProduct}=="2230", RUN="/bin/sh -c 'echo 0 >/sys/\$devpath/authorized'"
