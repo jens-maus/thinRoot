@@ -1,2 +1,2 @@
-# ignore/remove ID 085f:2230 CANBERRA DSA-LX
-ACTION=="add", ATTR{idVendor}=="085f", ATTR{idProduct}=="2230", RUN="/bin/sh -c 'echo 0 >/sys/\$devpath/authorized'"
+# ignore/unauth ID 085f:2230 CANBERRA DSA-LX
+SUBSYSTEM=="usb", ATTRS{idVendor}=="085f", ATTRS{idProduct}=="2230", ATTR{authorized}="0"
