@@ -75,6 +75,12 @@ fi
 # set solid background color in root window
 /usr/bin/xsetroot -solid "#32436B"
 
+# move mouse pointer off screen to hide it in case
+# a user wants this upon startup
+if [ "${SESSION_0_HIDECURSOR}" = "true" ]; then
+  /usr/bin/xdotool mousemove 0 5000
+fi
+
 # update the default pulseaudio sink
 /bin/pa-update-default-sink.sh
 
