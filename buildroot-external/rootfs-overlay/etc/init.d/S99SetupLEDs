@@ -12,8 +12,8 @@
 # leds accordingly
 case "${PLATFORM}" in
   rpi*)
-    LED_GREEN="/sys/class/leds/led0"
-    LED_RED="/sys/class/leds/led1"
+    LED_GREEN="/sys/class/leds/ACT"
+    LED_RED="/sys/class/leds/PWR"
   ;;
   tinkerboard*)
     LED_GREEN="/sys/class/leds/led-0"
