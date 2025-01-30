@@ -1,0 +1,47 @@
+# enable aarch64 bit support
+arm_64bit=1
+
+# make sure to use less memory for the GPU and
+# all total memory available
+gpu_mem=128
+#dtoverlay=vc4-kms-v3d
+
+# Disable overscan assuming the display supports displaying the full resolution
+# If the text shown on the screen disappears off the edge, comment this out
+disable_overscan=1
+
+# Enable DRM VC4 V3D driver
+dtoverlay=vc4-kms-v3d
+max_framebuffers=1
+
+# enable i2c and spi
+dtparam=i2c_arm=on
+dtparam=i2c1=on
+dtparam=spi=on
+
+# enable the UART
+#enable_uart=1
+
+# for disabling bluetooth alltogether
+# you can uncomment the following two lines
+#dtoverlay=disable-bt
+#dtparam=uart1=off
+
+# disable the splash screen
+disable_splash=1
+
+# activating the hardware watchdog
+dtparam=watchdog=on
+
+# Uncomment to disable continous SD-card poll (for USB SSD)
+#dtparam=sd_poll_once=on
+
+# start with heartbeat on PWR led and mmc0 on ACT led
+dtparam=pwr_led_trigger=timer,act_led_trigger=mmc0
+
+# lets u-boot take over the boot process
+kernel=u-boot.bin
+
+# user config options shoule be put in
+# /boot/extraconfig.txt
+include extraconfig.txt

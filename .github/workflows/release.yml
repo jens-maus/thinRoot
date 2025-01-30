@@ -108,7 +108,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [generic-x86_64, rpi3, rpi4]
+        platform: [generic-x86_64, rpi3, rpi4, rpi5]
 
     steps:
       - name: Checkout Code
@@ -159,46 +159,46 @@ jobs:
 
       #######################
       # release uploads
-      - name: Upload release image [generic-x86_64, rpi3, rpi4]
+      - name: Upload release image [generic-x86_64, rpi3, rpi4, rpi5]
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ needs.release_draft.outputs.upload_url }}
           asset_path: release/thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.img
           asset_content_type: application/octet-stream
 
-      - name: Upload release image checksum [generic-x86_64, rpi3, rpi4]
+      - name: Upload release image checksum [generic-x86_64, rpi3, rpi4, rpi5]
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ needs.release_draft.outputs.upload_url }}
           asset_path: release/thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.img.sha256
           asset_content_type: text/plain
 
-      - name: Upload release sdcard image [rpi3, rpi4]
-        if: matrix.platform == 'rpi3' || matrix.platform == 'rpi4'
+      - name: Upload release sdcard image [rpi3, rpi4, rpi5]
+        if: matrix.platform == 'rpi3' || matrix.platform == 'rpi4' || matrix.platform == 'rpi5'
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ needs.release_draft.outputs.upload_url }}
           asset_path: release/thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}-sdcard.img
           asset_content_type: application/octet-stream
 
-      - name: Upload release sdcard image checksum [rpi3, rpi4]
-        if: matrix.platform == 'rpi3' || matrix.platform == 'rpi4'
+      - name: Upload release sdcard image checksum [rpi3, rpi4, rpi5]
+        if: matrix.platform == 'rpi3' || matrix.platform == 'rpi4' || matrix.platform == 'rpi5'
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ needs.release_draft.outputs.upload_url }}
           asset_path: release/thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}-sdcard.img.sha256
           asset_content_type: text/plain
 
-      - name: Upload release kernel image [rpi3, rpi4]
-        if: matrix.platform == 'rpi3' || matrix.platform == 'rpi4'
+      - name: Upload release kernel image [rpi3, rpi4, rpi5]
+        if: matrix.platform == 'rpi3' || matrix.platform == 'rpi4' || matrix.platform == 'rpi5'
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ needs.release_draft.outputs.upload_url }}
           asset_path: release/thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}-kernel.img
           asset_content_type: application/octet-stream
 
-      - name: Upload release kernel image checksum [rpi3, rpi4]
-        if: matrix.platform == 'rpi3' || matrix.platform == 'rpi4'
+      - name: Upload release kernel image checksum [rpi3, rpi4, rpi5]
+        if: matrix.platform == 'rpi3' || matrix.platform == 'rpi4' || matrix.platform == 'rpi5'
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ needs.release_draft.outputs.upload_url }}
