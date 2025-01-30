@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [generic-x86_64, rpi3]
+        platform: [generic-x86_64, rpi3, rpi4]
 
     steps:
       - name: Checkout Code
