@@ -1,0 +1,15 @@
+--- webkitgtk-2.44.2/Source/WTF/wtf/PlatformCPU.h.orig	2024-03-16 07:45:49.640672700 +0100
++++ webkitgtk-2.44.2/Source/WTF/wtf/PlatformCPU.h	2025-01-31 15:55:46.125450373 +0100
+@@ -254,9 +254,9 @@
+ #  error "Cannot use both of WTF_CPU_ARM_TRADITIONAL and WTF_CPU_ARM_THUMB2 platforms"
+ #endif /* !defined(WTF_CPU_ARM_TRADITIONAL) && !defined(WTF_CPU_ARM_THUMB2) */
+ 
+-#if (defined(__ARM_NEON__) || defined(__ARM_NEON)) && !defined(WTF_CPU_ARM_NEON)
+-#define WTF_CPU_ARM_NEON 1
+-#endif
++//#if (defined(__ARM_NEON__) || defined(__ARM_NEON)) && !defined(WTF_CPU_ARM_NEON)
++//#define WTF_CPU_ARM_NEON 1
++//#endif
+ 
+ #if (defined(__VFP_FP__) && !defined(__SOFTFP__))
+ #define WTF_CPU_ARM_VFP 1
