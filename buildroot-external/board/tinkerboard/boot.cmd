@@ -17,6 +17,9 @@ if test -e ${devtype} ${devnum}:${bootfs} bootEnv.txt; then
   env import -t ${load_addr} ${filesize}
 fi
 
+# load kernel cmdline from /boot/cmdline.txt
+fileenv ${devtype} ${devnum}:${bootfs} ${load_addr} cmdline.txt cmdline
+
 # Load device tree
 if test "$devnum" = "0"; then
   setenv fdtfile "rk3288-tinker-s.dtb"
@@ -43,7 +46,7 @@ fi
 
 # set bootargs
 setenv rootfs_str "/dev/ram0"
-setenv bootargs "console=${console} root=${rootfs_str} ro rootfstype=ext4 fsck.repair=yes rootwait rootdelay=5 consoleblank=120 quiet loglevel=${loglevel} init_on_alloc=1 init_on_free=1 slab_nomerge iomem=relaxed net.ifnames=0 usb-storage.quirks=${usbstoragequirks} ${extraargs} ${bootargs}"
+setenv bootargs "console=${console} root=${rootfs_str} ro rootfstype=ext4 fsck.repair=yes rootwait rootdelay=5 consoleblank=120 quiet loglevel=${loglevel} init_on_alloc=1 init_on_free=1 slab_nomerge iomem=relaxed net.ifnames=0 usb-storage.quirks=${usbstoragequirks} ${cmdline} ${bootargs}"
 
 if env exists bootserver; then
   echo "==== NETWORK BOOT ===="
