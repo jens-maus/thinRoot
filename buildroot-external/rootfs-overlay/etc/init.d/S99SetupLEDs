@@ -12,8 +12,13 @@
 # leds accordingly
 case "${PLATFORM}" in
   rpi*)
-    LED_GREEN="/sys/class/leds/ACT"
-    LED_RED="/sys/class/leds/PWR"
+    if grep -q "Pi 400" /proc/device-tree/model 2>/dev/null; then
+      LED_GREEN="/sys/class/leds/PWR"
+      LED_RED=
+    else
+      LED_GREEN="/sys/class/leds/ACT"
+      LED_RED="/sys/class/leds/PWR"
+    fi
   ;;
   tinkerboard*)
     LED_GREEN="/sys/class/leds/led-0"
