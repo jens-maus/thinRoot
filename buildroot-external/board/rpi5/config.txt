@@ -1,10 +1,8 @@
 # enable aarch64 bit support
 arm_64bit=1
 
-# make sure to use less memory for the GPU and
-# all total memory available
-gpu_mem=128
-#dtoverlay=vc4-kms-v3d
+# enable vc4/v3d GPU dtoverlay
+dtoverlay=vc4-kms-v3d
 
 # Disable overscan assuming the display supports displaying the full resolution
 # If the text shown on the screen disappears off the edge, comment this out
