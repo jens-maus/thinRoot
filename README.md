@@ -10,32 +10,65 @@
 [![Donate](https://img.shields.io/badge/donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RAQSDY9YNZVCL)
 [![GitHub stars](https://img.shields.io/github/stars/jens-maus/thinRoot.svg?style=social&label=Star)](https://github.com/jens-maus/thinRoot/stargazers/)
 
-_thinRoot_ is a buildroot (https://buildroot.org/) powered operating system environment to create lightweight user-defined kiosk systems as ThinClients (e.g. using intel NUC, RaspberryPi, ASUS Tinkerboard, etc.) to smoothly connect to server-based desktop environments using ThinLinc, RDP (xfreerdp/remmina), VNC, etc. or to create simply web-kiosk systems displaying a webpage fullscreen.
+_thinRoot_ is a buildroot (https://buildroot.org/) powered operating system environment to create lightweight user-defined kiosk systems or ThinClients for generic x86_64 hardware (e.g. intelNUC, standard PCs, Laptops, etc.) or single-board computer (SBC) driven embedded systems (RaspberryPi, ASUS Tinkerboard, etc.) to smoothly connect to server-based desktop environments (Linux/Windows Terminalserver, VDIs, etc.) via included ThinLinc, RDP (xfreerdp), VNC, SPICE, etc. clients or to create simply web-kiosk systems displaying a single fullscreen webpage upon bootup.
 
 ## :cookie: Features
-* provides a lightweight kiosk system which after bootup provides a simple connection GUI with options to connect via [ThinLinc](http://www.cendio.se/), RDP (via [freerdp](https://github.com/FreeRDP/FreeRDP) or [remmina](https://remmina.org/)) or VNC to Linux and Windows-based Terminalservers.
-* allows to run a fullscreen webbrowser (e.g. [qt-webengine-kiosk](https://github.com/akdor1154/qt-webengine-kiosk)) for webkiosk-based applications.
-* allows to either use PXE/TFTP-based network boot environments or allow to directly install the thinRoot images onto a local storage disk.
-* allows to create full-fledged system images below 150MB in size (e.g. for a fast network-based bootup).
-
-## :fire: Limitations
-* The only limitation is, that we are **currently** not providing ready-to-use images for your selected hardware. Hence, you will have to create these images yourself using the provided information below.
+* allows to be setup as a lightweight and generic ThinClient system which after bootup providing a simple connection GUI (using [qutselect](https://github.com/hzdr/qutselect)) with options to connect via [ThinLinc](http://www.cendio.se/), RDP (via [freerdp](https://github.com/FreeRDP/FreeRDP)), VNC or [SPICE](https://www.spice-space.org/) to Linux- or Windows-based desktop systems (Terminalserver, VDI, etc.) including potential USB device redirection/forwarding.
+* allows to be setup to start only a fullscreen webbrowser (via [WebKit/MiniBrowser](https://github.com/WebKit/WebKit/tree/main/Tools/MiniBrowser)) for simple fullscreen webkiosk use-cases.
+* direct support for SPICE-based connections to SPICE-enabled VDI systems hosted via [ProxmoxVE](https://www.proxmox.com/en/) including cluster proxied connection support.
+* boots and operates completly in a full-fledged RAM disk with no mandatory local disk storage requirements.
+* allows to be booted solely using existing PXE+TFTP/HTTP+DHCP-based netboot environments or to directly install the thinRoot images onto a small local boot disk.
+* allows to use a TFTP/HTTP-connected bootserver: fetches environment files from a bootserver which then can be used to define alternative system bootup procedures (based on the hostname/MAC of the client system) by simply changing these environment files on the TFTP/HTTP bootserver.
+* highly optimized for a small footprint: compressed kernel and system for fast network-based bootup use-cases.
+* easily adaptable to other potential use cases apart from simple web-kiosk or ThinClient environment uses.
+* can be easily enhanced to support more x86/ARM-based hardware.
 
 ## :computer: Requirements
 
-1. One of the following ThinClient / single-board-computer (SBC) hardware:
-   * RaspberryPi 4, RaspberryPi 400, RaspberryPi Compute Module 4
-   * RaspberryPi 3, RaspberryPi Compute Module 3
-   * ASUS Tinkerboard, ASUS Tinkerboard S
-   * All "Intel NUC" type systems
-2. If you want to run thinRoot as a pure network booted system, you require a PXE+TFTP+DHCP environment.
-4. A server-based desktop environment to connect to (e.g. Linux via ThinLinc, Windows via RDP, etc.).
+1. A supported x86_64/ARM-based hardware. Well working and tested hardware:
+   * All generic x86_64-based hardware (e.g. Intel NUC, modern Laptops, etc.) which comes with directly supported PXE boot capabilities in the BIOS.
+   * All ARM-based single board computer (SBC) systems supported by the [U-Boot](https://www.denx.de/project/u-boot/) bootloader which is used to provide a common way to boot the kernel and initrd via network. This includes:
+     * RaspberryPi 5, RaspberryPi 500, RaspberryPi Compute Module 5
+     * RaspberryPi 4, RaspberryPi 400, RaspberryPi Compute Module 4
+     * RaspberryPi 3, RaspberryPi Compute Module 3
+     * ASUS Tinkerboard, ASUS Tinkerboard S
+2. An already working PXE+TFTP/HTTP+DHCP bootserver environment where the thinRoot images and its environment files can be installed and directly accessed upon bootup via TFTP/HTTP sideloading.
+3. In case of a ThinClient use-case: A network-based desktop environment (e.g. Windows Terminalserver, VDI system, etc.) to connect to via ThinLinc, RDP, VNC or SPICE protocol.
+4. In case of a web-kisok use-case: A web page that can be configured using a bootserver-definable environment file so that thinRoot automatically starts as a lightweight web-kiosk.
 
-## :cloud: Installation
-The installation of thinRoot is quite straight forward as it is delivered as a full PXE bootable system image that can be directly booted using a PXE+TFTP+DHCP environment:
+## :cloud: Quick-Installation
+The installation of thinRoot is quite straight forward as it is delivered as fully network bootable system images which boot directly into a RAMdisk using images hosted by a an already existing PXE+TFTP/HTTP+DHCP environment:
 
-1. [Download latest release](https://github.com/jens-maus/thinRoot/releases) archive for the hardware platform you are using:
-2. Unarchive tar.bz2 file resulting in a 'bzImage' file to be bootable via a standard PXE environment.
+1. [Download latest release](https://github.com/jens-maus/thinRoot/releases) zip archive for the hardware platform you are interesed in:
+   - *generic-x86_64*
+     1. Put the unarchived `*.img` file into your tftpboot PXE environment (e.g. under `/tftpboot/thinroot`).
+   - *RaspberryPi, Tinkerboard*:
+     1. Put the unarchived `*-[platform]-kernel.img` and `*-[platform].img` file into your existing tftpboot PXE environment where `[platform]` corresponds to your chosen hardware image.
+     2. Use an imaging tool (e.g. [Etcher](https://github.com/balena-io/etcher) to flash the included `*-[platform]-sdcard.img` files to a fresh microSD card or USB thumb drive.
+     3. Modify the `/boot/bootEnv.txt` file in the FAT32 boot partition to match your TFTP/HTTP bootserver setup.
+2. Make sure your PXE+TFTP/HTTP+DHCP/bootserver provides the image files also via HTTP (e.g. using a nginx proxy against `/tftpboot`).
+3. (`generic-x86_64`): Modify your PXE+TFTP/HTTP+DHCP/bootserver environment to load the corresponding `*.img` via HTTP and with the following APPEND line
+   - *iPXE/UEFI boot environment*:
+     ```cfg
+     set root-path http://192.168.74.30/thinroot/
+     kernel ${root-path}thinroot.img
+     imgargs thinroot.img BOOT_IMAGE=${root-path}/thinroot.img console=tty2 noswap noinitrd consoleblank=120 init_on_alloc=1 init_on_free=0 slab_nomerge net.ifnames=0 intel_iommu=igfx_off quiet loglevel=0
+     ```
+   - *Syslinux/Legacy boot environment*:
+     ```cfg
+     LABEL      thinroot
+     MENU LABEL ^thinRoot (stable)
+     KERNEL     http://192.168.74.30/thinroot/thinroot.img
+     APPEND     console=tty2 noswap noinitrd consoleblank=120 init_on_alloc=1 init_on_free=0 slab_nomerge net.ifnames=0 intel_iommu=igfx_off quiet loglevel=0
+     ```
+4. (`rpi*, tinkerboard*`): Modify the `/boot/bootEnv.txt` file on the microSD card/USB thumb drive to match your PXE+TFTP/HTTP+DHCP environment:
+   ```
+   bootserver=192.168.74.30
+   kernel_img=thinroot/thinroot-tinkerboard-kernel.img
+   initrd=thinroot/thinroot-tinkerboard.img
+   extraargs=BASE_PATH=http://192.168.74.30/thinroot
+   ```
+   Make sure to remove comments (`#`) from lines which are required and modify the pathes to match your  PXE+TFTP/HTTP+DHCP environment. For example, it might also simply be enough to just enable the `extraargs=...` line if you want the image on the microSD card itself to be booted. However, if you want to fetch the kernel image and initrd from the `bootserver` make sure to uncomment these lines as well.
 
 ## :yum: How to contribute
 As the thinRoot project is an open source based project everyone is invited to contribute to this project. So, if you are a talented developer and want to contribute to the success of thinRoot feel free to send over pull requests or report issues / enhancement requests. Please note, however, the licensing and contributing implications and accept that - in short - anything you contribute to this repository/project (especially source code) will be (re)licensed under the Apache 2.0 license (see [CONTRIBUTING.md](CONTRIBUTING.md)). In addition, please understand that we will only accept contributions (either source code or issues in the issue tracker) if these comply to our [CODE OF CONDUCT](CODE_OF_CONDUCT.md).
