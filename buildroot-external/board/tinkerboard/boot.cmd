@@ -46,7 +46,7 @@ fi
 
 # set bootargs
 setenv rootfs_str "/dev/ram0"
-setenv bootargs "console=${console} root=${rootfs_str} ro rootfstype=ext4 fsck.repair=yes rootwait rootdelay=5 consoleblank=120 quiet loglevel=${loglevel} init_on_alloc=1 init_on_free=1 slab_nomerge iomem=relaxed net.ifnames=0 usb-storage.quirks=${usbstoragequirks} ${cmdline} ${bootargs}"
+setenv bootargs "console=${console} root=${rootfs_str} ro rootfstype=ext4 fsck.repair=yes rootwait rootdelay=5 consoleblank=120 quiet loglevel=${loglevel} init_on_alloc=1 init_on_free=1 slab_nomerge iomem=relaxed net.ifnames=0 usb-storage.quirks=${usbstoragequirks} ${cmdline} ${extraargs} ${bootargs}"
 
 if env exists bootserver; then
   echo "==== NETWORK BOOT ===="
