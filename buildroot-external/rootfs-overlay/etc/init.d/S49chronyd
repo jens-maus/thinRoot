@@ -1,0 +1,70 @@
+#!/bin/sh
+# shellcheck shell=dash disable=SC2169,SC3010
+
+NAME=chrony
+DAEMON=/usr/sbin/chronyd
+CLIENT=/usr/bin/chronyc
+
+# Gracefully exit if the package has been removed.
+test -x $DAEMON || exit 0
+
+init() {
+  # retrieve NTPSERVERS from chrony.conf
+  if [[ -e /etc/chrony.conf ]]; then
+    NTPSERVERS=$(grep -e "^server " /etc/chrony.conf | cut -d' ' -f2 | xargs echo)
+  fi
+
+  # make sure /var/lib/chrony exists so that the drift file
+  # can be saved later on
+  mkdir -p /var/lib/${NAME}
+  chown chrony:chrony /var/lib/${NAME}
+}
+
+case "$1" in
+  start)
+    init
+    echo -n "Starting $NAME: "
+
+    # get current clock from rtc
+    hwclock -s -u
+
+    # call ntpdate to perform a single sync to the servers
+    if [[ -n "${NTPSERVERS}" ]]; then
+      # shellcheck disable=SC2086
+      /usr/bin/ntpdate -b -s -u ${NTPSERVERS}
+    fi
+
+    # start daemon
+    if start-stop-daemon -S -q -x ${DAEMON}; then
+      ${CLIENT} -a "burst 3/5" >/dev/null 2>&1
+      ${CLIENT} -a makestep >/dev/null 2>&1
+      echo "OK"
+    else
+      echo "FAIL"
+    fi
+    ;;
+  stop)
+    echo -n "Stopping $NAME: "
+    if start-stop-daemon -K -q -p /var/run/chrony/chronyd.pid; then
+      echo "OK"
+    else
+      echo "FAIL"
+    fi
+
+    # set current time to rtc
+    hwclock -w -u
+
+    ;;
+  restart|reload)
+    echo "Restarting $NAME: "
+    $0 stop
+    sleep 1
+    $0 start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|reload}" >&2
+    exit 1
+    ;;
+esac
+
+exit 0
