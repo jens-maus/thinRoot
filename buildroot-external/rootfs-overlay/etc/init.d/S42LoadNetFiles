@@ -162,7 +162,7 @@ setup_dns() {
 
 setup_ntp() {
   if [[ -n "${NET_TIME_SERVER}" ]]; then
-    echo "server ${NET_TIME_SERVER}" >>/etc/chrony.conf
+    echo "server ${NET_TIME_SERVER} prefer iburst" >>/etc/chrony.conf
   fi
 
   # add some standard/default settings
