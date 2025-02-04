@@ -13,18 +13,15 @@
 # action    == one of sysinit, respawn, askfirst, wait, and once
 # process   == program to run
 
-# Startup the system
-null::sysinit:/bin/mount /proc
-null::sysinit:/bin/mount /sys
-null::sysinit:/bin/mkdir -p /dev/pts /dev/shm
-tty2::sysinit:/bin/mount -a
-null::sysinit:/bin/mkdir -p /run/lock
-null::sysinit:/bin/mkdir -p /var/cache
-null::sysinit:/sbin/ldconfig -C /var/cache/ld.so.cache
-null::sysinit:/bin/hostname -F /etc/hostname
-null::sysinit:/usr/bin/psplash -n &
-# now run any rc scripts
-::sysinit:/etc/init.d/rcS
+# Init the system
+tty2::sysinit:/bin/mount /proc
+tty2::sysinit:/bin/mount /sys
+tty2::sysinit:/bin/mount /tmp
+tty2::sysinit:/bin/mkdir -p /dev/pts /dev/shm
+
+# run any rc scripts (start) and move boot.log
+::sysinit:/etc/init.d/rcS 2>&1 | /usr/bin/tee -a /tmp/boot.log
+::sysinit:/bin/mv /tmp/boot.log /var/log/boot.log
 
 # Put a getty on tty2
 tty2::askfirst:/sbin/getty -L tty2 0 vt100
@@ -35,4 +32,4 @@ tty2::askfirst:/sbin/getty -L tty2 0 vt100
 # Stuff to do before rebooting
 ::shutdown:/etc/init.d/rcK
 tty2::shutdown:/bin/umount -a -r -f >/dev/null
-null::shutdown:/sbin/swapoff -a
+tty2::shutdown:/sbin/swapoff -a

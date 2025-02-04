@@ -1,5 +1,5 @@
 #!/bin/sh
-# shellcheck shell=dash disable=SC1090,SC2169,SC3010,SC3057
+# shellcheck shell=dash disable=SC2169 source=/dev/null
 #
 # Start all init scripts in /etc/init.d
 # executing them in numerical order.
@@ -7,16 +7,30 @@
 # make sure we have a secure umask
 umask 0002
 
+# mount all filesystems
+/bin/mount -a
+
+# create /var/run, /var/cache and /run/lock
+/bin/mkdir -p /var/run /var/cache /run/lock
+
+# create ld.so.cache file
+/sbin/ldconfig -C /var/cache/ld.so.cache
+
 for i in /etc/init.d/S??* ;do
 
   # Ignore dangling symlinks (if any).
   [[ ! -f "${i}" ]] && continue
 
+  # make sure psplash is running
+  if ! pgrep -n /usr/bin/psplash >/dev/null 2>&1; then
+    /usr/bin/psplash -n 2>/dev/null &
+  fi
+
   # put the psplash progess bar to the
   # corresponding level
   name=${i##*/}
   num=${name:1:2}
-  /usr/bin/psplash-write "MSG ${name:3}..."
+  /usr/bin/psplash-write "MSG Starting ${name:3}..."
   /usr/bin/psplash-write "PROGRESS $((${num#0}+1))"
 
   case "${i}" in
@@ -35,4 +49,16 @@ for i in /etc/init.d/S??* ;do
   esac
 done
 
+# make sure psplash is running
+if ! pgrep -n /usr/bin/psplash >/dev/null 2>&1; then
+  /usr/bin/psplash -n 2>/dev/null &
+fi
+
 /usr/bin/psplash-write "PROGRESS 100"
+
+[[ -r /VERSION ]] && . /VERSION
+
+echo "Finished Boot: thinRoot ${VERSION} (${PRODUCT})"
+
+# kill psplash after 2 seconds
+(sleep 2; pkill /usr/bin/psplash 2>/dev/null) &
