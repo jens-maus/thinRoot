@@ -1,4 +1,3 @@
-/home/maus/thinRoot/buildroot-external/rootfs-overlay/etc
 # <file system>	<mount pt>	<type>	<options>		<dump>	<pass>
 /dev/root	/		ext2	rw,noauto		0	1
 LABEL=bootfs	/boot		vfat	rw,noauto		0	0
