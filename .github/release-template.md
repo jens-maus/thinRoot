@@ -18,7 +18,22 @@ The following installation archives can be downloaded for different hardware pla
 - Generic-x86_64:
 <sub>:package: [thinRoot-${VERSION}-generic-x86_64.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-generic-x86_64.img)<br/>SHA256: XSHAgeneric-x86_64.imgX</sub>
 
+- RaspberryPi5 Model B, RaspberryPi Compute Module 5, RaspberryPi 500:
+<sub>:package: [thinRoot-${VERSION}-rpi5.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-rpi5.img)<br/>SHA256: XSHArpi5.imgX</sub>
+<sub>:package: [thinRoot-${VERSION}-rpi5-kernel.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-rpi5-kernel.img)<br/>SHA256: XSHArpi5-kernel.imgX</sub>
+<sub>:package: [thinRoot-${VERSION}-rpi5-sdcard.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-rpi5-sdcard.img)<br/>SHA256: XSHArpi5-sdcard.imgX</sub>
+
+- RaspberryPi4 Model B, RaspberryPi Compute Module 4, RaspberryPi 400:
+<sub>:package: [thinRoot-${VERSION}-rpi4.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-rpi4.img)<br/>SHA256: XSHArpi4.imgX</sub>
+<sub>:package: [thinRoot-${VERSION}-rpi4-kernel.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-rpi4-kernel.img)<br/>SHA256: XSHArpi4-kernel.imgX</sub>
+<sub>:package: [thinRoot-${VERSION}-rpi4-sdcard.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-rpi4-sdcard.img)<br/>SHA256: XSHArpi4-sdcard.imgX</sub>
+
 - RaspberryPi3 Model B+, RaspberryPi3 Model B, RaspberryPi3 Model A+, RaspberryPi Compute Module 3, RaspberryPi Compute Module 3 lite, RaspberryPi Zero 2 W:
 <sub>:package: [thinRoot-${VERSION}-rpi3.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-rpi3.img)<br/>SHA256: XSHArpi3.imgX</sub>
 <sub>:package: [thinRoot-${VERSION}-rpi3-kernel.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-rpi3-kernel.img)<br/>SHA256: XSHArpi3-kernel.imgX</sub>
 <sub>:package: [thinRoot-${VERSION}-rpi3-sdcard.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-rpi3-sdcard.img)<br/>SHA256: XSHArpi3-sdcard.imgX</sub>
+
+- TinkerBoard S, TinkerBoard:
+<sub>:package: [thinRoot-${VERSION}-tinkerboard.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-tinkerboard.img)<br/>SHA256: XSHAtinkerboard.imgX</sub>
+<sub>:package: [thinRoot-${VERSION}-tinkerboard-kernel.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-tinkerboard-kernel.img)<br/>SHA256: XSHAtinkerboard-kernel.imgX</sub>
+<sub>:package: [thinRoot-${VERSION}-tinkerboard-sdcard.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinRoot-${VERSION}-tinkerboard-sdcard.img)<br/>SHA256: XSHAtinkerboard-sdcard.imgX</sub>
