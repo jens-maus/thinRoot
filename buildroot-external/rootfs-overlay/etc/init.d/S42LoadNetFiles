@@ -42,7 +42,7 @@ install_net_overlay() {
   # file (overlay.tar.bz2) and installs it on top
   # of the rootfs
   if /usr/bin/wget -q "${BASE_PATH}/overlay.pkg" -O "${TMPDIR}/overlay.pkg"; then
-    /bin/tar -C / -xf "${TMPDIR}/overlay.pkg"
+    /bin/tar -C / -xf "${TMPDIR}/overlay.pkg" --warning=no-timestamp
   fi
 }
 
