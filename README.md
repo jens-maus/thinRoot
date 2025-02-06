@@ -28,10 +28,10 @@ _thinRoot_ is a buildroot (https://buildroot.org/) powered operating system envi
 1. A supported x86_64/ARM-based hardware. Well working and tested hardware:
    * All generic x86_64-based hardware (e.g. Intel NUC, modern Laptops, etc.) which comes with directly supported PXE boot capabilities in the BIOS.
    * All ARM-based single board computer (SBC) systems supported by the [U-Boot](https://www.denx.de/project/u-boot/) bootloader which is used to provide a common way to boot the kernel and initrd via network. This includes:
-     * RaspberryPi 5, RaspberryPi 500, RaspberryPi Compute Module 5
-     * RaspberryPi 4, RaspberryPi 400, RaspberryPi Compute Module 4
-     * RaspberryPi 3, RaspberryPi Compute Module 3
-     * ASUS Tinkerboard, ASUS Tinkerboard S
+     * [RaspberryPi5 Model B](https://www.raspberrypi.com/products/raspberry-pi-5/), [RaspberryPi Compute Module 5](https://www.raspberrypi.com/products/compute-module-5), [RaspberryPi 500](https://www.raspberrypi.com/products/raspberry-pi-500/)
+     * [RaspberryPi4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/), [RaspberryPi Compute Module 4](https://www.raspberrypi.com/products/compute-module-4), [RaspberryPi 400](https://www.raspberrypi.com/products/raspberry-pi-400-unit/)
+     * [RaspberryPi3 Model B+](https://www.raspberrypi.com/products/raspberry-pi-3-model-b-plus/), [RaspberryPi3 Model B](https://www.raspberrypi.com/products/raspberry-pi-3-model-b/), [RaspberryPi3 Model A+](https://www.raspberrypi.com/products/raspberry-pi-3-model-a-plus/), [RaspberryPi Compute Module 3](https://www.raspberrypi.com/products/compute-module-3-plus/), [RaspberryPi Zero 2 W](https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/)
+     * [TinkerBoard S](https://www.asus.com/de/networking-iot-servers/aiot-industrial-solutions/all-series/tinker-board-s/), [TinkerBoard](https://www.asus.com/de/networking-iot-servers/aiot-industrial-solutions/all-series/tinker-board/)
 2. An already working PXE+TFTP/HTTP+DHCP bootserver environment where the thinRoot images and its environment files can be installed and directly accessed upon bootup via TFTP/HTTP sideloading.
 3. In case of a ThinClient use-case: A network-based desktop environment (e.g. Windows Terminalserver, VDI system, etc.) to connect to via ThinLinc, RDP, VNC or SPICE protocol.
 4. In case of a web-kisok use-case: A web page that can be configured using a bootserver-definable environment file so that thinRoot automatically starts as a lightweight web-kiosk.
