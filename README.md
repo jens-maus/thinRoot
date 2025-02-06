@@ -26,7 +26,7 @@ _thinRoot_ is a buildroot (https://buildroot.org/) powered operating system envi
 ## :computer: Requirements
 
 1. A supported x86_64/ARM-based hardware. Well working and tested hardware:
-   * All generic x86_64-based hardware (e.g. Intel NUC, modern Laptops, etc.) which comes with directly supported PXE boot capabilities in the BIOS.
+   * All generic x86_64-based hardware (e.g. Intel NUC, modern Laptops, etc.) which come with directly supported PXE boot capabilities (Legacy or UEFI) in the BIOS.
    * All ARM-based single board computer (SBC) systems supported by the [U-Boot](https://www.denx.de/project/u-boot/) bootloader which is used to provide a common way to boot the kernel and initrd via network. This includes:
      * [RaspberryPi5 Model B](https://www.raspberrypi.com/products/raspberry-pi-5/), [RaspberryPi Compute Module 5](https://www.raspberrypi.com/products/compute-module-5), [RaspberryPi 500](https://www.raspberrypi.com/products/raspberry-pi-500/)
      * [RaspberryPi4 Model B](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/), [RaspberryPi Compute Module 4](https://www.raspberrypi.com/products/compute-module-4), [RaspberryPi 400](https://www.raspberrypi.com/products/raspberry-pi-400-unit/)
