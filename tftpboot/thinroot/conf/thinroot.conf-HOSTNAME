@@ -1,0 +1,1 @@
+SESSION_0_XSTARTUP="eval VNC_PASSWORD='mypassword' /lib/tlclient/vncviewer -shared -menukey= -fullscreen -fullscreensystemkeys 192.168.4.4"

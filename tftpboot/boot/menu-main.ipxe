@@ -1,0 +1,114 @@
+#!ipxe
+
+:main_menu
+isset ${showmenu} || goto thinroot
+clear username
+clear password
+iseq ${arch} x64 && goto main_x64 ||
+iseq ${arch} x32 && goto main_x32 ||
+
+:main_x64
+menu iPXE ${archl}-${arch} (${platform}) netboot
+item --gap --          -------------- Operating systems -----------------
+item thinroot          thinRoot (stable)
+item thinroot-debug    thinRoot (stable+debug)
+item thinroot-beta     thinRoot (beta)
+item thinroot-betadbg  thinRoot (beta+debug)
+item local             Local boot
+item --gap --          ------------------ live systems ------------------
+item sysrescue64       SystemRescueCD
+item clonezilla64      Clonezilla
+item --gap --          ------------------ Advanced ----------------------
+item pxelinux          Drop to PXE legacy boot environment
+item shell             Drop to iPXE shell (admin)
+item reboot            Reboot
+item exit              Exit
+choose target && goto ${target}
+
+:main_x32
+menu iPXE ${archl}-${arch} (${platform}) netboot
+item --gap --          -------------- Operating systems -----------------
+item thinroot          thinRoot (stable)
+item thinroot-debug    thinRoot (stable+debug)
+item thinroot-beta     thinRoot (beta)
+item thinroot-betadbg  thinRoot (beta+debug)
+item local             Local boot
+item --gap --          ------------------ live systems ------------------
+item sysrescue         SystemRescueCD
+item clonezilla        Clonezilla
+item --gap --          ------------------ Advanced ----------------------
+item pxelinux          Drop to PXE legacy boot environment
+item shell             Drop to iPXE shell (admin)
+item reboot            Reboot
+item exit              Exit
+choose target && goto ${target}
+
+:failed
+echo Booting failed.
+goto main_menu
+
+:shell
+clear username
+clear password
+login || goto main_menu
+iseq ${password} ADMIN || goto main_menu
+echo Type 'exit' to get back to the menu
+shell
+set menu-timeout 0
+set submenu-timeout 0
+imgfree
+goto main_menu
+
+:reboot
+reboot
+
+:exit
+exit
+
+:local
+sanboot --no-describe --drive 0x80 || goto failed
+
+:pxelinux
+set 209:string pxelinux.cfg/default
+set 210:string http:///192.168.74.30/
+chain ${210:string}syslinux.efi || goto failed
+
+:thinroot
+set root-path ${boot-url}thinroot/
+kernel ${root-path}thinroot.img
+imgargs thinroot.img BOOT_IMAGE=${root-path}/thinroot.img console=tty2 noswap noinitrd consoleblank=120 init_on_alloc=1 init_on_free=0 slab_nomerge net.ifnames=0 intel_iommu=igfx_off quiet loglevel=0
+boot || goto failed
+
+:thinroot-debug
+set root-path ${boot-url}thinroot/
+kernel ${root-path}thinroot.img
+imgargs thinroot.img BOOT_IMAGE=${root-path}/thinroot.img console=tty1 noswap noinitrd init_on_alloc=1 init_on_free=0 slab_nomerge net.ifnames=0 intel_iommu=igfx_off loglevel=8 debug
+boot || goto failed
+
+:thinroot-beta
+set root-path ${boot-url}thinroot/
+kernel ${root-path}thinroot-beta.img
+imgargs thinroot-beta.img BOOT_IMAGE=${root-path}/thinroot-beta.img console=tty2 noswap noinitrd consoleblank=120 init_on_alloc=1 init_on_free=0 slab_nomerge net.ifnames=0 intel_iommu=igfx_off quiet loglevel=0
+boot || goto failed
+
+:thinroot-betadbg
+set root-path ${boot-url}thinroot/
+kernel ${root-path}thinroot-beta.img
+imgargs thinroot-beta.img BOOT_IMAGE=${root-path}/thinroot-beta.img console=tty1 noswap noinitrd init_on_alloc=1 init_on_free=0 slab_nomerge net.ifnames=0 intel_iommu=igfx_off loglevel=8 debug
+boot || goto failed
+
+:sysrescue64
+set root-path ${boot-url}sysrescue/
+kernel ${root-path}sysresccd/boot/x86_64/vmlinuz
+initrd ${root-path}sysresccd/boot/intel_ucode.img
+initrd ${root-path}sysresccd/boot/amd_ucode.img
+initrd ${root-path}sysresccd/boot/x86_64/sysresccd.img
+imgargs vmlinuz initrd=sysresccd.img ip=dhcp dodhcp setkmap=de dostartx archisobasedir=sysresccd archiso_http_srv=${boot-url}sysrescue/
+boot || goto failed
+
+:clonezilla64
+set root-path ${boot-url}clonezilla/
+kernel ${root-path}live/vmlinuz
+initrd ${root-path}live/initrd.img
+imgargs vmlinuz initrd=initrd.img boot=live config noswap nolocales edd=on nomodeset vga=788 nosplash noprompt fetch=${boot-url}clonezilla/live/filesystem.squashfs locales=en_US.UTF-8 keyboard-layouts=de
+boot || goto failed

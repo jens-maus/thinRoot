@@ -1,0 +1,10 @@
+# Serverlist for qutselect
+# 
+# DISPLAYNAME   HOSTNAME     DOMAIN   TYPE    OS             DESCRIPTION            PWPRMPT SCRIPT
+# ---------------------------------------------------------------------------------------------------------------------------
+Linux   ; ubuntu ;     ; TLINC ; Linux   ; Linux-Terminalserver   ; TRUE  ; scripts/qutselect_connect_tlinc.sh
+Windows ; kronos ; DOMAIN ; RDP   ; Windows 2019 ; Public Terminal Server Farm ; TRUE  ; scripts/qutselect_connect_rdp.sh
+===
+BigBlueButton ; bbb ;  ; APP ; bbb.domain.de ; Local  Video Conferencing ; FALSE; scripts/qutselect_connect_app.sh
+Zoom          ; zoom ;  ; APP ; Zoom Workplace ; Local Zoom Video Conferencing ; FALSE; scripts/qutselect_connect_app.sh
+Google Chrome ; chrome ;  ; APP ; Google Chrome ; Local Webbrowser ; FALSE; scripts/qutselect_connect_app.sh

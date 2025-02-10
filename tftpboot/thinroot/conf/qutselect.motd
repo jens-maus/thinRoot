@@ -1,0 +1,11 @@
+<table width=100%>
+<tr><td colspan=2><u><b>Global Keyboard Shortcuts:</u></b></td><td align=right><small>thinRoot 20250207</small></td></tr>
+<tr><td>PAUSE</td><td>Lock Screen</td><td align=right><small>&copy; 2019-2025 Jens Maus, hzdr.de</small></td></tr>
+<tr><td>SHIFT+PAUSE/STOP</td><td>Disconnect Session</td></tr>
+<tr><td>CTRL+PAUSE</td><td colspan=2>Reboot System</td></tr>
+<tr><td>ALT+F10</td><td colspan=2>Eject/Umount all USB drives</td></tr>
+<tr><td>ALT+KEYPAD-PLUS</td><td colspan=2>Volume Up</td></tr>
+<tr><td>ALT+KEYPAD-MINUS</td><td colspan=2>Volume Down</td></tr>
+<tr><td>ALT+KEYPAD-X</td><td colspan=2>Mute/Unmute</td></tr>
+<tr><td>SCROLL-LOCK</td><td colspan=2>Switch Keyboard Layout (de/en)</td></tr>
+</table>

@@ -1,0 +1,10 @@
+# You can have any amount of spaces/tabs between names
+# HOST  MAC               GROUPS                COMMENTS
+# 
+# Group A
+pc1     -                 groupA noblank        # PC1 groupA and no screen blanking
+pc2     -                 groupA noidle         # PC2 groupA and no idle shutdown
+pc3     ec:a8:6b:ff:6d:e3 groupA                # PC3 with dedicated MAC
+# Group B
+pc4     -                 groupB noblank noidle # PC4 groupB, no blank and no idle
+pc5     -                 groupB                # PC5 groupB

@@ -1,0 +1,3 @@
+SESSION_0_QUTSELECT_SLIST=qutselect.groupB.slist
+XKBLAYOUT="us,de"
+SESSION_0_XSTARTUP="eval echo mypassword\! | /bin/scripts/qutselect_connect_pve.sh 0 PVE true 0 0 0 0 pve.example.com:443 user@pve vm13 && while pgrep remote-viewer >/dev/null; do sleep 1; done"

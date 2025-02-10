@@ -1,0 +1,5 @@
+#!ipxe
+
+console --x 1024 --y 768 --picture ${boot-url}${boot-dir}pxe-banner.png --keep --left 40 --right 290 --top 32 --bottom 48
+colour --rgb 0xf5f219 7
+colour --rgb 0x75f658 6

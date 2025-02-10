@@ -1,0 +1,16 @@
+#!ipxe
+
+# wait for space keypress and show menu if pressed
+prompt --timeout 4000 --key 0x20 Loading... Please wait or press SPACE for BootMenu && set showmenu 1 ||
+
+# global variables used in our scripts
+chain --autofree net.cfg ||
+
+# my theme for this boot-config
+isset ${showmenu} && chain --autofree ${boot-url}${boot-dir}net.theme ||
+
+# Boot //mac-010203040506.ipxe if script is present
+chain --replace --autofree ${boot-url}${boot-dir}mac-${mac:hexraw}.ipxe ||
+
+# Boot /menu.ipxe script if all other options have been exhausted
+chain --replace --autofree ${boot-menu} ||

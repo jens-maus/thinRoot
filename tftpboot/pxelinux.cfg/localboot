@@ -1,0 +1,8 @@
+INCLUDE pxelinux.cfg/menu/main.cfg
+INCLUDE pxelinux.cfg/menu/localboot.cfg
+MENU DEFAULT
+INCLUDE pxelinux.cfg/menu/thinroot.cfg
+INCLUDE pxelinux.cfg/menu/thinroot-beta.cfg
+MENU SEPARATOR
+INCLUDE pxelinux.cfg/menu/global-pxe.cfg
+INCLUDE pxelinux.cfg/menu/admin.cfg
