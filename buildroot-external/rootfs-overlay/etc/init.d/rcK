@@ -46,5 +46,5 @@ fi
 /usr/bin/psplash-write "MSG Rebooting..."
 /usr/bin/psplash-write "PROGRESS 0"
 
-# kill psplash
-pkill /usr/bin/psplash
+# quit psplash
+/usr/bin/psplash-write "QUIT"

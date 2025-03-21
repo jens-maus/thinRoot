@@ -60,5 +60,5 @@ fi
 
 echo "Finished Boot: thinRoot ${VERSION} (${PRODUCT})"
 
-# kill psplash after 2 seconds
-(sleep 2; pkill /usr/bin/psplash 2>/dev/null) &
+# quit psplash after 5 seconds
+(sleep 5; /usr/bin/psplash-write "QUIT") &
