@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RPI_EEPROM_VERSION = 3a16bd016f533877079c3bfad188539abd31fb8a
+RPI_EEPROM_VERSION = 6c2e2d6833df14134463ea8968151f031950a21e
 RPI_EEPROM_SITE = $(call github,raspberrypi,rpi-eeprom,$(RPI_EEPROM_VERSION))
 RPI_EEPROM_LICENSE = BSD-3-Clause
 RPI_EEPROM_LICENSE_FILES = LICENSE
@@ -12,10 +12,10 @@ RPI_EEPROM_INSTALL_IMAGES = YES
 
 ifeq ($(BR2_PACKAGE_RPI_EEPROM_RPI4),y)
   # Raspberry Pi 4
-  RPI_EEPROM_FIRMWARE_PATH = firmware-2712/stable/pieeprom-2025-02-11.bin
+  RPI_EEPROM_FIRMWARE_PATH = firmware-2711/stable/pieeprom-2025-02-11.bin
 else ifeq ($(BR2_PACKAGE_RPI_EEPROM_RPI5),y)
   # Raspberry Pi 5
-  RPI_EEPROM_FIRMWARE_PATH = firmware-2712/stable/pieeprom-2025-03-03.bin
+  RPI_EEPROM_FIRMWARE_PATH = firmware-2712/stable/pieeprom-2025-03-19.bin
 endif
 
 define RPI_EEPROM_BUILD_CMDS
