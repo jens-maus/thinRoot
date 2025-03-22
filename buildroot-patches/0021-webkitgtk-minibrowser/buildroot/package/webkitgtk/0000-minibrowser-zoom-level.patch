@@ -1,14 +1,14 @@
---- a/Tools/MiniBrowser/gtk/main.c	2024-03-16 07:45:51.328670000 +0100
-+++ b/Tools/MiniBrowser/gtk/main.c	2025-01-23 09:53:26.729347760 +0100
-@@ -76,6 +76,7 @@
- static gboolean exitAfterLoad;
- static gboolean webProcessCrashed;
- static gboolean printVersion;
+--- a/Tools/MiniBrowser/gtk/main.c	2024-08-19 08:28:40.315243700 +0200
++++ b/Tools/MiniBrowser/gtk/main.c	2025-03-22 18:35:45.248938849 +0100
+@@ -70,6 +70,7 @@
+ static const char *cookiesFile;
+ static const char *cookiesPolicy;
+ static const char *proxy;
 +static gdouble zoomLevel = 0.0;
- 
- #if !GTK_CHECK_VERSION(3, 98, 0)
- static gboolean enableSandbox;
-@@ -118,6 +119,10 @@
+ static gboolean darkMode;
+ static char* timeZone;
+ static gboolean enableITP;
+@@ -120,6 +121,10 @@
      if (editorMode)
          webkit_web_view_set_editable(webView, TRUE);
  
@@ -19,7 +19,7 @@
      browser_window_append_view(window, webView);
      return webView;
  }
-@@ -164,6 +169,7 @@
+@@ -166,6 +171,7 @@
      { "session-file", 's', 0, G_OPTION_ARG_FILENAME, &sessionFile, "Session file", "FILE" },
      { "geometry", 'g', 0, G_OPTION_ARG_STRING, &geometry, "Unused. Kept for backwards-compatibility only", "GEOMETRY" },
      { "full-screen", 'f', 0, G_OPTION_ARG_NONE, &fullScreen, "Set the window to full-screen mode", NULL },
