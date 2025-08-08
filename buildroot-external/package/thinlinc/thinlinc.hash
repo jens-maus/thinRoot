@@ -1,3 +1,3 @@
 # Locally computed
-sha256  7d37b31a19f45044844113eb1d855935ca65578f306f95ffc6aa6521f2d12c00  tl-4.18.0-3768-client-linux-dynamic-x86_64.tar.gz
-sha256  cd35be934574a197cc01399e7c3a2a9e5451e42215b0aab7ea9f29771927a643  tl-4.18.0-3768-client-linux-dynamic-armhf.tar.gz
+sha256  b21961bb49be4cf830de7751ef441d27a67403225d23fc661c9bfe65b155a241  tl-4.19.0-4005-client-linux-dynamic-x86_64.tar.gz
+sha256  263968914a61b87a0b7454d82659f14c59396a870d124c1c5cd304e1ca27a3f7  tl-4.19.0-4005-client-linux-dynamic-armhf.tar.gz

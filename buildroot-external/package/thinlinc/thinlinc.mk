@@ -6,7 +6,7 @@
 #
 ################################################################################
 
-THINLINC_VERSION = 4.18.0-3768
+THINLINC_VERSION = 4.19.0-4005
 THINLINC_SITE = https://www.cendio.com/downloads/clients
 
 ifeq ($(call qstrip,$(BR2_ARCH)),x86_64)
