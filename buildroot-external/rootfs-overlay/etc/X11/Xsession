@@ -21,15 +21,15 @@ message () {
   fi
 }
 
-message_nonl () {
-  # pretty-print messages of arbitrary length (no trailing newline); use
-  # xmessage if it is available and $DISPLAY is set
-  MESSAGE="$PROGNAME: $*"
-  echo -n "$MESSAGE" | fold -s -w "${COLUMNS:-80}" >&2;
-  if [ -n "$DISPLAY" ] && command -v xmessage > /dev/null 2>&1; then
-    echo -n "$MESSAGE" | fold -s -w "${COLUMNS:-80}" | xmessage -center -file -
-  fi
-}
+#message_nonl () {
+#  # pretty-print messages of arbitrary length (no trailing newline); use
+#  # xmessage if it is available and $DISPLAY is set
+#  MESSAGE="$PROGNAME: $*"
+#  echo -n "$MESSAGE" | fold -s -w "${COLUMNS:-80}" >&2;
+#  if [ -n "$DISPLAY" ] && command -v xmessage > /dev/null 2>&1; then
+#    echo -n "$MESSAGE" | fold -s -w "${COLUMNS:-80}" | xmessage -center -file -
+#  fi
+#}
 
 errormsg () {
   # exit script with error
@@ -37,16 +37,16 @@ errormsg () {
   exit 1
 }
 
-internal_errormsg () {
-  # exit script with error; essentially a "THIS SHOULD NEVER HAPPEN" message
-  # One big call to message() for the sake of xmessage; if we had two then
-  # the user would have dismissed the error we want reported before seeing the
-  # request to report it.
-  errormsg "$*" \
-           "Please report the installed version of the \"x11-common\"" \
-           "package and the complete text of this error message to" \
-           "<debian-x@lists.debian.org>."
-}
+#internal_errormsg () {
+#  # exit script with error; essentially a "THIS SHOULD NEVER HAPPEN" message
+#  # One big call to message() for the sake of xmessage; if we had two then
+#  # the user would have dismissed the error we want reported before seeing the
+#  # request to report it.
+#  errormsg "$*" \
+#           "Please report the installed version of the \"x11-common\"" \
+#           "package and the complete text of this error message to" \
+#           "<debian-x@lists.debian.org>."
+#}
 
 # initialize variables for use by all session scripts
 
