@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Check shell scripts
         uses: ludeeus/action-shellcheck@2.0.0
