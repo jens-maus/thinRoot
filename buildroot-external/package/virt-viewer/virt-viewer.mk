@@ -17,7 +17,7 @@ VIRT_VIEWER_LICENSE_FILES = COPYING
 VIRT_VIEWER_DEPENDENCIES = libgtk3 spice-gtk
 
 define VIRT_VIEWER_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/build/src/remote-viewer $(TARGET_DIR)/bin/
+	$(INSTALL) -D -m 0755 $(@D)/buildroot-build/src/remote-viewer $(TARGET_DIR)/bin/
 endef
 
 $(eval $(meson-package))
