@@ -25,5 +25,4 @@ define HOTKEYD_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S60hotkeyd
 endef
 
-
 $(eval $(generic-package))
