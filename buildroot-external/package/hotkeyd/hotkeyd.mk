@@ -2,12 +2,12 @@
 #
 # hotkeyd
 #
-# https://github.com/vflyson/hotkeyd
+# https://github.com/jens-maus/hotkeyd
 #
 ################################################################################
 
 HOTKEYD_VERSION = 0.4.6
-HOTKEYD_TAG = e94e4ab50346e01ff1dcbf0f9d95bfe94a348b01
+HOTKEYD_TAG = b35ba8173d9a95f0e8cc3be2d168124fc641fee6
 HOTKEYD_SITE = $(call github,jens-maus,hotkeyd,$(HOTKEYD_TAG))
 HOTKEYD_LICENSE = GPL-3.0
 HOTKEYD_LICENSE_FILES = LICENSE
