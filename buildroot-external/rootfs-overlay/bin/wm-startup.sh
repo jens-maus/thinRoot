@@ -82,7 +82,7 @@ if [ "${SESSION_0_HIDECURSOR}" = "true" ]; then
 fi
 
 # update the default pulseaudio sink
-/bin/pa-update-default-sink.sh
+#/bin/pa-update-default-sink.sh
 
 # if SESSION_0_STARTUP is not set we start qutselect-startup.sh as the
 # default topmost application
