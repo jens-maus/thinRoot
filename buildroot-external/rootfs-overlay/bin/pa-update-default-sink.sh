@@ -57,14 +57,17 @@ setActiveCardProfile()
   # now iterate through all cards and output the first profile that
   # is set as available
   cardinfo=$(pactl list cards | sed -n "/^Card #${cardnum}$/,/^$/p")
+  echo $cardnum
 
   # find the first
-  actport=$(echo "${cardinfo}" | grep -e ".*:.*(.*,.*available)" | grep -v "not available" | head -n 1 | awk '{ print $1 }')
+  actport=$(echo "${cardinfo}" | grep -e ".*:.*(type: .*,.*avail.*)" | grep -v "not available" | head -n 1 | awk '{ print $1 }')
+  echo $actport
 
   # check if actport is empty
   if [ -n "${actport}" ]; then
     # not empty, identify the profile name
     actprofile=$(echo "${cardinfo}" | sed -n "/\w*${actport}.*)/,/Part of profile/p" | tail -n1 | awk -F': ' '{ print $2 }' | awk -F',' '{ print $1 }')
+    echo ${actprofile}
   else
     # empty, so lets get the first profile
     actprofile=$(echo "${cardinfo}" | sed -n "/\tPorts:/,/^$/p" | grep "Part of profile" | head -n1 | awk -F': ' '{ print $2 }' | awk -F',' '{ print $1 }')

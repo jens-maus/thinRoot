@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="snd-usb-audio", RUN+="/bin/pa-udev-update-sink.sh"   
+ACTION=="remove", SUBSYSTEM=="sound", ENV{ID_BUS}=="usb", RUN+="/bin/pa-udev-update-sink.sh"
