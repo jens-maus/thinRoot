@@ -1,5 +1,5 @@
-BUILDROOT_VERSION=2025.05.2
-BUILDROOT_SHA256=d5e7203b1c885256283ec2db8be0cfe2e4ec3445decdce5e971629b9d3531d59
+BUILDROOT_VERSION=2025.08
+BUILDROOT_SHA256=b8310af16ddd28de15cf24384464be844f858abead9111d41100f82fe4362274
 BUILDROOT_EXTERNAL=buildroot-external
 DEFCONFIG_DIR=$(BUILDROOT_EXTERNAL)/configs
 DATE=$(shell date +%Y%m%d)
@@ -29,7 +29,7 @@ buildroot-$(BUILDROOT_VERSION).tar.gz: $(BR2_DL_DIR)
 
 buildroot-$(BUILDROOT_VERSION): | buildroot-$(BUILDROOT_VERSION).tar.gz
 	@echo "[patching buildroot-$(BUILDROOT_VERSION)]"
-	if [ ! -d $@ ]; then tar xf buildroot-$(BUILDROOT_VERSION).tar.gz; for p in $(sort $(wildcard buildroot-patches/*.patch)); do echo "\nApplying $${p}"; patch -d buildroot-$(BUILDROOT_VERSION) --remove-empty-files -p1 < $${p} || exit 127; [ ! -x $${p%.*}.sh ] || $${p%.*}.sh buildroot-$(BUILDROOT_VERSION); done; fi
+	if [ ! -d $@ ]; then tar xf buildroot-$(BUILDROOT_VERSION).tar.gz; for p in $(sort $(wildcard buildroot-patches/*.patch)); do echo "\nApplying $${p}"; patch -d buildroot-$(BUILDROOT_VERSION) --remove-empty-files --no-backup-if-mismatch -p1 < $${p} || exit 127; [ ! -x $${p%.*}.sh ] || $${p%.*}.sh buildroot-$(BUILDROOT_VERSION); done; fi
 
 build-$(PRODUCT): | buildroot-$(BUILDROOT_VERSION)
 	mkdir $(shell pwd)/build-$(PRODUCT)
