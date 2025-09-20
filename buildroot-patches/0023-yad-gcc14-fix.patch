@@ -1,0 +1,23 @@
+--- buildroot/package/yad/0001-gcc14-fix.patch.orig
++++ buildroot/package/yad/0001-gcc14-fix.patch
+@@ -0,0 +1,20 @@
++--- yad-0.40.0/src/main.c.orig	2025-09-20 12:23:10.917236849 +0200
+++++ yad-0.40.0/src/main.c	2025-09-20 12:21:54.343190497 +0200
++@@ -670,7 +670,7 @@
++ 
++ #if GTK_CHECK_VERSION(3,0,0)
++   if (css)
++-    gtk_style_context_add_provider (gtk_widget_get_style_context (dlg), css, GTK_STYLE_PROVIDER_PRIORITY_USER);
+++    gtk_style_context_add_provider (gtk_widget_get_style_context (dlg), GTK_STYLE_PROVIDER(css), GTK_STYLE_PROVIDER_PRIORITY_USER);
++ #endif
++ 
++   return dlg;
++@@ -700,7 +700,7 @@
++ 
++ #if GTK_CHECK_VERSION(3,0,0)
++   if (css)
++-    gtk_style_context_add_provider (gtk_widget_get_style_context (win), css, GTK_STYLE_PROVIDER_PRIORITY_USER);
+++    gtk_style_context_add_provider (gtk_widget_get_style_context (win), GTK_STYLE_PROVIDER(css), GTK_STYLE_PROVIDER_PRIORITY_USER);
++ #endif
++ 
++   gtk_widget_show_all (win);
