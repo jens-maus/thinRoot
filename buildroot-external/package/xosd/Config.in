@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XOSD
+	bool "xosd"
+	help
+	  XOSD
+
+	  https://sourceforge.net/projects/libxosd/
