@@ -4,21 +4,18 @@
 #
 ################################################################################
 
-# 2.2.15 (code/libxosd-code@r634)
-XOSD_VERSION = r634
-XOSD_SITE = https://svn.code.sf.net/p/libxosd/code/libxosd-code
-XOSD_SITE_METHOD = svn
-XOSD_LICENSE = GPLv2
+XOSD_VERSION = 2.2.14
+XOSD_SOURCE = xosd-$(XOSD_VERSION).tar.gz
+XOSD_SITE = http://sourceforge.net/projects/libxosd/files
+XOSD_LICENSE = GPL-2.0
 XOSD_LICENSE_FILES = COPYING
-XOSD_INSTALL_STAGING = YES
-XOSD_DEPENDENCIES = host-autoconf
-XOSD_MAKE = $(MAKE1)
+#XOSD_DEPENDENCIES = host-autoconf
 
-# Using autoconf, not automake, so we cannot use AUTORECONF = YES.
-define XOSD_RUN_AUTOCONF
-	cd $(@D); $(AUTOCONF)
+# remove unnecessary stuff
+define XOSD_REMOVE_DATA
+	$(RM) -r $(TARGET_DIR)/usr/share/xosd
+	$(RM) -r $(TARGET_DIR)/usr/bin/xosd-config
 endef
-
-XOSD_PRE_CONFIGURE_HOOKS += XOSD_RUN_AUTOCONF
+XOSD_POST_INSTALL_TARGET_HOOKS += XOSD_REMOVE_DATA
 
 $(eval $(autotools-package))
