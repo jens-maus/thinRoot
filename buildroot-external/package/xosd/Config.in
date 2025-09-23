@@ -1,0 +1,11 @@
+config BR2_PACKAGE_XOSD
+	bool "xosd"
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	help
+	  XOSD displays text on your screen, sounds simple right?
+	  The difference is it is unmanaged and shaped, so it appears
+	  transparent. This gives the effect of an On Screen Display,
+	  like your TV/VCR etc.
+
+	  https://sourceforge.net/projects/libxosd/
