@@ -5,10 +5,10 @@
 ################################################################################
 
 XOSD_VERSION = 2.2.14
-XOSD_SITE = http://sourceforge.net/projects/libxosd/files
-XOSD_LICENSE = GPL-2.0
+XOSD_SITE = https://downloads.sourceforge.net/project/libxosd/libxosd/xosd-$(XOSD_VERSION)
+XOSD_LICENSE = GPL-2.0-or-later
 XOSD_LICENSE_FILES = COPYING
-#XOSD_DEPENDENCIES = host-autoconf
+XOSD_DEPENDENCIES = xlib_libX11 xlib_libXext
 
 # remove unnecessary stuff
 define XOSD_REMOVE_DATA
