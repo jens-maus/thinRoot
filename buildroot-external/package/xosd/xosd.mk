@@ -5,7 +5,6 @@
 ################################################################################
 
 XOSD_VERSION = 2.2.14
-XOSD_SOURCE = xosd-$(XOSD_VERSION).tar.gz
 XOSD_SITE = http://sourceforge.net/projects/libxosd/files
 XOSD_LICENSE = GPL-2.0
 XOSD_LICENSE_FILES = COPYING
