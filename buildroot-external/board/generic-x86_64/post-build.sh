@@ -17,3 +17,6 @@ rm -f "${TARGET_DIR}/lib/dhcpcd/dhcpcd-hooks/50-timesyncd.conf"
 
 # remove unnecessary /etc/init.d/fuse3
 rm -f "${TARGET_DIR}/etc/init.d/fuse3"
+
+# remove unnecessary /usr/share/clc
+rm -rf "${TARGET_DIR}/usr/share/clc"
