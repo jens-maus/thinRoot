@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XKB_SWITCH
+	bool "xkb-switch"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXKBFILE
+	help
+	  CLI zum Abfragen/Umschalten des XKB-Layouts.
