@@ -38,4 +38,11 @@ fi
 # If the symlink does not yet exist, create it.
 test -e "/var/run/usbmount/${name}" || (mkdir "/var/run/usbmount/${name}"; mount --bind "${UM_MOUNTPOINT}" "/var/run/usbmount/${name}")
 
+if [ -x /usr/bin/osd_cat ]; then
+  export LANG=en_US.UTF-8
+  export DISPLAY=:0
+  COLOR=green
+  echo "Mounted USB: '${name}'..." | /usr/bin/osd_cat -A center -p top -f '-*-fixed-bold-r-*-*-30-*-*-*-*-*-*-*' -c ${COLOR} -s 5 -d 3
+fi
+
 exit 0

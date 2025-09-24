@@ -21,4 +21,11 @@ if [ -n "${MOUNTNAME}" ]; then
   /bin/rmdir "${MOUNTNAME}"
 fi
 
+if [ -x /usr/bin/osd_cat ]; then
+  export LANG=en_US.UTF-8
+  export DISPLAY=:0
+  COLOR=red
+  echo "Unclean USB eject: Press ALT+F10 next time!" | /usr/bin/osd_cat -A center -p top -f '-*-fixed-bold-r-*-*-30-*-*-*-*-*-*-*' -c ${COLOR} -s 5 -d 10
+fi
+
 exit 0
