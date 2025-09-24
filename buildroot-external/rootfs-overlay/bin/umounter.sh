@@ -2,7 +2,9 @@
 
 # show an OSD display
 if [ -x /usr/bin/osd_cat ]; then
-  echo "Unmounting USB..." | DISPLAY=:0 /usr/bin/osd_cat -A center -p top -f '-*-fixed-bold-r-*-*-30-*-*-*-*-*-*-*' -c green -s 5 -d 20 &
+  export LANG=en_US.UTF-8
+  export DISPLAY=:0
+  echo "Unmounting USB..." | /usr/bin/osd_cat -A center -p top -f '-*-fixed-bold-r-*-*-30-*-*-*-*-*-*-*' -c green -s 5 -d 20 &
 fi
 
 # umount all stuff including bind mounts
@@ -26,6 +28,8 @@ if [ -x /usr/bin/osd_cat ]; then
     POS=200
     COLOR=red
   fi
-  echo "${RESULT}" | DISPLAY=:0 /usr/bin/osd_cat -A center -p top -i ${POS} -f '-*-fixed-bold-r-*-*-30-*-*-*-*-*-*-*' -c ${COLOR} -s 5 -d 2
+  export LANG=en_US.UTF-8
+  export DISPLAY=:0
+  echo "${RESULT}" | /usr/bin/osd_cat -A center -p top -i ${POS} -f '-*-fixed-bold-r-*-*-30-*-*-*-*-*-*-*' -c ${COLOR} -s 5 -d 2
   pkill osd_cat
 fi
