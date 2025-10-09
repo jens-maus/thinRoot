@@ -20,3 +20,7 @@ rm -f "${TARGET_DIR}/etc/init.d/fuse3"
 
 # remove unnecessary /usr/share/clc
 rm -rf "${TARGET_DIR}/usr/share/clc"
+
+# remove unnecessary /lib/firmware stuff
+rm -rf "${TARGET_DIR}/lib/firmware/intel-ucode"
+rm -rf "${TARGET_DIR}/lib/firmware/amd-ucode"
