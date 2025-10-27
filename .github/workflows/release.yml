@@ -89,7 +89,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload release-template.md artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           path: /tmp/release-template.md
           name: release-template.md
@@ -208,7 +208,7 @@ jobs:
       #######################
       # manifest file artifact upload
       - name: Upload manifest artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           path: release/thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.mf
           name: thinroot-${{ needs.release_draft.outputs.version }}-${{ matrix.platform }}.mf
