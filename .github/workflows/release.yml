@@ -233,7 +233,7 @@ jobs:
 
       # download all artifact files
       - name: Download all workflow artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
 
       - name: Patch release draft
         shell: bash
