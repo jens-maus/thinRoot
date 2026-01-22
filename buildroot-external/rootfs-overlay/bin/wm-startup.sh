@@ -62,7 +62,7 @@ create_thinlinc_conf
                      -remove _NET_CURRENT_DESKTOP 2> /dev/null
 
 # start compositor process (xcompmgr)
-/usr/bin/xcompmgr -c -f -D 3 &
+/usr/bin/xcompmgr &
 sleep 0.2
 
 # start wm (openbox is the default)
