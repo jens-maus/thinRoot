@@ -1,12 +1,16 @@
 /*
  * setrootpix.c
  *
- * Set a solid-color root background using a 1x1 pixmap (tiled by the X server),
- * and publish _XROOTPMAP_ID + ESETROOT_PMAP_ID hints. Uses RetainPermanent so
- * the pixmap survives after this helper exits.
+ * Sets a solid-color root background using a 1x1 pixmap (tiled by the X server),
+ * and publishes background pixmap hints:
+ *   - _XROOTPMAP_ID
+ *   - ESETROOT_PMAP_ID
+ *   - _XSETROOT_ID
+ *
+ * Uses RetainPermanent so the pixmap survives after this helper exits.
  *
  * Build:
- *   cc -O2 -Wall -Wextra -o setrootpix setrootpix.c -lX11
+ *   ${TARGET_CC} -O2 -Wall -Wextra -o setrootpix setrootpix.c -lX11
  *
  * Usage:
  *   ./setrootpix "#32436B"
@@ -14,8 +18,8 @@
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
+#include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 static int alloc_color(Display *dpy, Colormap cmap, const char *spec, XColor *out)
 {
@@ -26,6 +30,15 @@ static int alloc_color(Display *dpy, Colormap cmap, const char *spec, XColor *ou
         return 0;
     }
     return 1;
+}
+
+static void set_pixmap_property(Display *dpy, Window root, Atom prop, Pixmap pm)
+{
+    /* XIDs are 32-bit; store as 32-bit item for XChangeProperty format=32. */
+    uint32_t id = (uint32_t)pm;
+
+    XChangeProperty(dpy, root, prop, XA_PIXMAP, 32, PropModeReplace,
+                    (unsigned char *)&id, 1);
 }
 
 int main(int argc, char **argv)
@@ -42,7 +55,7 @@ int main(int argc, char **argv)
     Window root = RootWindow(dpy, scr);
     Colormap cmap = DefaultColormap(dpy, scr);
 
-    /* Ensure server retains resources after this client exits (critical). */
+    /* Critical: keep resources (pixmap) after this client exits. */
     XSetCloseDownMode(dpy, RetainPermanent);
 
     XColor col;
@@ -52,7 +65,7 @@ int main(int argc, char **argv)
         return 2;
     }
 
-    /* 1x1 pixmap; the server will tile it across the root window. */
+    /* 1x1 pixmap; will be tiled across the root window. */
     Pixmap pm = XCreatePixmap(dpy, root, 1, 1, DefaultDepth(dpy, scr));
     if (!pm) {
         fprintf(stderr, "setrootpix: XCreatePixmap failed\n");
@@ -72,21 +85,18 @@ int main(int argc, char **argv)
     XFillRectangle(dpy, pm, gc, 0, 0, 1, 1);
     XFreeGC(dpy, gc);
 
-    /* Apply background pixmap and force redraw. */
+    /* Apply pixmap as root background and repaint. */
     XSetWindowBackgroundPixmap(dpy, root, pm);
     XClearWindow(dpy, root);
 
-    /* Publish well-known background pixmap hints. */
-    Atom a_root = XInternAtom(dpy, "_XROOTPMAP_ID", False);
-    Atom a_eset = XInternAtom(dpy, "ESETROOT_PMAP_ID", False);
+    /* Publish hints used by compositors / pseudo-transparency clients. */
+    Atom a_root  = XInternAtom(dpy, "_XROOTPMAP_ID", False);
+    Atom a_eset  = XInternAtom(dpy, "ESETROOT_PMAP_ID", False);
+    Atom a_xset  = XInternAtom(dpy, "_XSETROOT_ID", False);
 
-    /* Note: properties are 32-bit items; Pixmap is an XID, safe to store as unsigned long. */
-    unsigned long pm_id = (unsigned long)pm;
-
-    XChangeProperty(dpy, root, a_root, XA_PIXMAP, 32, PropModeReplace,
-                    (unsigned char *)&pm_id, 1);
-    XChangeProperty(dpy, root, a_eset, XA_PIXMAP, 32, PropModeReplace,
-                    (unsigned char *)&pm_id, 1);
+    set_pixmap_property(dpy, root, a_root, pm);
+    set_pixmap_property(dpy, root, a_eset, pm);
+    set_pixmap_property(dpy, root, a_xset, pm);
 
     XFlush(dpy);
     XCloseDisplay(dpy);

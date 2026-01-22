@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SETROOTPIX_VERSION = 0.1.0
+SETROOTPIX_VERSION = 0.2.0
 SETROOTPIX_SITE = $(BR2_EXTERNAL_THINROOT_PATH)/package/setrootpix
 SETROOTPIX_SITE_METHOD = local
 SETROOTPIX_LICENSE = Apache-2.0
