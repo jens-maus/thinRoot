@@ -1,6 +1,6 @@
 # $Id: 99x11-common_start 305 2005-07-03 18:51:43Z dnusinow $
 
 # start windows manager and topmost app not exiting at all.
-exec /bin/wm-startup.sh
+exec /bin/wm-startup.sh >/var/log/wm-startup.log 2>&1
 
 # vim:set ai et sts=2 sw=2 tw=80:

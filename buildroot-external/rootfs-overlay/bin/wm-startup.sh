@@ -61,6 +61,10 @@ create_thinlinc_conf
                      -remove _NET_DESKTOP_NAMES \
                      -remove _NET_CURRENT_DESKTOP 2> /dev/null
 
+# start compositor process (xcompmgr)
+/usr/bin/xcompmgr -c -f -D 3 &
+sleep 0.2
+
 # start wm (openbox is the default)
 if [ -z "${SESSION_0_WM}" ]; then
   SESSION_0_WM=/usr/bin/openbox
@@ -92,7 +96,7 @@ fi
 
 # start qutselect unlimited
 while true; do
-  if ! ${SESSION_0_XSTARTUP} >/var/log/xm-startup.log 2>&1; then
+  if ! ${SESSION_0_XSTARTUP}; then
     break 
   fi
 done
