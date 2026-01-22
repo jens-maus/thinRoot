@@ -1,0 +1,6 @@
+config BR2_PACKAGE_SETROOTPIX
+	bool "setrootpix"
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  A utility to set the X11 root window to dedicated color in
+	  a compositor-compatible way.

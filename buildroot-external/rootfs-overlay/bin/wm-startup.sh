@@ -61,6 +61,9 @@ create_thinlinc_conf
                      -remove _NET_DESKTOP_NAMES \
                      -remove _NET_CURRENT_DESKTOP 2> /dev/null
 
+# set solid background color in root window
+/usr/bin/setrootpix "#32436B"
+
 # start compositor process (xcompmgr)
 /usr/bin/xcompmgr &
 sleep 0.2
@@ -75,9 +78,6 @@ ${SESSION_0_WM} &
 if ! wait_for_wm; then
   echo "$0: Timeout waiting for wm to start"
 fi
-
-# set solid background color in root window
-/usr/bin/xsetroot -solid "#32436B"
 
 # move mouse pointer off screen to hide it in case
 # a user wants this upon startup
