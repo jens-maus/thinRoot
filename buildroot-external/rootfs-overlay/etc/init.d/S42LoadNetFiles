@@ -192,11 +192,6 @@ setup_xconf() {
     sed -i "/Option .*AutoRepeat/c\\\tOption \"AutoRepeat\" \"${KEYBOARD_AUTOREPEAT}\"" /etc/X11/xorg.conf.d/00-keyboard.conf
   fi
 
-  # 01-mouse.conf
-  if [[ -n "${MOUSE_RESOLUTION}" ]]; then
-    sed -i "/Option .*Resolution/c\\\tOption \"Resolution\" \"${MOUSE_RESOLUTION}\"" /etc/X11/xorg.conf.d/01-mouse.conf
-  fi
-
   # 10-serverlayout.conf
   if [[ -n "${SCREEN_BLANK_TIME}" ]]; then
     sed -i "/Option .*BlankTime/c\\\tOption \"BlankTime\" \"${SCREEN_BLANK_TIME}\"" /etc/X11/xorg.conf.d/10-serverlayout.conf
