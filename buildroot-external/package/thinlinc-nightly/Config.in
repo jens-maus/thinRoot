@@ -1,0 +1,6 @@
+config BR2_PACKAGE_THINLINC_NIGHTLY
+	bool "thinlinc-nightly"
+	help
+	  A X11 Remote Desktop client (Nightly Build)
+
+	  https://www.cendio.com/thinlinc
