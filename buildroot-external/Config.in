@@ -19,4 +19,5 @@ menu "Additional software"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/xosd/Config.in"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/xkb-switch/Config.in"
   source "$BR2_EXTERNAL_THINROOT_PATH/package/setrootpix/Config.in"
+  source "$BR2_EXTERNAL_THINROOT_PATH/package/xfce-minimal/Config.in"
 endmenu

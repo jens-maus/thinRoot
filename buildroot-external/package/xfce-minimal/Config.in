@@ -1,0 +1,70 @@
+menu "Xfce minimal (xfwm4 only)"
+
+comment "Xfce minimal (xfwm4 only) needs X11 + GTK3 + D-Bus"
+	depends on !BR2_PACKAGE_XORG7
+	depends on !BR2_PACKAGE_LIBGTK3
+	depends on !BR2_PACKAGE_DBUS
+
+config BR2_PACKAGE_LIBXFCE4UTIL
+	bool "libxfce4util"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_LIBGLIB2
+	help
+	  Basic utility library used by multiple Xfce components.
+	  Required by xfconf and libxfce4ui.
+
+config BR2_PACKAGE_XFCONF
+	bool "xfconf"
+	depends on BR2_PACKAGE_DBUS
+	depends on BR2_PACKAGE_LIBXFCE4UTIL
+	help
+	  Xfce configuration system (D-Bus daemon + xfconf-query).
+	  xfwm4 uses xfconf as its primary configuration backend.
+
+config BR2_PACKAGE_LIBXFCE4UI
+	bool "libxfce4ui"
+	depends on BR2_PACKAGE_LIBGTK3
+	depends on BR2_PACKAGE_XFCONF
+	help
+	  Common GTK3 widgets used by Xfce components (and xfwm4).
+
+config BR2_PACKAGE_LIBWNCK
+	bool "libwnck"
+	depends on BR2_PACKAGE_LIBGTK3
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_XLIB_LIBXRES
+	help
+	  GNOME Window Navigator Construction Kit (GTK3).
+	  xfwm4 uses it for window/task handling helpers.
+
+config BR2_PACKAGE_XFWM4
+	bool "xfwm4 (Xfce Window Manager)"
+	depends on BR2_PACKAGE_LIBGTK3
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_XFCONF
+	depends on BR2_PACKAGE_LIBWNCK
+	select BR2_PACKAGE_LIBX11
+	select BR2_PACKAGE_LIBXEXT
+	select BR2_PACKAGE_LIBXRENDER
+	select BR2_PACKAGE_LIBXRANDR
+	select BR2_PACKAGE_LIBXCOMPOSITE
+	select BR2_PACKAGE_LIBXDAMAGE
+	select BR2_PACKAGE_LIBXFIXES
+	help
+	  Xfce window manager, usable standalone in a plain X11 session.
+	  Configuration is stored via xfconf (typically under
+	  $XDG_CONFIG_HOME/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml).
+
+if BR2_PACKAGE_XFWM4
+
+config BR2_PACKAGE_XFWM4_COMPOSITOR
+	bool "enable xfwm4 compositor"
+	default n
+	help
+	  If disabled, xfwm4 is built without its built-in compositor, saving
+	  some code/CPU. Keep disabled for a thin client unless you explicitly
+	  need compositing (shadows/transparency).
+
+endif
+
+endmenu
