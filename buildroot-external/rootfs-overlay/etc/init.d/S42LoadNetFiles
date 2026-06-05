@@ -38,12 +38,15 @@ init() {
 }
 
 install_net_overlay() {
-  # this function downloads a global net overlay
-  # file (overlay.tar.bz2) and installs it on top
-  # of the rootfs
-  if /usr/bin/wget -q "${BASE_PATH}/overlay.pkg" -O "${TMPDIR}/overlay.pkg"; then
-    /bin/tar -C / -xf "${TMPDIR}/overlay.pkg" --warning=no-timestamp
-  fi
+  # try to get a global overlay.pkg first (empty post) which can contain
+  # changes to the rootfs applicable to all systems/groups (common overlay)
+  # then try to get "overlay.pkg-XXXXXX" pkg files which could contain specific
+  # rootfs changes for certain systems/groups, etc.
+  for post in "" ${CONFFILES}; do
+    if /usr/bin/wget -q "${BASE_PATH}/overlay.pkg${post}" -O "${TMPDIR}/overlay.pkg${post}"; then
+      /bin/tar -C / -xf "${TMPDIR}/overlay.pkg${post}" --warning=no-timestamp
+    fi
+  done
 }
 
 load_thinroot_network() {
@@ -272,9 +275,6 @@ start() {
   init
 
   if [[ -n "${BASE_PATH}" ]]; then
-    # retrieve+install a net overlay file
-    install_net_overlay
-
     # load thinroot.network env file
     load_thinroot_network
 
@@ -286,6 +286,9 @@ start() {
 
     # load all thinroot.conf.XXXXX conffiles
     load_thinroot_conffiles
+
+    # retrieve+install rootfs overlay.pkg files
+    install_net_overlay
 
     # setup additional DNS servers
     setup_dns
