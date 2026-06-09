@@ -1,0 +1,18 @@
+--- buildroot/package/yad/yad.mk.orig
++++ buildroot/package/yad/yad.mk
+@@ -11,6 +11,14 @@
+ YAD_LICENSE_FILES = COPYING
+ YAD_DEPENDENCIES = host-intltool host-pkgconf libgtk3 $(TARGET_NLS_DEPENDENCIES)
+ YAD_CONF_ENV = LIBS=$(TARGET_NLS_LIBS)
+-YAD_CONF_OPTS = --enable-html=no --with-gtk=gtk3
++
++YAD_CONF_OPTS = \
++	--enable-standalone \
++	--disable-html \
++	--disable-spell \
++	--disable-sourceview \
++	--disable-tools \
++	--disable-icon-browser \
++	--disable-tray
+ 
+ $(eval $(autotools-package))
