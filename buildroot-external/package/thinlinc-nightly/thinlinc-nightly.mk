@@ -13,7 +13,7 @@ THINLINC_NIGHTLY_SOURCE = tl-nightly-clients.zip
 ifeq ($(call qstrip,$(BR2_ARCH)),x86_64)
 THINLINC_NIGHTLY_SUBDIR = tl-$(THINLINC_NIGHTLY_VERSION)-*-client-linux-dynamic-x86_64
 else ifeq ($(call qstrip,$(BR2_ARCH)),aarch64)
-THINLINC_NIGHTLY_SUBDIR = tl-$(THINLINC_NIGHTLY_VERSION)-*-client-linux-dynamic-armhf
+THINLINC_NIGHTLY_SUBDIR = tl-$(THINLINC_NIGHTLY_VERSION)-*-client-linux-dynamic-aarch64
 else ifeq ($(call qstrip,$(BR2_ARCH)),arm)
 THINLINC_NIGHTLY_SUBDIR = tl-$(THINLINC_NIGHTLY_VERSION)-*-client-linux-dynamic-armhf
 endif
