@@ -74,7 +74,8 @@ config BR2_PACKAGE_FREERDP3_RDPECAM
 	help
 	  Enable [MS-RDPECAM] camera redirection support for FreeRDP3.
 
-	  This enables the rdpecam channel and the rdpecam client module.
+	  This enables the rdpecam channel and
+	  the rdpecam client module.
 
 comment "RDPECAM camera redirection needs libusb and libv4l"
 	depends on !BR2_PACKAGE_LIBUSB || !BR2_PACKAGE_LIBV4L
