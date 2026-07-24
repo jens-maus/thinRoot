@@ -296,5 +296,4 @@ define FREERDP3_CLEANUP
 endef
 FREERDP3_POST_INSTALL_TARGET_HOOKS += FREERDP3_CLEANUP
 
-
 $(eval $(cmake-package))
