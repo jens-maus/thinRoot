@@ -273,9 +273,25 @@ endef
 FREERDP3_POST_INSTALL_TARGET_HOOKS += FREERDP3_RM_CLIENT_WL
 endif
 
-# Remove static libraries in unusual dir
+# Remove static libraries in unusual dir and development files not needed on target
 define FREERDP3_CLEANUP
 	rm -rf $(TARGET_DIR)/usr/lib/freerdp
+	rm -rf $(TARGET_DIR)/usr/include/freerdp3
+	rm -rf $(TARGET_DIR)/usr/include/winpr3
+	rm -rf $(TARGET_DIR)/usr/lib/cmake/FreeRDP3
+	rm -rf $(TARGET_DIR)/usr/lib/cmake/FreeRDP-Client3
+	rm -rf $(TARGET_DIR)/usr/lib/cmake/FreeRDP-Server3
+	rm -rf $(TARGET_DIR)/usr/lib/cmake/FreeRDP-Shadow3
+	rm -rf $(TARGET_DIR)/usr/lib/cmake/FreeRDP-Proxy3
+	rm -rf $(TARGET_DIR)/usr/lib/cmake/WinPR3
+	rm -rf $(TARGET_DIR)/usr/lib/cmake/WinPR-tools3
+	rm -f $(TARGET_DIR)/usr/lib/pkgconfig/freerdp3.pc
+	rm -f $(TARGET_DIR)/usr/lib/pkgconfig/freerdp-client3.pc
+	rm -f $(TARGET_DIR)/usr/lib/pkgconfig/freerdp-server3.pc
+	rm -f $(TARGET_DIR)/usr/lib/pkgconfig/freerdp-shadow3.pc
+	rm -f $(TARGET_DIR)/usr/lib/pkgconfig/freerdp-server-proxy3.pc
+	rm -f $(TARGET_DIR)/usr/lib/pkgconfig/winpr3.pc
+	rm -f $(TARGET_DIR)/usr/lib/pkgconfig/winpr-tools3.pc
 endef
 FREERDP3_POST_INSTALL_TARGET_HOOKS += FREERDP3_CLEANUP
 
