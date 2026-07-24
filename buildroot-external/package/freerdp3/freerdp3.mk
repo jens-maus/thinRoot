@@ -230,6 +230,13 @@ FREERDP3_CONF_OPTS += \
 	-DCHANNEL_RDPECAM_CLIENT=OFF
 endif
 
+ifeq ($(BR2_PACKAGE_FREERDP3_FUSE),y)
+FREERDP3_CONF_OPTS += -DWITH_FUSE=ON
+FREERDP3_DEPENDENCIES += libfuse3
+else
+FREERDP3_CONF_OPTS += -DWITH_FUSE=OFF
+endif
+
 #---------------------------------------
 # Post-install hooks to cleanup and install missing stuff
 

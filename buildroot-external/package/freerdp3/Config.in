@@ -80,6 +80,18 @@ config BR2_PACKAGE_FREERDP3_RDPECAM
 comment "RDPECAM camera redirection needs libusb and libv4l"
 	depends on !BR2_PACKAGE_LIBUSB || !BR2_PACKAGE_LIBV4L
 
+config BR2_PACKAGE_FREERDP3_FUSE
+	bool "FUSE clipboard file copy support"
+	depends on BR2_PACKAGE_LIBFUSE3
+	select BR2_PACKAGE_LIBFUSE3
+	help
+	  Enable clipboard file copy support using FUSE3. This allows
+	  clipboard-based file transfers between the RDP client and server
+	  via a FUSE-mounted filesystem.
+
+comment "FUSE clipboard support needs libfuse3"
+	depends on !BR2_PACKAGE_LIBFUSE3
+
 endif
 
 comment "freerdp3 needs a toolchain w/ wchar, dynamic library, threads, C++"
