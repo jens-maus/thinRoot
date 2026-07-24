@@ -279,18 +279,5 @@ define FREERDP3_CLEANUP
 endef
 FREERDP3_POST_INSTALL_TARGET_HOOKS += FREERDP3_CLEANUP
 
-# Install the server key and certificate, so that a client can connect.
-# A user can override them with its own in a post-build script, if needed.
-# We install them even if the server is not enabled, since another server
-# can be built and linked with libfreerdp (e.g. weston with the  RDP
-# backend). Key and cert are installed world-readable, so non-root users
-# can start a server.
-define FREERDP3_INSTALL_KEYS
-	$(INSTALL) -m 0644 -D $(@D)/server/Sample/server.key \
-		$(TARGET_DIR)/etc/freerdp/keys/server.key
-	$(INSTALL) -m 0644 -D $(@D)/server/Sample/server.crt \
-		$(TARGET_DIR)/etc/freerdp/keys/server.crt
-endef
-FREERDP3_POST_INSTALL_TARGET_HOOKS += FREERDP3_INSTALL_KEYS
 
 $(eval $(cmake-package))
