@@ -85,9 +85,9 @@ config BR2_PACKAGE_FREERDP3_FUSE
 	depends on BR2_PACKAGE_LIBFUSE3
 	select BR2_PACKAGE_LIBFUSE3
 	help
-	  Enable clipboard file copy support using FUSE3. This allows
-	  clipboard-based file transfers between the RDP client and server
-	  via a FUSE-mounted filesystem.
+	  Enable clipboard file copy support using FUSE3. This
+	  allows clipboard-based file transfers between the RDP
+	  client and server via a FUSE-mounted filesystem.
 
 comment "FUSE clipboard support needs libfuse3"
 	depends on !BR2_PACKAGE_LIBFUSE3
