@@ -86,11 +86,6 @@ try:
         if not tag_regex.fullmatch(tag):
             continue
 
-        with urllib.request.urlopen(urllib.request.Request(release_url, headers=headers)) as response:
-            html = response.read().decode("utf-8", errors="ignore")
-        if ">Pre-release<" in html or ">Draft<" in html:
-            continue
-
         print(tag)
         sys.exit(0)
 except (urllib.error.URLError, ET.ParseError):

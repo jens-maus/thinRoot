@@ -16,9 +16,9 @@ if ! wget --passive-ftp -nd -t 3 --spider "${CHECKSUM_URL}"; then
 fi
 
 CHECKSUM_CONTENT=$(wget --passive-ftp -nd -t 3 -O - "${CHECKSUM_URL}")
-ID=${1:-$(echo "${CHECKSUM_CONTENT}" | grep -oE "${PACKAGE_NAME}-6\.18\.[0-9]+\.tar\.xz" | sed -E "s/^${PACKAGE_NAME}-//; s/\.tar\.xz$//" | sort -V | tail -n1)}
+ID=${1:-$(echo "${CHECKSUM_CONTENT}" | grep -oE "${PACKAGE_NAME}-[0-9]+\.[0-9]+\.[0-9]+\.tar\.xz" | sed -E "s/^${PACKAGE_NAME}-//; s/\.tar\.xz$//" | sort -V | tail -n1)}
 if [[ -z "${ID}" ]]; then
-  echo "Failed to resolve latest ${PACKAGE_NAME} 6.18.x version from ${CHECKSUM_URL}" >&2
+  echo "Failed to resolve latest ${PACKAGE_NAME} version from ${CHECKSUM_URL}" >&2
   exit 1
 fi
 
