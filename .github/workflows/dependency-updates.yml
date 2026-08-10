@@ -30,6 +30,11 @@ jobs:
             package: buildroot
             version_file: Makefile
             version_regex: '^BUILDROOT_VERSION=(.*)$'
+          - slug: freerdp3
+            script: scripts/update-freerdp3.sh
+            package: freerdp3
+            version_file: buildroot-external/package/freerdp3/freerdp3.mk
+            version_regex: '^FREERDP3_VERSION = (.*)$'
           - slug: hotkeyd
             script: scripts/update-hotkeyd.sh
             package: hotkeyd
