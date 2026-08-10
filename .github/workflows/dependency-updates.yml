@@ -179,8 +179,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PR_TITLE: "bump ${{ matrix.slug }} to ${{ steps.metadata.outputs.version }}"
         run: |
+          AUTH_HEADER="Authorization: Bearer ${GH_TOKEN}"
           count=$(curl -fsSL \
-            -H "Authorization: ******" \
+            -H "${AUTH_HEADER}" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/pulls?state=open&per_page=100" \
             | jq --arg title "${PR_TITLE}" \

@@ -7,7 +7,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/utils/utils.sh"
 
 PACKAGE_NAME="linux"
-PROJECT_URL="https://cdn.kernel.org/pub/linux/kernel/v6.x"
+PROJECT_ROOT_URL="https://cdn.kernel.org/pub/linux/kernel"
+PROJECT_SERIES=$(wget --passive-ftp -nd -t 3 -O - "${PROJECT_ROOT_URL}/" | grep -oE 'v[0-9]+\.x/' | tr -d '/' | sort -uV | tail -n1 || true)
+if [[ -z "${PROJECT_SERIES}" ]]; then
+  echo "Failed to resolve latest ${PACKAGE_NAME} kernel series from ${PROJECT_ROOT_URL}" >&2
+  exit 1
+fi
+PROJECT_URL="${PROJECT_ROOT_URL}/${PROJECT_SERIES}"
 CHECKSUM_URL="${PROJECT_URL}/sha256sums.asc"
 
 if ! wget --passive-ftp -nd -t 3 --spider "${CHECKSUM_URL}"; then
