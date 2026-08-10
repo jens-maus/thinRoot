@@ -94,12 +94,12 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: |
           previous_version=$(git --no-pager show "HEAD:${{ matrix.version_file }}" \
-            | sed -nE 's/${{ matrix.version_regex }}/\1/p' \
+            | sed -nE 's|${{ matrix.version_regex }}|\1|p' \
             | head -n1)
-          version=$(sed -nE 's/${{ matrix.version_regex }}/\1/p' '${{ matrix.version_file }}' | head -n1)
+          version=$(sed -nE 's|${{ matrix.version_regex }}|\1|p' '${{ matrix.version_file }}' | head -n1)
           if [[ -z "${version}" ]]; then
             version=$(git --no-pager diff -- '${{ matrix.version_file }}' \
-              | sed -nE 's/^\+[^+]*[[:space:]=]+([0-9a-f]{40})$/\1/p' \
+              | sed -nE 's|^\+[^+]*[[:space:]=]+([0-9a-f]{40})$|\1|p' \
               | head -n1)
           fi
 
