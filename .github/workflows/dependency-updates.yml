@@ -142,8 +142,8 @@ jobs:
             exit 0
           fi
 
-          make PRODUCT=rpi3 build-rpi3/.config
-          if ! make -C build-rpi3 "${PACKAGE}-dirclean" "${PACKAGE}-patch"; then
+          make PRODUCT=generic-x86_64 build-generic-x86_64/.config
+          if ! make -C build-generic-x86_64 "${PACKAGE}-dirclean" "${PACKAGE}-patch"; then
             echo "::warning::Patch apply check failed for package '${PACKAGE}'. The version bump likely requires patch updates."
             echo "patch_warning=true" >>"${GITHUB_OUTPUT}"
           fi
