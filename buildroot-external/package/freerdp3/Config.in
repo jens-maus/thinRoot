@@ -21,12 +21,6 @@ config BR2_PACKAGE_FREERDP3
 
 	  http://www.freerdp.com/
 
-	  Note: this also installs a key and certificate in
-	  /etc/freerdp/keys/ . These are publicly-known, as they
-	  are present in FreeRDP's source tree. It is strongly
-	  suggested that you overwrite them with your own set,
-	  either in an overlay rootfs or in a post-build script.
-
 if BR2_PACKAGE_FREERDP3
 
 config BR2_PACKAGE_FREERDP3_GSTREAMER1
@@ -49,6 +43,11 @@ config BR2_PACKAGE_FREERDP3_SERVER
 	select BR2_PACKAGE_XLIB_LIBXDAMAGE
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XLIB_LIBXFIXES
+	help
+	  Build the freerdp-shadow-cli server.
+
+	  TLS certificate and private key material are not installed
+	  by this package and must be provisioned separately.
 
 config BR2_PACKAGE_FREERDP3_CLIENT_X11
 	bool "X11 client"
