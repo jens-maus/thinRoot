@@ -51,13 +51,11 @@ function update_hash() {
   local cpu=${1}
   local url=${ARCHIVE_URL/CPU/${cpu}}
 
-  if ! wget --passive-ftp -nd -t 3 --spider "${url}"; then
+  local archive_hash
+  if ! archive_hash=$(wget --passive-ftp -nd -t 3 -O - "${url}" | sha256sum | awk '{ print $1 }'); then
     echo "Failed to download archive for ${PACKAGE_NAME} (${cpu})" >&2
     exit 1
   fi
-
-  local archive_hash
-  archive_hash=$(wget --passive-ftp -nd -t 3 -O - "${url}" | sha256sum | awk '{ print $1 }')
   if [[ -n "${archive_hash}" ]]; then
     sed -i "/-${cpu}\.tar.gz/d" "buildroot-external/package/${PACKAGE_NAME}/${PACKAGE_NAME}.hash"
     echo "sha256  ${archive_hash}  tl-${ID}-client-linux-dynamic-${cpu}.tar.gz" >>"buildroot-external/package/${PACKAGE_NAME}/${PACKAGE_NAME}.hash"
