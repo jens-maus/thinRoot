@@ -9,7 +9,7 @@ source "${SCRIPT_DIR}/utils/utils.sh"
 PACKAGE_NAME="linux"
 PROJECT_ROOT_URL="https://cdn.kernel.org/pub/linux/kernel"
 SUPPORTED_KERNEL_LINE="6.18"
-PROJECT_SERIES="v6.x"
+PROJECT_SERIES="v$(echo "${SUPPORTED_KERNEL_LINE}" | cut -d. -f1).x"
 PROJECT_URL="${PROJECT_ROOT_URL}/${PROJECT_SERIES}"
 CHECKSUM_URL="${PROJECT_URL}/sha256sums.asc"
 

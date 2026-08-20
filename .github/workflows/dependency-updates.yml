@@ -21,6 +21,8 @@ jobs:
     name: check (${{ matrix.slug }})
     if: ${{ github.repository == 'jens-maus/thinRoot' }}
     runs-on: ubuntu-24.04
+    env:
+      BRANCH_PREFIX: pr/dependency-update-
     strategy:
       fail-fast: false
       matrix:
@@ -186,10 +188,20 @@ jobs:
           PR_TITLE: "bump ${{ matrix.slug }} to ${{ steps.metadata.outputs.version }}"
         run: |
           AUTH_HEADER="Authorization: Bearer ${GH_TOKEN}"
-          open_prs=$(curl -fsSL \
-            -H "${AUTH_HEADER}" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/pulls?state=open&per_page=100")
+          open_prs='[]'
+          page=1
+          while true; do
+            page_prs=$(curl -fsSL \
+              -H "${AUTH_HEADER}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls?state=open&per_page=100&page=${page}")
+            open_prs=$(jq -cn --argjson acc "${open_prs}" --argjson page_prs "${page_prs}" '$acc + $page_prs')
+            page_count=$(echo "${page_prs}" | jq 'length')
+            if [[ "${page_count}" -lt 100 ]]; then
+              break
+            fi
+            page=$((page + 1))
+          done
 
           count=$(echo "${open_prs}" | jq --arg title "${PR_TITLE}" \
             '[.[] | select(.title == $title)] | length')
@@ -199,23 +211,24 @@ jobs:
             echo "Found existing open PR with the same change request title. Skipping PR creation."
           else
             echo "skip=false" >>"${GITHUB_OUTPUT}"
-          fi
+            stale_pr_numbers=$(echo "${open_prs}" | jq -r \
+              --arg branch_prefix "${BRANCH_PREFIX}" \
+              --arg slug "${UPDATE_SLUG}" \
+              --arg title_prefix "bump ${UPDATE_SLUG} to " \
+              '.[] | select(.head.ref | startswith($branch_prefix + $slug + "-")) | select(.title | startswith($title_prefix)) | .number')
 
-          stale_pr_numbers=$(echo "${open_prs}" | jq -r \
-            --arg slug "${UPDATE_SLUG}" \
-            --arg title "${PR_TITLE}" \
-            '.[] | select(.title != $title) | select(.head.ref | startswith("pr/dependency-update-" + $slug + "-")) | .number')
-
-          if [[ -n "${stale_pr_numbers}" ]]; then
-            while IFS= read -r pr_number; do
-              [[ -z "${pr_number}" ]] && continue
-              curl -fsSL -X PATCH \
-                -H "${AUTH_HEADER}" \
-                -H "Accept: application/vnd.github+json" \
-                "https://api.github.com/repos/${{ github.repository }}/pulls/${pr_number}" \
-                -d '{"state":"closed"}' >/dev/null
-              echo "Closed stale open PR #${pr_number} for ${UPDATE_SLUG}."
-            done <<< "${stale_pr_numbers}"
+            if [[ -n "${stale_pr_numbers}" ]]; then
+              while IFS= read -r pr_number; do
+                [[ -z "${pr_number}" ]] && continue
+                curl -fsSL -X PATCH \
+                  -H "${AUTH_HEADER}" \
+                  -H "Accept: application/vnd.github+json" \
+                  -H "Content-Type: application/json" \
+                  "https://api.github.com/repos/${{ github.repository }}/pulls/${pr_number}" \
+                  -d '{"state":"closed"}'
+                echo "Closed stale open PR #${pr_number} for ${UPDATE_SLUG}."
+              done <<< "${stale_pr_numbers}"
+            fi
           fi
 
       - name: Create pull request
@@ -223,7 +236,7 @@ jobs:
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.AUTO_MERGE_TOKEN != '' && secrets.AUTO_MERGE_TOKEN || github.token }}
-          branch: pr/dependency-update-${{ matrix.slug }}-${{ steps.metadata.outputs.version }}
+          branch: ${{ env.BRANCH_PREFIX }}${{ matrix.slug }}-${{ steps.metadata.outputs.version }}
           delete-branch: true
           commit-message: "bump ${{ matrix.slug }} to ${{ steps.metadata.outputs.version }}"
           title: "bump ${{ matrix.slug }} to ${{ steps.metadata.outputs.version }}"
