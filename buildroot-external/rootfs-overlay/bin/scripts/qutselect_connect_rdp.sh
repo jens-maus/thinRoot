@@ -191,7 +191,7 @@ if [[ "${dtlogin}" != "true" ]]; then
   # add clipboard synchronization (only required in non-dtlogin mode)
   cmdArgs="$cmdArgs /clipboard"
 
-  echo "${XFREERDP} ${cmdArgs} /v:${serverName}" >>/tmp/xfreerdp-${USER}-$$.log 2>&1
+  echo "${XFREERDP} ${cmdArgs} /v:${serverName}" >>"/tmp/xfreerdp-${USER}-$$.log" 2>&1
 else
   # disable the full-screen toggling in case we are in dtlogin mode
   cmdArgs="$cmdArgs -toggle-fullscreen"
@@ -203,9 +203,9 @@ cmdArgs="$cmdArgs /log-level:INFO"
 # run xfreerdp finally
 if [[ "${password}" != "NULL" ]]; then
   cmdArgs="$cmdArgs /from-stdin"
+  echo "${XFREERDP} ${cmdArgs} /v:${serverName}" >>"/tmp/xfreerdp-${USER}-$$.log" 2>&1
   # shellcheck disable=SC2086
-  echo "${XFREERDP} ${cmdArgs} /v:${serverName}" >>/tmp/xfreerdp-${USER}-$$.log 2>&1
-  echo "${password}" | ${XFREERDP} ${cmdArgs} /v:"${serverName}" >>/tmp/xfreerdp-${USER}-$$.log 2>&1 &
+  echo "${password}" | ${XFREERDP} ${cmdArgs} /v:"${serverName}" >>"/tmp/xfreerdp-${USER}-$$.log" 2>&1 &
   res=$?
 else
   # shellcheck disable=SC2086
