@@ -8,23 +8,20 @@ source "${SCRIPT_DIR}/utils/utils.sh"
 
 PACKAGE_NAME="linux"
 PROJECT_ROOT_URL="https://cdn.kernel.org/pub/linux/kernel"
-PROJECT_SERIES=$(wget --passive-ftp -nd -t 3 -O - "${PROJECT_ROOT_URL}/" | grep -oE 'v[0-9]+\.x/' | tr -d '/' | sort -uV | tail -n1 || true)
-if [[ -z "${PROJECT_SERIES}" ]]; then
-  echo "Failed to resolve latest ${PACKAGE_NAME} kernel series from ${PROJECT_ROOT_URL}" >&2
-  exit 1
-fi
+SUPPORTED_KERNEL_LINE="6.18"
+PROJECT_SERIES="v6.x"
 PROJECT_URL="${PROJECT_ROOT_URL}/${PROJECT_SERIES}"
 CHECKSUM_URL="${PROJECT_URL}/sha256sums.asc"
 
 if ! wget --passive-ftp -nd -t 3 --spider "${CHECKSUM_URL}"; then
-  echo "Failed to download checksum list for ${PACKAGE_NAME}" >&2
+  echo "Failed to download checksum list for ${PACKAGE_NAME} (${SUPPORTED_KERNEL_LINE}.x) from ${CHECKSUM_URL}" >&2
   exit 1
 fi
 
 CHECKSUM_CONTENT=$(wget --passive-ftp -nd -t 3 -O - "${CHECKSUM_URL}")
-ID=${1:-$(echo "${CHECKSUM_CONTENT}" | grep -oE "${PACKAGE_NAME}-[0-9]+\.[0-9]+\.[0-9]+\.tar\.xz" | sed -E "s/^${PACKAGE_NAME}-//; s/\.tar\.xz$//" | sort -V | tail -n1)}
+ID=${1:-$(echo "${CHECKSUM_CONTENT}" | grep -oE "${PACKAGE_NAME}-${SUPPORTED_KERNEL_LINE}\.[0-9]+\.tar\.xz" | sed -E "s/^${PACKAGE_NAME}-//; s/\.tar\.xz$//" | sort -V | tail -n1)}
 if [[ -z "${ID}" ]]; then
-  echo "Failed to resolve latest ${PACKAGE_NAME} version from ${CHECKSUM_URL}" >&2
+  echo "Failed to resolve latest ${PACKAGE_NAME} ${SUPPORTED_KERNEL_LINE}.x version from ${CHECKSUM_URL}" >&2
   exit 1
 fi
 

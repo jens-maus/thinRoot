@@ -182,21 +182,40 @@ jobs:
         if: steps.changes.outputs.changed == 'true' && steps.metadata.outputs.no_update != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          UPDATE_SLUG: ${{ matrix.slug }}
           PR_TITLE: "bump ${{ matrix.slug }} to ${{ steps.metadata.outputs.version }}"
         run: |
           AUTH_HEADER="Authorization: Bearer ${GH_TOKEN}"
-          count=$(curl -fsSL \
+          open_prs=$(curl -fsSL \
             -H "${AUTH_HEADER}" \
             -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/pulls?state=open&per_page=100" \
-            | jq --arg title "${PR_TITLE}" \
-                '[.[] | select(.title == $title)] | length')
+            "https://api.github.com/repos/${{ github.repository }}/pulls?state=open&per_page=100")
+
+          count=$(echo "${open_prs}" | jq --arg title "${PR_TITLE}" \
+            '[.[] | select(.title == $title)] | length')
 
           if [[ "${count}" -gt 0 ]]; then
             echo "skip=true" >>"${GITHUB_OUTPUT}"
             echo "Found existing open PR with the same change request title. Skipping PR creation."
           else
             echo "skip=false" >>"${GITHUB_OUTPUT}"
+          fi
+
+          stale_pr_numbers=$(echo "${open_prs}" | jq -r \
+            --arg slug "${UPDATE_SLUG}" \
+            --arg title "${PR_TITLE}" \
+            '.[] | select(.title != $title) | select(.head.ref | startswith("pr/dependency-update-" + $slug + "-")) | .number')
+
+          if [[ -n "${stale_pr_numbers}" ]]; then
+            while IFS= read -r pr_number; do
+              [[ -z "${pr_number}" ]] && continue
+              curl -fsSL -X PATCH \
+                -H "${AUTH_HEADER}" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/${{ github.repository }}/pulls/${pr_number}" \
+                -d '{"state":"closed"}' >/dev/null
+              echo "Closed stale open PR #${pr_number} for ${UPDATE_SLUG}."
+            done <<< "${stale_pr_numbers}"
           fi
 
       - name: Create pull request
