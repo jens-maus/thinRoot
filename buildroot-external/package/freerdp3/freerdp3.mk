@@ -94,6 +94,12 @@ else
 FREERDP3_CONF_OPTS += -DWITH_SIMD=OFF
 endif
 
+ifeq ($(BR2_PACKAGE_LIBVA),y)
+FREERDP3_CONF_OPTS += -DWITH_VAAPI=ON -DWITH_VAAPI_H264_ENCODING=ON
+else
+FREERDP3_CONF_OPTS += -DWITH_VAAPI=OFF
+endif
+
 #---------------------------------------
 # Enabling server and/or client
 

@@ -1,0 +1,39 @@
+From: local Buildroot integration
+Subject: [PATCH 1/2] build: fix FFmpeg AVCODEC component variable name
+
+FindFFmpeg.cmake records the AVCODEC component result in the
+FFmpeg_AVCODEC_FOUND variable.  The checks in libfreerdp use a differently
+cased variable, causing CMake to report AVCODEC as unavailable even after it
+has successfully found libavcodec.
+
+Use the component variable name provided by FindFFmpeg.cmake so that the
+MJPEG decoder dependencies are added explicitly.
+
+Upstream-Status: Pending
+---
+ libfreerdp/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/libfreerdp/CMakeLists.txt b/libfreerdp/CMakeLists.txt
+--- a/libfreerdp/CMakeLists.txt
++++ b/libfreerdp/CMakeLists.txt
+@@ -162,7 +162,7 @@ if(WITH_SWSCALE)
+     # AVUTIL is needed for av_image_* functions, AVCODEC is optional (for MJPEG in video.c)
+     find_package(FFmpeg REQUIRED COMPONENTS SWSCALE AVUTIL)
+     find_package(FFmpeg COMPONENTS AVCODEC)
+-    if(FFmpeg_avcodec_FOUND)
++    if(FFmpeg_AVCODEC_FOUND)
+       message(STATUS "FFmpeg AVCODEC found - MJPEG support available in video codec wrappers")
+       set(WITH_FFMPEG ON)
+     else()
+@@ -180,7 +180,7 @@ if(WITH_SWSCALE)
+   if(NOT WITH_SWSCALE_LOADING)
+     include_directories(SYSTEM ${SWSCALE_INCLUDE_DIRS} ${AVUTIL_INCLUDE_DIRS})
+     freerdp_library_add(${SWSCALE_LIBRARIES} ${AVUTIL_LIBRARIES})
+-    if(FFmpeg_avcodec_FOUND)
++    if(FFmpeg_AVCODEC_FOUND)
+       include_directories(SYSTEM ${AVCODEC_INCLUDE_DIRS})
+       freerdp_library_add(${AVCODEC_LIBRARIES})
+     endif()
+-- 
+2.39.5
