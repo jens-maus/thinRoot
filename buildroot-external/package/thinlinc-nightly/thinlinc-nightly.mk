@@ -6,7 +6,7 @@
 #
 ################################################################################
 
-THINLINC_NIGHTLY_VERSION = 4.20.0post
+THINLINC_NIGHTLY_VERSION = 4.21.0post
 THINLINC_NIGHTLY_SITE = https://www.cendio.com/downloads/nightly
 THINLINC_NIGHTLY_SOURCE = tl-nightly-clients.zip
 

@@ -70,4 +70,4 @@ BR_PACKAGE_NAME=${BR_PACKAGE_NAME//-/_}
 sed -i "s/${BR_PACKAGE_NAME}_VERSION = .*/${BR_PACKAGE_NAME}_VERSION = ${ID}/g" "buildroot-external/package/${PACKAGE_NAME}/${PACKAGE_NAME}.mk"
 
 update_hash x86_64
-update_hash armhf
+update_hash aarch64
