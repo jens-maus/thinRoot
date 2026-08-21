@@ -32,8 +32,3 @@ The following installation archives can be downloaded for different hardware pla
 <sub>:package: [thinroot-${VERSION}-rpi3.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinroot-${VERSION}-rpi3.img)<br/>SHA256: XSHArpi3.imgX</sub>
 <sub>:package: [thinroot-${VERSION}-rpi3-kernel.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinroot-${VERSION}-rpi3-kernel.img)<br/>SHA256: XSHArpi3-kernel.imgX</sub>
 <sub>:package: [thinroot-${VERSION}-rpi3-sdcard.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinroot-${VERSION}-rpi3-sdcard.img)<br/>SHA256: XSHArpi3-sdcard.imgX</sub>
-
-- TinkerBoard S, TinkerBoard:
-<sub>:package: [thinroot-${VERSION}-tinkerboard.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinroot-${VERSION}-tinkerboard.img)<br/>SHA256: XSHAtinkerboard.imgX</sub>
-<sub>:package: [thinroot-${VERSION}-tinkerboard-kernel.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinroot-${VERSION}-tinkerboard-kernel.img)<br/>SHA256: XSHAtinkerboard-kernel.imgX</sub>
-<sub>:package: [thinroot-${VERSION}-tinkerboard-sdcard.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinroot-${VERSION}-tinkerboard-sdcard.img)<br/>SHA256: XSHAtinkerboard-sdcard.imgX</sub>

@@ -1,1 +1,0 @@
-truser -1 truser -1 * /home/truser /bin/sh video,audio,input,tty thinRoot main user

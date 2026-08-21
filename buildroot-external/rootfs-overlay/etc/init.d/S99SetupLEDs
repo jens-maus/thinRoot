@@ -20,10 +20,6 @@ case "${PLATFORM}" in
       LED_RED="/sys/class/leds/PWR"
     fi
   ;;
-  tinkerboard*)
-    LED_GREEN="/sys/class/leds/led-0"
-    LED_RED="/sys/class/leds/led-2"
-  ;;
 esac
 
 start() {
