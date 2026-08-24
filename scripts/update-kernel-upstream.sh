@@ -31,7 +31,7 @@ if [[ -z "${ARCHIVE_HASH}" ]]; then
   exit 1
 fi
 
-CURRENT_VERSION_LIST=$(grep -oE 'BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="[^"]+"' buildroot-external/configs/{generic-x86_64}.config | sed -E 's/.*"([^"]+)"/\1/' | sort -u)
+CURRENT_VERSION_LIST=$(grep -oE 'BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="[^"]+"' buildroot-external/configs/generic-x86_64.config | sed -E 's/.*"([^"]+)"/\1/' | sort -u)
 if [[ $(echo "${CURRENT_VERSION_LIST}" | wc -l) -ne 1 ]]; then
   echo "${PACKAGE_NAME}: inconsistent kernel versions found across target configs, refusing to auto-update" >&2
   exit 1
@@ -52,7 +52,7 @@ if [[ -z "${1}" ]]; then
   fi
 fi
 
-sed -i "s/BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE=\".*\"/BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE=\"${ID}\"/g" buildroot-external/configs/{generic-x86_64}.config
+sed -i "s/BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE=\".*\"/BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE=\"${ID}\"/g" buildroot-external/configs/generic-x86_64.config
 
 sed -i "/${PACKAGE_NAME}-${CURRENT_VERSION}\.tar\.xz/d" "buildroot-external/patches/${PACKAGE_NAME}/${PACKAGE_NAME}.hash"
 echo "sha256  ${ARCHIVE_HASH}  ${PACKAGE_NAME}-${ID}.tar.xz" >>"buildroot-external/patches/${PACKAGE_NAME}/${PACKAGE_NAME}.hash"
