@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FREERDP3_VERSION = 3.31.0
+FREERDP3_VERSION = 3.31.1
 FREERDP3_SITE = $(call github,FreeRDP,FreeRDP,$(FREERDP3_VERSION))
 FREERDP3_DEPENDENCIES = host-pkgconf libglib2 openssl zlib
 FREERDP3_LICENSE = Apache-2.0
