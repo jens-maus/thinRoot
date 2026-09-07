@@ -36,6 +36,17 @@ comment "gstreamer support needs X.Org"
 	depends on !BR2_PACKAGE_XORG7
 	depends on BR2_PACKAGE_GSTREAMER1
 
+config BR2_PACKAGE_FREERDP3_VAAPI
+	bool "VAAPI H.264 decoding"
+	depends on BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_LIBVA
+	help
+	  Enable FreeRDP's experimental VAAPI hardware-accelerated
+	  H.264 decoding support.
+
+comment "VAAPI H.264 decoding needs ffmpeg"
+	depends on !BR2_PACKAGE_FFMPEG
+
 config BR2_PACKAGE_FREERDP3_SERVER
 	bool "server"
 	depends on BR2_PACKAGE_XORG7
