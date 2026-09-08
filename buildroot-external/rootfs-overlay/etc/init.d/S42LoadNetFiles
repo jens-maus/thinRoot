@@ -185,7 +185,7 @@ setup_xconf() {
   if [[ -n "${XKBMODEL}" ]]; then
     sed -i "/Option .*XkbModel/c\\\tOption \"XkbModel\" \"${XKBMODEL}\"" /etc/X11/xorg.conf.d/00-keyboard.conf
   fi
-  if [[ -n "${XKBVARIANT}" ]]; then
+  if [[ ${XKBVARIANT+x} ]]; then
     sed -i "/Option .*XkbVariant/c\\\tOption \"XkbVariant\" \"${XKBVARIANT}\"" /etc/X11/xorg.conf.d/00-keyboard.conf
   fi
   if [[ -n "${XKBOPTIONS}" ]]; then
