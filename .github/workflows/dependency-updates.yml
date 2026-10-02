@@ -85,6 +85,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends jq
 
       - name: Run dependency update script
+        id: update
         run: ./${{ matrix.script }}
 
       - name: Check for updated files
@@ -99,6 +100,8 @@ jobs:
       - name: Resolve package and version metadata
         id: metadata
         if: steps.changes.outputs.changed == 'true'
+        env:
+          VERSION_LABEL: ${{ steps.update.outputs.version_label }}
         run: |
           previous_version=$(git --no-pager show "HEAD:${{ matrix.version_file }}" \
             | sed -nE 's|${{ matrix.version_regex }}|\1|p' \
@@ -132,6 +135,9 @@ jobs:
           echo "package=${{ matrix.package }}" >>"${GITHUB_OUTPUT}"
           echo "previous_version=${previous_version}" >>"${GITHUB_OUTPUT}"
           echo "version=${version}" >>"${GITHUB_OUTPUT}"
+          # update scripts may report a human readable version label
+          # (e.g. a release date for commit pinned packages)
+          echo "title=bump ${{ matrix.slug }} to ${VERSION_LABEL:-${version}}" >>"${GITHUB_OUTPUT}"
           echo "no_update=false" >>"${GITHUB_OUTPUT}"
 
       - name: Check package patch apply status
@@ -158,6 +164,8 @@ jobs:
       - name: Compose PR body
         id: pr_body
         if: steps.changes.outputs.changed == 'true' && steps.metadata.outputs.no_update != 'true'
+        env:
+          UPDATE_DETAILS: ${{ steps.update.outputs.details }}
         run: |
           body_file="${RUNNER_TEMP}/pr_body.md"
           cat >"${body_file}" <<'PR_BODY'
@@ -169,6 +177,9 @@ jobs:
           - Current version: `${{ steps.metadata.outputs.previous_version }}`
           - New version....: `${{ steps.metadata.outputs.version }}`
           PR_BODY
+          if [[ -n "${UPDATE_DETAILS}" ]]; then
+            echo "${UPDATE_DETAILS}" >>"${body_file}"
+          fi
           if [[ "${{ steps.patch_check.outputs.patch_warning }}" == "true" ]]; then
             cat >>"${body_file}" <<'PR_WARNING'
 
@@ -185,7 +196,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           UPDATE_SLUG: ${{ matrix.slug }}
-          PR_TITLE: "bump ${{ matrix.slug }} to ${{ steps.metadata.outputs.version }}"
+          PR_TITLE: ${{ steps.metadata.outputs.title }}
         run: |
           AUTH_HEADER="Authorization: Bearer ${GH_TOKEN}"
           open_prs='[]'
@@ -238,7 +249,7 @@ jobs:
           token: ${{ secrets.AUTO_MERGE_TOKEN != '' && secrets.AUTO_MERGE_TOKEN || github.token }}
           branch: ${{ env.BRANCH_PREFIX }}${{ matrix.slug }}-${{ steps.metadata.outputs.version }}
           delete-branch: true
-          commit-message: "bump ${{ matrix.slug }} to ${{ steps.metadata.outputs.version }}"
-          title: "bump ${{ matrix.slug }} to ${{ steps.metadata.outputs.version }}"
+          commit-message: ${{ steps.metadata.outputs.title }}
+          title: ${{ steps.metadata.outputs.title }}
           body-path: ${{ steps.pr_body.outputs.body_file }}
           labels: dependencies
