@@ -29,7 +29,7 @@ Supported products (one per file in `buildroot-external/configs/`):
 | `buildroot-external/Busybox.config` | Shared BusyBox configuration. |
 | `buildroot-external/configs/<product>.config` | Product-specific Buildroot options, merged on top of `Buildroot.config`. |
 | `buildroot-external/board/<product>/` | Board files: `post-build.sh`, `post-image.sh`, `post-release.sh`, `kernel.config` fragment, `users_table.txt`, and for RPi `boot.cmd`, `bootEnv.txt`, `config.txt`, `cmdline.txt`, `genimage.cfg`, `uboot.config`, `kernel-patches/`. |
-| `buildroot-external/kernel/<major.minor>/` | Shared Linux kernel config fragments (`global`, `device-support*`, `security*`). `6.18` is used by `generic-x86_64`, `6.6` by the RPi kernels. |
+| `buildroot-external/kernel/<major.minor>/` | Shared Linux kernel config fragments (`global`, `device-support*`, `security*`). `6.18` is used by all products (`generic-x86_64` and the RPi kernels). |
 | `buildroot-external/package/<pkg>/` | Custom Buildroot packages (`Config.in`, `<pkg>.mk`, `<pkg>.hash`, optional patches/init scripts). |
 | `buildroot-external/Config.in`, `Config.ext.in`, `external.mk` | Package menu registration and extra make targets (e.g. `linux-check-dotconfig`, CPU microcode embedding). |
 | `buildroot-external/patches/<pkg>/` | `BR2_GLOBAL_PATCH_DIR`: patches/hash overrides for **upstream** Buildroot packages. |
@@ -145,7 +145,21 @@ that exist in the respective kernel's Kconfig.
   failed patch run) remove just that directory first
   (`rm -rf buildroot-<version>`). Do **not** use `make distclean` for this: it
   deletes all build directories and the download cache.
-- **RPi kernel patches:** `buildroot-external/board/<rpi>/kernel-patches/`.
+- **RPi kernel patches:** `buildroot-external/board/rpi4/kernel-patches/`
+  (`rpi3` and `rpi5` symlink to it). They are kept in sync with the RPi
+  kernel patches of OpenCCU (`board/rpi*/patches/linux/`). Buildroot applies
+  them without fuzz, so a patch whose context changed fails the build.
+- **RPi U-Boot:** `rpi3` and `rpi5` use the same U-Boot version and
+  `rpi_arm64` defconfig as OpenCCU. Their patches live in
+  `buildroot-external/board/rpi5/patches/uboot/` (`rpi3` symlinks to it),
+  added via a per-product `BR2_GLOBAL_PATCH_DIR`. Version-specific U-Boot
+  fixes and the tarball hash live in `buildroot-external/patches/uboot/<version>/`.
+  `rpi4` stays on its own U-Boot version and `rpi_4` defconfig.
+- **RPi kernel bumps** (`scripts/update-rpi-kernel.sh`) only change the tarball
+  and hashes. If the bump crosses a kernel major/minor version, also update
+  `BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_<x>_<y>`, the
+  `kernel/<major.minor>/` fragment paths in `configs/rpi*.config`, and rebase
+  the RPi kernel patches.
 
 ### Shell scripts
 
