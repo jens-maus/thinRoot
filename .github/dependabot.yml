@@ -6,3 +6,9 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+
+  # Maintain base images of the boot server container
+  - package-ecosystem: "docker"
+    directory: "/docker"
+    schedule:
+      interval: "weekly"

@@ -38,6 +38,7 @@ Supported products (one per file in `buildroot-external/configs/`):
 | `buildroot-patches/` | Patches applied to the Buildroot source tree itself (see below). |
 | `scripts/update-*.sh` | Dependency bump scripts used by the `dependency-updates` workflow. |
 | `tftpboot/` | Example PXE/iPXE/TFTP boot server setup (not part of the image build). |
+| `docker/` | Boot server container (`ghcr.io/jens-maus/thinroot`): `Dockerfile` (builds iPXE from source, adds PXELINUX and the release images), entrypoint + generator scripts in `rootfs/`, smoke test in `tests/`. Built/published by `.github/workflows/container.yml`. |
 | `release/` | Output directory for release images (contents are git-ignored). |
 
 Generated / ignored directories: `build-<product>/`, `buildroot-<version>/`,
@@ -82,6 +83,11 @@ yamllint .
 
 # Markdown (config: .markdownlint.yml)
 markdownlint '**/*.md'
+
+# boot server container (needs docker): build with a dummy image + smoke test
+mkdir -p /tmp/payload && echo dummy >/tmp/payload/thinroot-19700101-generic-x86_64.img
+docker buildx build -f docker/Dockerfile --build-context payload=/tmp/payload -t thinroot:test --load .
+docker/tests/smoke-test.sh thinroot:test 19700101
 
 # Buildroot package style – downloads and extracts Buildroot on first run;
 # needs the Python modules flake8 and python-magic (pip install flake8 python-magic)

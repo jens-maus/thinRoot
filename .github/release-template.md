@@ -32,3 +32,12 @@ The following installation archives can be downloaded for different hardware pla
 <sub>:package: [thinroot-${VERSION}-rpi3.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinroot-${VERSION}-rpi3.img)<br/>SHA256: XSHArpi3.imgX</sub>
 <sub>:package: [thinroot-${VERSION}-rpi3-kernel.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinroot-${VERSION}-rpi3-kernel.img)<br/>SHA256: XSHArpi3-kernel.imgX</sub>
 <sub>:package: [thinroot-${VERSION}-rpi3-sdcard.img](https://github.com/jens-maus/thinRoot/releases/download/${VERSION}/thinroot-${VERSION}-rpi3-sdcard.img)<br/>SHA256: XSHArpi3-sdcard.imgX</sub>
+
+## :whale: Boot server container:
+
+This release is also available as ready-to-use PXE/TFTP/HTTP boot server container including the release images (see [docker/README.md](https://github.com/jens-maus/thinRoot/blob/master/docker/README.md)):
+
+```sh
+docker pull ghcr.io/jens-maus/thinroot:${VERSION}         # all platforms
+docker pull ghcr.io/jens-maus/thinroot:${VERSION}-x86_64  # generic-x86_64 only
+```
