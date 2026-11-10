@@ -30,6 +30,11 @@ setenv bootargs "dwc_otg.lpm_enable=0 sdhci_bcm2708.enable_llm=0 console=${conso
 if env exists bootserver; then
   echo "==== NETWORK BOOT ===="
 
+  # make sure USB is started: the rpi3/rpi5 U-Boot has no "usb start"
+  # preboot anymore, and the ethernet of the RPi 2 B / 3 B (LAN9514) is
+  # attached via USB (no-op if USB is already running)
+  usb start
+
   # init network
   dhcp
   setenv serverip ${bootserver}

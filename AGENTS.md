@@ -149,6 +149,12 @@ that exist in the respective kernel's Kconfig.
   (`rpi3` and `rpi5` symlink to it). They are kept in sync with the RPi
   kernel patches of OpenCCU (`board/rpi*/patches/linux/`). Buildroot applies
   them without fuzz, so a patch whose context changed fails the build.
+- **RPi U-Boot:** `rpi3` and `rpi5` use the same U-Boot version and
+  `rpi_arm64` defconfig as OpenCCU. Their patches live in
+  `buildroot-external/board/rpi5/patches/uboot/` (`rpi3` symlinks to it),
+  added via a per-product `BR2_GLOBAL_PATCH_DIR`. Version-specific U-Boot
+  fixes and the tarball hash live in `buildroot-external/patches/uboot/<version>/`.
+  `rpi4` stays on its own U-Boot version and `rpi_4` defconfig.
 - **RPi kernel bumps** (`scripts/update-rpi-kernel.sh`) only change the tarball
   and hashes. If the bump crosses a kernel major/minor version, also update
   `BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_<x>_<y>`, the
