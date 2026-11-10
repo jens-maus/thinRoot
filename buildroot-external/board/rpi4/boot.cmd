@@ -6,7 +6,7 @@ setenv loglevel "0"
 setenv bootfs 1
 setenv kernel_img "thinroot-Image"
 setenv initrd "thinroot-initrd"
-setenv usbstoragequirks "174c:55aa:u,2109:0715:u,152d:0578:u,152d:0579:u,152d:1561:u,174c:0829:u,14b0:0206:u,174c:55aa:u"
+setenv usbstoragequirks "174c:55aa:u,2109:0715:u,152d:0578:u,152d:0579:u,152d:1561:u,174c:0829:u,14b0:0206:u,174c:225c:u,7825:a2a4:u,152d:0562:u,125f:a88a:u,152d:a583:u,152d:a578:u,152d:0583:u,0bda:9201:u,0634:5605:u,174c:235c:u,174c:1156:u"
 
 # output where we are booting from
 itest.b ${devnum} == 0 && echo "U-boot loaded from SD"
@@ -19,7 +19,8 @@ if test -e ${devtype} ${devnum}:${bootfs} bootEnv.txt; then
 fi
 
 # load devicetree
-fdt addr ${fdt_addr}
+setenv fdt_org ${fdt_addr}
+fdt addr ${fdt_org}
 fdt get value bootargs /chosen bootargs
 
 # set bootargs
@@ -50,7 +51,12 @@ else
   load ${devtype} ${devnum}:${kernelfs} ${kernel_addr_r} ${kernel_img}
 fi
 
+# Relocate the FDT below the firmware-provided one, otherwise it ends up just
+# below 512 MiB and fragments the CMA alloc-range (first 768 MiB on BCM2711)
+setenv fdt_high ${fdt_org}
+
 # boot kernel
+echo "Starting kernel"
 booti ${kernel_addr_r} ${initrd_addr_r} ${fdt_addr}
 
 echo "Boot failed, resetting..."
