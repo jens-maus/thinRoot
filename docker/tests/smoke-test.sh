@@ -78,6 +78,16 @@ check "check: invalid DHCP_MODE is rejected" \
 check "check: DHCP_MODE=full without DHCP_RANGE is rejected" \
   bash -c "! docker run --rm -e SERVER_IP=${SERVER_IP} -e DHCP_MODE=full ${IMAGE} check"
 
+echo "# export"
+EXPORT=$(mktemp -d)
+check "export: generates the boot server tree" docker run --rm -e SERVER_IP="${SERVER_IP}" \
+  -e PUID="$(id -u)" -e PGID="$(id -g)" -v "${EXPORT}:/export" "${IMAGE}" export
+check "export: bootloaders" test -s "${EXPORT}/pxelinux.0" -a -s "${EXPORT}/snponly.efi"
+check "export: boot menus" grep -qF "set boot-url http://${SERVER_IP}/" "${EXPORT}/boot/net.cfg"
+check "export: thinRoot image and configuration" \
+  test -s "${EXPORT}/thinroot/thinroot.img" -a -s "${EXPORT}/thinroot/conf/thinroot.conf.network"
+rm -rf "${EXPORT}"
+
 echo "# first start"
 start_container
 check "example configuration created" test -f "${DATA}/conf/thinroot.conf.network"

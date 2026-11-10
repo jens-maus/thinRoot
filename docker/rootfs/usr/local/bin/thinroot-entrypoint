@@ -2,9 +2,11 @@
 #
 # thinRoot boot server - container entrypoint
 #
-# Usage: thinroot-entrypoint [run|check|<command>...]
+# Usage: thinroot-entrypoint [run|check|export|<command>...]
 #   run    generate the configuration and start dnsmasq + nginx (default)
 #   check  generate and validate the configuration, then exit
+#   export generate the configuration and copy the complete TFTP/HTTP tree
+#          to /export (for boot servers not running this container)
 #   other  run the given command (e.g. a shell for debugging)
 #
 # All settings are taken from environment variables, see docker/README.md.
@@ -47,6 +49,15 @@ check() {
   nginx -t -e stderr -c "${RUN_DIR}/nginx.conf"
 }
 
+export_tree() {
+  local dest=/export
+  [[ -d "${dest}" ]] || die "export: mount the target directory to ${dest}"
+  # dereference all links into /data, the bundled images and bootloaders
+  cp -RL "${TFTP_ROOT}/." "${dest}/"
+  chown -R "${PUID}:${PGID}" "${dest}"
+  log "exported the boot server tree to ${dest}"
+}
+
 run() {
   local pids rc=0
 
@@ -79,6 +90,10 @@ case "${1:-run}" in
   check)
     setup
     check
+    ;;
+  export)
+    setup
+    export_tree
     ;;
   *)
     exec "$@"

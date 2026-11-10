@@ -120,7 +120,7 @@ OPNsense/pfSense (DHCP server, *Network booting*): next server
 `192.168.74.30`, default BIOS file name `pxelinux.0`, UEFI 64 bit file name
 `snponly.efi`.
 
-The former file names of the `tftpboot/` example (`ipxe.x86_64.efi`,
+The file names of the former `tftpboot/` example setup (`ipxe.x86_64.efi`,
 `ipxe.i386.efi`, `pxeboot.0`, `Boot\x64\wdsmgfw.efi`) are available as aliases.
 
 ## Network setup
@@ -255,6 +255,19 @@ docker/tests/smoke-test.sh thinroot:local <version>
 
 `docker run --rm -e SERVER_IP=... thinroot:local check` only generates and
 validates the configuration.
+
+## Using the files without running the container
+
+For an own PXE/TFTP/HTTP server, `export` writes the complete tree that the
+container would serve (bootloaders, generated boot menus for `SERVER_IP`,
+thinRoot images, configuration from `/data`) into the directory mounted at
+`/export`:
+
+```sh
+docker run --rm -e SERVER_IP=192.168.74.30 \
+  -v "$PWD/data:/data" -v "$PWD/tftpboot:/export" \
+  ghcr.io/jens-maus/thinroot:latest export
+```
 
 ## Troubleshooting
 

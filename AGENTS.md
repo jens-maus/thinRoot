@@ -37,7 +37,7 @@ Supported products (one per file in `buildroot-external/configs/`):
 | `buildroot-external/scripts/` | Python helpers (`check-dotconfig.py`, vendored `kconfiglib.py`). |
 | `buildroot-patches/` | Patches applied to the Buildroot source tree itself (see below). |
 | `scripts/update-*.sh` | Dependency bump scripts used by the `dependency-updates` workflow. |
-| `tftpboot/` | Example PXE/iPXE/TFTP boot server setup (not part of the image build). |
+| `tftpboot/` | Example boot server data (`thinroot/conf/` example configuration, overlay and pkgs examples, iPXE menu banner); used by the boot server container, not part of the image build. |
 | `docker/` | Boot server container (`ghcr.io/jens-maus/thinroot`): `Dockerfile` (builds iPXE from source, adds PXELINUX and the release images), entrypoint + generator scripts in `rootfs/`, smoke test in `tests/`. Built/published by `.github/workflows/container.yml`. |
 | `release/` | Output directory for release images (contents are git-ignored). |
 
