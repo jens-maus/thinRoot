@@ -140,8 +140,11 @@ that exist in the respective kernel's Kconfig.
 - After bumping `BUILDROOT_VERSION`, verify that all `buildroot-patches/*.patch`
   still apply and refresh the `*.orig` files if upstream changed.
   `make PRODUCT=<p> check` extracts the new Buildroot version and applies all
-  patches, failing if one does not apply. Do **not** use `make distclean` for
-  this: it deletes all build directories and the download cache.
+  patches, failing if one does not apply. Extraction and patching only happen
+  if `buildroot-<version>/` does not exist yet, so to re-check (e.g. after a
+  failed patch run) remove just that directory first
+  (`rm -rf buildroot-<version>`). Do **not** use `make distclean` for this: it
+  deletes all build directories and the download cache.
 - **RPi kernel patches:** `buildroot-external/board/<rpi>/kernel-patches/`.
 
 ### Shell scripts
