@@ -18,13 +18,18 @@ is provided by the thinRoot boot server container, which also uses
 
 To set up an own PXE/TFTP/HTTP server, the container can generate the
 complete file tree (bootloaders, boot menus for your server address, thinRoot
-images, configuration) without running it:
+images, configuration) into a new, empty directory without running it:
 
 ```sh
+mkdir thinroot-export
 docker run --rm -e SERVER_IP=192.168.74.30 \
-  -v "$PWD/data:/data" -v "$PWD/tftpboot:/export" \
+  -v "$PWD/data:/data" -v "$PWD/thinroot-export:/export" \
   ghcr.io/jens-maus/thinroot:latest export
 ```
 
-Serve the resulting `tftpboot/` directory via TFTP and HTTP and configure
+The target directory has to be empty, so that no stale or modified files get
+mixed with the generated tree. Replace `192.168.74.30` with the address of
+your boot server.
+
+Serve the resulting `thinroot-export/` directory via TFTP and HTTP and configure
 your DHCP server as described in [docker/README.md](../docker/README.md).

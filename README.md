@@ -47,6 +47,8 @@ docker run -d --name thinroot --network host --cap-add NET_ADMIN \
   -v ./data:/data ghcr.io/jens-maus/thinroot:latest
 ```
 
+Replace `192.168.74.30` with the IPv4 address of the Docker host.
+
 ### Using an existing boot server
 
 The installation of thinRoot is quite straight forward as it is delivered as fully network bootable system images which boot directly into a RAMdisk using images hosted by a an already existing PXE+TFTP/HTTP+DHCP environment:

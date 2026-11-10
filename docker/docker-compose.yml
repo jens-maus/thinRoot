@@ -18,7 +18,7 @@ services:
     cap_add:
       - NET_ADMIN  # only needed for DHCP_MODE=proxy/full
     environment:
-      SERVER_IP: 192.168.74.30  # IP address of this host
+      SERVER_IP: 192.168.74.30  # replace with the IPv4 address of this host
       DHCP_MODE: proxy          # none | proxy | full
       # LEGACY_BOOTLOADER: pxelinux  # pxelinux | ipxe
       # MENU_TIMEOUT: 4

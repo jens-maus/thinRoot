@@ -6,7 +6,8 @@
 #   run    generate the configuration and start dnsmasq + nginx (default)
 #   check  generate and validate the configuration, then exit
 #   export generate the configuration and copy the complete TFTP/HTTP tree
-#          to /export (for boot servers not running this container)
+#          to the empty directory /export (for boot servers not running
+#          this container)
 #   other  run the given command (e.g. a shell for debugging)
 #
 # All settings are taken from environment variables, see docker/README.md.
@@ -51,7 +52,9 @@ check() {
 
 export_tree() {
   local dest=/export
-  [[ -d "${dest}" ]] || die "export: mount the target directory to ${dest}"
+  [[ -d "${dest}" ]] || die "export: mount an empty target directory to ${dest}"
+  # never mix the generated tree with existing files (stale or overwritten files)
+  [[ -z "$(ls -A "${dest}")" ]] || die "export: ${dest} is not empty, use a new or empty directory"
   # dereference all links into /data, the bundled images and bootloaders
   cp -RL "${TFTP_ROOT}/." "${dest}/"
   chown -R "${PUID}:${PGID}" "${dest}"

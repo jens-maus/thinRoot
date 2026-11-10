@@ -66,6 +66,8 @@ start_container() {
 }
 
 echo "# configuration checks"
+check "check: missing route reports an error instead of exiting silently" \
+  bash -c "docker run --rm --network none ${IMAGE} check 2>&1 | grep -q 'SERVER_IP not set'"
 check "check: DHCP_MODE=none" docker run --rm -e SERVER_IP="${SERVER_IP}" "${IMAGE}" check
 check "check: DHCP_MODE=proxy" docker run --rm -e SERVER_IP="${SERVER_IP}" -e DHCP_MODE=proxy \
   -e DHCP_PROXY_SUBNET=192.0.2.0 "${IMAGE}" check
@@ -86,6 +88,8 @@ check "export: bootloaders" test -s "${EXPORT}/pxelinux.0" -a -s "${EXPORT}/snpo
 check "export: boot menus" grep -qF "set boot-url http://${SERVER_IP}/" "${EXPORT}/boot/net.cfg"
 check "export: thinRoot image and configuration" \
   test -s "${EXPORT}/thinroot/thinroot.img" -a -s "${EXPORT}/thinroot/conf/thinroot.conf.network"
+check "export: a non-empty target directory is rejected" \
+  bash -c "! docker run --rm -e SERVER_IP=${SERVER_IP} -v ${EXPORT}:/export ${IMAGE} export"
 rm -rf "${EXPORT}"
 
 echo "# first start"

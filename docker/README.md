@@ -44,7 +44,9 @@ All iPXE binaries contain an embedded script that continues with
 ## Quick start
 
 1. Create a directory for the configuration and a `docker-compose.yml` (see
-   [docker-compose.yml](docker-compose.yml)):
+   [docker-compose.yml](docker-compose.yml)). Replace `192.168.74.30` with
+   the IPv4 address of your Docker host: with `DHCP_MODE=proxy` the container
+   refuses to start if the host does not own `SERVER_IP`.
 
    ```yaml
    services:
@@ -110,10 +112,12 @@ if option arch = 00:07 or option arch = 00:09 {
 dnsmasq / Pi-hole:
 
 ```text
+dhcp-match=set:efi32,option:client-arch,6
 dhcp-match=set:efi64,option:client-arch,7
 dhcp-match=set:efi64,option:client-arch,9
+dhcp-boot=tag:efi32,ipxe-i386.efi,,192.168.74.30
 dhcp-boot=tag:efi64,snponly.efi,,192.168.74.30
-dhcp-boot=tag:!efi64,pxelinux.0,,192.168.74.30
+dhcp-boot=tag:!efi32,tag:!efi64,pxelinux.0,,192.168.74.30
 ```
 
 OPNsense/pfSense (DHCP server, *Network booting*): next server
@@ -249,7 +253,7 @@ mkdir payload
 docker buildx build -f docker/Dockerfile \
   --build-context payload=payload \
   --build-arg THINROOT_VERSION=<version> \
-  -t thinroot:local .
+  -t thinroot:local --load .
 docker/tests/smoke-test.sh thinroot:local <version>
 ```
 
@@ -260,14 +264,19 @@ validates the configuration.
 
 For an own PXE/TFTP/HTTP server, `export` writes the complete tree that the
 container would serve (bootloaders, generated boot menus for `SERVER_IP`,
-thinRoot images, configuration from `/data`) into the directory mounted at
-`/export`:
+thinRoot images, configuration from `/data`) into the empty directory
+mounted at `/export`:
 
 ```sh
+mkdir thinroot-export
 docker run --rm -e SERVER_IP=192.168.74.30 \
-  -v "$PWD/data:/data" -v "$PWD/tftpboot:/export" \
+  -v "$PWD/data:/data" -v "$PWD/thinroot-export:/export" \
   ghcr.io/jens-maus/thinroot:latest export
 ```
+
+The target directory has to be empty, so that no stale or modified files get
+mixed with the generated tree. Replace `192.168.74.30` with the address of
+your boot server.
 
 ## Troubleshooting
 

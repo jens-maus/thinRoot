@@ -248,9 +248,11 @@ menu_labels() {
 }
 
 check_menu_default() {
-  if ! menu_labels | grep -qxF "${MENU_DEFAULT}"; then
+  local labels
+  labels=$(menu_labels)
+  if ! grep -qxF -- "${MENU_DEFAULT}" <<<"${labels}"; then
     warn "MENU_DEFAULT '${MENU_DEFAULT}' is not a boot menu entry" \
-         "(available: $(menu_labels | tr '\n' ' ')), using 'thinroot'"
+         "(available: $(tr '\n' ' ' <<<"${labels}")), using 'thinroot'"
     MENU_DEFAULT=thinroot
   fi
 }

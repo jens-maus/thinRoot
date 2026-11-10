@@ -53,14 +53,19 @@ network_of() {
   int2ip $(($(ip2int "$1") & mask))
 }
 
-# first IPv4 source address used for outgoing traffic
+# first IPv4 source address used for outgoing traffic (empty if there is
+# no route; callers report that, so never fail under errexit/pipefail)
 detect_server_ip() {
-  ip -4 route get 1.1.1.1 2>/dev/null | sed -n 's/.* src \([0-9.]*\).*/\1/p' | head -n1
+  local route
+  route=$(ip -4 route get 1.1.1.1 2>/dev/null) || return 0
+  sed -n 's/.* src \([0-9.]*\).*/\1/p' <<<"${route}" | head -n1
 }
 
-# prefix length of the interface holding <ip>
+# prefix length of the interface holding <ip> (empty if not found)
 detect_prefix() {
-  ip -o -4 addr show 2>/dev/null | awk -v ip="$1" '{ split($4, a, "/"); if (a[1] == ip) { print a[2]; exit } }'
+  local addrs
+  addrs=$(ip -o -4 addr show 2>/dev/null) || return 0
+  awk -v ip="$1" '{ split($4, a, "/"); if (a[1] == ip) { print a[2]; exit } }' <<<"${addrs}"
 }
 
 # load settings from the environment, apply defaults and validate them
