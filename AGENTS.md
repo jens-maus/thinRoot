@@ -107,7 +107,7 @@ that exist in the respective kernel's Kconfig.
   absolute or `../` paths.
 - Product config files are `savedefconfig` style: only non-default values
   that differ per product. `make PRODUCT=<p> savedefconfig` writes the
-  *merged* configuration, so it also copies every setting from
+  *merged* configuration, so it also copies the non-default settings from
   `Buildroot.config` into `configs/<p>.config`. Review the result and remove
   those shared entries again (keep intentional product overrides), otherwise
   later changes to `Buildroot.config` are silently overridden. For small
