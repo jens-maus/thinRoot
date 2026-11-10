@@ -56,11 +56,11 @@ make help                              # list all targets and products
 make generic-x86_64                    # build one product
 make generic-x86_64-release            # build + copy images to release/
 make PRODUCT=rpi4 menuconfig           # edit Buildroot config interactively
-make PRODUCT=rpi4 savedefconfig        # write config back to configs/rpi4.config
+make PRODUCT=rpi4 savedefconfig        # overwrite buildroot-external/configs/rpi4.config (see below)
 make PRODUCT=rpi4 linux-menuconfig     # kernel config
 make PRODUCT=rpi4 linux-check-dotconfig  # verify kernel fragments vs. Kconfig
 make generic-x86_64-clean              # remove build-generic-x86_64/
-make distclean                         # remove everything incl. buildroot + downloads
+make distclean                         # remove ALL build dirs, buildroot and download/ (destructive)
 ```
 
 Useful variables: `PRODUCT`, `BR2_JLEVEL`, `BR2_DL_DIR` (default `./download`),
@@ -83,7 +83,8 @@ yamllint .
 # Markdown (config: .markdownlint.yml)
 markdownlint '**/*.md'
 
-# Buildroot package style – downloads and extracts Buildroot on first run
+# Buildroot package style – downloads and extracts Buildroot on first run;
+# needs the Python modules flake8 and python-magic (pip install flake8 python-magic)
 make check
 ```
 
@@ -104,9 +105,13 @@ that exist in the respective kernel's Kconfig.
   applies to all RPi boards, update `rpi3`, `rpi4` **and** `rpi5`.
 - Reference paths in configs via `$(BR2_EXTERNAL_THINROOT_PATH)/…`, never with
   absolute or `../` paths.
-- Product config files are `savedefconfig` style: only non-default values.
-  Keep them that way (regenerate with `make PRODUCT=<p> savedefconfig` if you
-  have a configured build tree, otherwise edit by hand carefully).
+- Product config files are `savedefconfig` style: only non-default values
+  that differ per product. `make PRODUCT=<p> savedefconfig` writes the
+  *merged* configuration, so it also copies every setting from
+  `Buildroot.config` into `configs/<p>.config`. Review the result and remove
+  those shared entries again (keep intentional product overrides), otherwise
+  later changes to `Buildroot.config` are silently overridden. For small
+  changes, editing the product config by hand is usually simpler.
 
 ### Custom Buildroot packages (`buildroot-external/package/`)
 
@@ -133,8 +138,10 @@ that exist in the respective kernel's Kconfig.
   `.patch` files. An optional executable `NNNN-name.sh` next to a patch is run
   after it is applied. Patches are applied in sorted order with `patch -p1`.
 - After bumping `BUILDROOT_VERSION`, verify that all `buildroot-patches/*.patch`
-  still apply (`make distclean` then `make PRODUCT=<p> check` is a quick way
-  to do so) and refresh the `*.orig` files if upstream changed.
+  still apply and refresh the `*.orig` files if upstream changed.
+  `make PRODUCT=<p> check` extracts the new Buildroot version and applies all
+  patches, failing if one does not apply. Do **not** use `make distclean` for
+  this: it deletes all build directories and the download cache.
 - **RPi kernel patches:** `buildroot-external/board/<rpi>/kernel-patches/`.
 
 ### Shell scripts
