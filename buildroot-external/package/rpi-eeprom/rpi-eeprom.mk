@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RPI_EEPROM_VERSION = 7fde8aed9f8c71d83a2879cf104d1284c4b22057
+RPI_EEPROM_VERSION = 3831e51dba65f4493f3f88c1d049de73165c082e
 RPI_EEPROM_SITE = $(call github,raspberrypi,rpi-eeprom,$(RPI_EEPROM_VERSION))
 RPI_EEPROM_LICENSE = BSD-3-Clause
 RPI_EEPROM_LICENSE_FILES = LICENSE
