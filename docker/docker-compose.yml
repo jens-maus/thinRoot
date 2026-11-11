@@ -1,0 +1,27 @@
+# thinRoot boot server - example docker compose file
+#
+# Start with:  docker compose up -d
+# Update with: docker compose pull && docker compose up -d
+#
+# See docker/README.md for all settings.
+---
+services:
+  thinroot:
+    image: ghcr.io/jens-maus/thinroot:latest
+    # use ghcr.io/jens-maus/thinroot:latest-x86_64 if you only have
+    # x86_64 clients (no Raspberry Pi images, much smaller)
+    container_name: thinroot
+    restart: unless-stopped
+    # host networking is required for DHCP_MODE=proxy/full and is the most
+    # robust option for TFTP
+    network_mode: host
+    cap_add:
+      - NET_ADMIN  # only needed for DHCP_MODE=proxy/full
+    environment:
+      SERVER_IP: 192.168.74.30  # replace with the IPv4 address of this host
+      DHCP_MODE: proxy          # none | proxy | full
+      # LEGACY_BOOTLOADER: pxelinux  # pxelinux | ipxe
+      # MENU_TIMEOUT: 4
+      # ADMIN_PASSWORD: changeme
+    volumes:
+      - ./data:/data

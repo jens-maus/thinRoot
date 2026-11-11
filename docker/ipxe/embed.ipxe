@@ -1,0 +1,31 @@
+#!ipxe
+#
+# thinRoot boot server - script embedded into all iPXE binaries
+#
+# Configures the network via DHCP and continues with boot/net.ipxe from the
+# boot server, which is either the proxyDHCP server (DHCP_MODE=proxy) or the
+# next-server announced by the DHCP server (DHCP_MODE=full/none). This keeps
+# the binaries generic: no server address is compiled in.
+#
+
+:dhcp
+dhcp || goto dhcp_failed
+isset ${proxydhcp/next-server} && set tr-server ${proxydhcp/next-server} || set tr-server ${next-server}
+isset ${tr-server} || goto no_server
+iseq ${tr-server} 0.0.0.0 && goto no_server ||
+echo thinRoot: loading boot/net.ipxe from ${tr-server}
+chain --replace --autofree tftp://${tr-server}/boot/net.ipxe || goto chain_failed
+
+:dhcp_failed
+echo thinRoot: DHCP failed
+goto failed
+
+:no_server
+echo thinRoot: DHCP did not announce a boot server (next-server)
+goto failed
+
+:chain_failed
+echo thinRoot: could not load tftp://${tr-server}/boot/net.ipxe
+
+:failed
+prompt --key s --timeout 10000 Press 's' for the iPXE shell, rebooting in 10 seconds... && shell || reboot

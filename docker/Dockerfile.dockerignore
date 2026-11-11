@@ -1,0 +1,7 @@
+# The build context is the repository root, but the image only needs these
+# paths. Everything else (build-*/, buildroot-*, download/, release/, ...)
+# is excluded to keep the context small.
+*
+!docker/
+!tftpboot/thinroot/conf/
+!tftpboot/boot/pxe-banner.png

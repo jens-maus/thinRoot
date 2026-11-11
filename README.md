@@ -36,6 +36,21 @@ _thinRoot_ is a buildroot (https://buildroot.org/) powered operating system envi
 4. In case of a web-kisok use-case: A web page that can be configured using a bootserver-definable environment file so that thinRoot automatically starts as a lightweight web-kiosk.
 
 ## :cloud: Quick-Installation
+
+### Using the boot server container
+
+The easiest way to get started is the thinRoot boot server container `ghcr.io/jens-maus/thinroot`, which bundles a complete PXE+TFTP/HTTP(+optional DHCP/proxyDHCP) boot server, the iPXE/PXELINUX bootloaders and the latest thinRoot release images. Updating thinRoot is then just a matter of pulling a new container image. See [docker/README.md](docker/README.md) for details:
+
+```sh
+docker run -d --name thinroot --network host --cap-add NET_ADMIN \
+  -e SERVER_IP=192.168.74.30 -e DHCP_MODE=proxy \
+  -v ./data:/data ghcr.io/jens-maus/thinroot:latest
+```
+
+Replace `192.168.74.30` with the IPv4 address of the Docker host.
+
+### Using an existing boot server
+
 The installation of thinRoot is quite straight forward as it is delivered as fully network bootable system images which boot directly into a RAMdisk using images hosted by a an already existing PXE+TFTP/HTTP+DHCP environment:
 
 1. [Download latest release](https://github.com/jens-maus/thinRoot/releases) zip archive for the hardware platform you are interesed in:

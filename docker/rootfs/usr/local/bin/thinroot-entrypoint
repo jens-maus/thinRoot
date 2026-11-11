@@ -1,0 +1,104 @@
+#!/bin/bash
+#
+# thinRoot boot server - container entrypoint
+#
+# Usage: thinroot-entrypoint [run|check|export|<command>...]
+#   run    generate the configuration and start dnsmasq + nginx (default)
+#   check  generate and validate the configuration, then exit
+#   export generate the configuration and copy the complete TFTP/HTTP tree
+#          to the empty directory /export (for boot servers not running
+#          this container)
+#   other  run the given command (e.g. a shell for debugging)
+#
+# All settings are taken from environment variables, see docker/README.md.
+#
+
+set -euo pipefail
+
+LIB_DIR=/usr/local/lib/thinroot
+# shellcheck source-path=SCRIPTDIR/../lib/thinroot disable=SC1091
+{
+  . "${LIB_DIR}/common.sh"
+  . "${LIB_DIR}/tree.sh"
+  . "${LIB_DIR}/ipxe.sh"
+  . "${LIB_DIR}/pxelinux.sh"
+  . "${LIB_DIR}/services.sh"
+}
+
+setup() {
+  load_settings
+  setup_run_user
+  mkdir -p "${RUN_DIR}"
+  prepare_data
+  build_tree
+  check_menu_default
+  gen_ipxe
+  gen_pxelinux
+  gen_dnsmasq
+  gen_nginx
+  check_permissions
+
+  log "thinRoot ${THINROOT_VERSION} boot server"
+  log "  server: ${SERVER_IP}, boot URL: ${BOOT_URL}"
+  log "  DHCP mode: ${DHCP_MODE}$([[ "${DHCP_MODE}" == "proxy" ]] && echo " (subnet ${DHCP_PROXY_SUBNET})")"
+  log "  bootloaders: BIOS=${LEGACY_FILE}, UEFI x64=${UEFI64_FILE}, UEFI ia32=${UEFI32_FILE}"
+  log "  default boot entry: ${MENU_DEFAULT}"
+}
+
+check() {
+  dnsmasq --test --conf-file="${RUN_DIR}/dnsmasq.conf"
+  nginx -t -e stderr -c "${RUN_DIR}/nginx.conf"
+}
+
+export_tree() {
+  local dest=/export
+  [[ -d "${dest}" ]] || die "export: mount an empty target directory to ${dest}"
+  # never mix the generated tree with existing files (stale or overwritten files)
+  [[ -z "$(ls -A "${dest}")" ]] || die "export: ${dest} is not empty, use a new or empty directory"
+  # dereference all links into /data, the bundled images and bootloaders
+  cp -RL "${TFTP_ROOT}/." "${dest}/"
+  chown -R "${PUID}:${PGID}" "${dest}"
+  log "exported the boot server tree to ${dest}"
+}
+
+run() {
+  local pids rc=0
+
+  dnsmasq --keep-in-foreground --conf-file="${RUN_DIR}/dnsmasq.conf" &
+  pids=$!
+  nginx -e stderr -c "${RUN_DIR}/nginx.conf" &
+  pids="${pids} $!"
+
+  # stop everything as soon as one service exits, so that the container
+  # restart policy can take over
+  STOPPING=0
+  trap 'STOPPING=1; kill ${pids} 2>/dev/null || true' TERM INT
+  wait -n || rc=$?
+  # shellcheck disable=SC2086
+  kill ${pids} 2>/dev/null || true
+  wait || true
+  if [[ ${STOPPING} -eq 1 ]]; then
+    log "stopped"
+    exit 0
+  fi
+  log "service exited unexpectedly (rc=${rc}), stopping"
+  exit $((rc == 0 ? 1 : rc))
+}
+
+case "${1:-run}" in
+  run)
+    setup
+    run
+    ;;
+  check)
+    setup
+    check
+    ;;
+  export)
+    setup
+    export_tree
+    ;;
+  *)
+    exec "$@"
+    ;;
+esac
