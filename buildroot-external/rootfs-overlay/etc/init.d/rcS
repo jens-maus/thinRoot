@@ -42,13 +42,15 @@ psplash_start() {
   if [[ -n "${fb}" ]] && [[ -n "${PSPLASH_FB}" ]] && [[ "${fb}" != "${PSPLASH_FB}" ]] &&
      pgrep -n /usr/bin/psplash >/dev/null 2>&1; then
     /usr/bin/psplash-write "QUIT"
-    # wait max. 2 seconds for psplash to quit
+    # wait for psplash to quit (bounded to max. 3 seconds). If it is still
+    # running after 2 seconds send SIGTERM and after 2.5 seconds SIGKILL.
     n=0
-    while pgrep -n /usr/bin/psplash >/dev/null 2>&1 && [[ ${n} -lt 20 ]]; do
+    while pgrep -n /usr/bin/psplash >/dev/null 2>&1 && [[ ${n} -lt 30 ]]; do
+      [[ ${n} -eq 20 ]] && killall psplash >/dev/null 2>&1
+      [[ ${n} -eq 25 ]] && killall -9 psplash >/dev/null 2>&1
       usleep 100000
       n=$((n+1))
     done
-    killall psplash >/dev/null 2>&1
   fi
 
   if [[ -n "${fb}" ]] && ! pgrep -n /usr/bin/psplash >/dev/null 2>&1; then
