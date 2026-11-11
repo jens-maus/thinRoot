@@ -16,15 +16,54 @@ umask 0002
 # create ld.so.cache file
 /sbin/ldconfig -C /var/cache/ld.so.cache
 
+# load the kernel modules of all graphics devices (PCI class 0x03xxxx)
+# before psplash is started. Otherwise a DRM driver built as module
+# (e.g. xe for Intel Panther Lake and newer) is loaded later by udev, takes
+# over the firmware framebuffer (efifb) and psplash ends up drawing into a
+# framebuffer which is not displayed anymore (black screen until Xorg).
+for d in /sys/bus/pci/devices/*; do
+  case "$(cat "${d}/class" 2>/dev/null)" in
+    0x03*)
+      # skip devices already bound to a (built-in) driver
+      [[ -e "${d}/driver" ]] && continue
+      /sbin/modprobe -q "$(cat "${d}/modalias")" 2>/dev/null
+      ;;
+  esac
+done
+
+# start psplash if it is not running yet and remember the framebuffer
+# device it was started on. If that framebuffer got replaced in the
+# meantime (e.g. efifb -> DRM fbdev after a graphics driver module got
+# loaded) psplash is restarted so that it draws on the visible framebuffer.
+PSPLASH_FB=""
+psplash_start() {
+  fb=$(cat /sys/class/graphics/fb0/name 2>/dev/null)
+
+  if [[ -n "${fb}" ]] && [[ -n "${PSPLASH_FB}" ]] && [[ "${fb}" != "${PSPLASH_FB}" ]] &&
+     pgrep -n /usr/bin/psplash >/dev/null 2>&1; then
+    /usr/bin/psplash-write "QUIT"
+    # wait max. 2 seconds for psplash to quit
+    n=0
+    while pgrep -n /usr/bin/psplash >/dev/null 2>&1 && [[ ${n} -lt 20 ]]; do
+      usleep 100000
+      n=$((n+1))
+    done
+    killall psplash >/dev/null 2>&1
+  fi
+
+  if [[ -n "${fb}" ]] && ! pgrep -n /usr/bin/psplash >/dev/null 2>&1; then
+    /usr/bin/psplash -n 2>/dev/null &
+    PSPLASH_FB="${fb}"
+  fi
+}
+
 for i in /etc/init.d/S??* ;do
 
   # Ignore dangling symlinks (if any).
   [[ ! -f "${i}" ]] && continue
 
-  # make sure psplash is running
-  if ! pgrep -n /usr/bin/psplash >/dev/null 2>&1; then
-    /usr/bin/psplash -n 2>/dev/null &
-  fi
+  # make sure psplash is running (on the current framebuffer)
+  psplash_start
 
   # put the psplash progess bar to the
   # corresponding level
@@ -49,10 +88,8 @@ for i in /etc/init.d/S??* ;do
   esac
 done
 
-# make sure psplash is running
-if ! pgrep -n /usr/bin/psplash >/dev/null 2>&1; then
-  /usr/bin/psplash -n 2>/dev/null &
-fi
+# make sure psplash is running (on the current framebuffer)
+psplash_start
 
 /usr/bin/psplash-write "PROGRESS 100"
 
